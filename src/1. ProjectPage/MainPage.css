@@ -1,0 +1,107 @@
+@font-face {
+    font-family: 'Montserrat-Bold';
+    src: url('../Fonts/Montserrat-Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Pretendard-SemiBold';
+    src: url('../Fonts/Pretendard-SemiBold.ttf') format('truetype');
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Pretendard-Medium';
+    src: url('../Fonts/Pretendard-Medium.ttf') format('truetype');
+    font-style: normal;
+}
+
+
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    
+    display: flex;
+    justify-content: center;
+}
+.MainPage-container{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.MainPage-Header {
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;
+    gap: 90px;
+}
+
+.MainPage-Header-Left {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 26px;
+}
+
+.MainPage-Header-LOGO {
+    font-family: 'Montserrat-Bold';
+    font-size: 32px;
+}
+
+.MainPage-Header-Right {
+    display: flex;
+    justify-content: flex-start;
+    gap: 30px;
+    align-items: center;
+}
+
+.MainPage-Header-Search {
+    width: 412px;
+    height: 54px;
+    padding-left: 24px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+    border: 2px, solid, #BE3838;
+    border-radius: 51px;
+    background-color: #F2F2F2;
+}
+
+.MainPage-Header-SearchIcon, .MainPage-Header-SearchIcon img {
+    width: 26px;
+    height: 26px;
+}
+
+.MainPage-Header-InputArea {
+    outline: none;
+    border: none;
+    background-color: transparent;
+    font-family: 'Pretendard-Medium';
+    font-size: 16px;
+    color: #000000  ;
+}
+
+.MainPage-Header-InputArea::placeholder {
+    font-family: 'Pretendard-Medium';
+    color: #A1A6A9;
+}
+
+.MainPage-Header-Right-ProMatch,
+.MainPage-Header-Right-FreeMatch,
+.MainPage-Header-Right-MyProject,
+.MainPage-Header-Right-LoginButton {
+    font-family: 'Pretendard-Semibold';
+}
+
+.MainPage-Header-Right-FreeMatch,
+.MainPage-Header-Right-MyProject,
+.MainPage-Header-Right-LoginButton {
+    color: #A1A6A9;
+}
