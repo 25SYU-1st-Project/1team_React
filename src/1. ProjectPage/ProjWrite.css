@@ -3,6 +3,7 @@
     src: url('../Fonts/Montserrat-Bold.ttf') format('truetype');
     font-style: normal;
 }
+
 @font-face {
     font-family: 'Pretendard-SemiBold';
     src: url('../Fonts/Pretendard-SemiBold.ttf') format('truetype');
@@ -14,3 +15,404 @@
     src: url('../Fonts/Pretendard-Medium.ttf') format('truetype');
     font-style: normal;
 }
+
+.ProjWrite-Container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.ProjWrite-Header {
+    display: flex;
+    justify-content: center;
+    gap: 552px;
+    margin-top: 56px;
+}
+
+.ProjWrite-Header-Left {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 26px;
+}
+
+.ProjWrite-Header-Left-Logo {
+    font-family: 'Montserrat-Bold';
+    font-size: 32px;
+}
+
+.ProjWrite-Header-Left-Logo span {
+    color: #BE3838;
+}
+
+
+.ProjWrite-Header-Right {
+    display: flex;
+    justify-content: flex-start;
+    gap: 30px;
+    align-items: center;
+}
+
+
+.ProjWrite-Header-Right-ProMatch,
+.ProjWrite-Header-Right-FreeMatch,
+.ProjWrite-Header-Right-MyProject,
+.ProjWrite-Header-Right-LoginButton {
+    font-family: 'Pretendard-SemiBold';
+}
+
+.ProjWrite-Header-Right-FreeMatch,
+.ProjWrite-Header-Right-MyProject,
+.ProjWrite-Header-Right-LoginButton {
+    color: #A1A6A9;
+}
+
+
+.ProjWrite-Body {
+    display: flex;
+    margin-top: 69px;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+}
+
+.ProjWrite-Body-Title-Box {
+    display: flex;
+    justify-content: flex-start;
+    width: 300px;
+    margin-right: 830px;
+}
+
+.ProjWrite-Body-Title {
+    font-family: 'Pretendard-Medium';
+    font-size: 40px;
+}
+
+.ProjWrite-Body-MainBox {
+    width: 1128px;
+    height: 630px;
+    margin-top: 38px;
+    padding-bottom: 17px;
+    background-color: #F2F2F2;
+    justify-content: flex-start;
+    border: 3px solid #BE3838;
+    border-radius: 15px;
+    overflow-y: scroll;
+}
+
+.ProjWrite-Body-MainBox-Title {
+    display: flex;
+    margin-top: 50px;
+    margin-left: 264px;
+    width: 600px;
+    height: 70px;
+    outline: none;
+    border-radius: 15px;
+    background-color: #d9d9d9;
+    border: none;
+    font-size: 24px;
+    text-align: center;
+
+}
+
+.ProjWrite-Body-MainBox-Title::placeholder {
+    font-family: 'Pretendard-Medium';
+    color: #A9A9A9;
+    text-align: center;
+}
+
+.ProjWrite-Body-MainBox-ContentBox {
+    margin-top: 56px;
+    margin-left: 72px;
+}
+
+.ProjWrite-Body-ContentBox-Title {
+    font-family: 'Pretendard-Medium';
+    font-size: 20px;
+}
+
+.ProjWrite-ContentBox-Container {
+    display: flex;
+    justify-content: flex-start;
+    gap: 21px;
+}
+
+
+
+.ProjWrite-Category {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.category-icon {
+    width: 34px;
+    height: 34px;
+}
+
+.category-text {
+    font-family: 'Pretendard-Medium';
+    font-size: 20px;
+    color: #A1A6A9;
+    width: 102px;
+}
+
+.ProjWrite-ContentBox-LimitSalary {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 125px;
+    
+}
+
+.ProjWrite-ContentBox-Limit {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+
+}
+
+.Limit-title {
+    display: flex;
+    flex-direction: row;
+
+    align-items: center;
+}
+
+.Limit-content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.calendar-icon {
+    width: 35px;
+    height: 35px;
+    margin-left: 1px;
+}
+
+
+.ProjWrite-LimitBox1 {
+    width: 168px;
+    height: 55px;
+    background-color: #d9d9d9;
+    border-radius: 15px;
+    margin-right: 8px;
+
+
+}
+
+.ProjWrite-LimitBox2 {
+    width: 168px;
+    height: 55px;
+    background-color: #d9d9d9;
+    border-radius: 15px;
+    margin-left: 8px;
+
+}
+
+.LimitBox-Text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+    font-family: 'Pretendard-Medium';
+}
+
+.ProjWrite-ContentBox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ProjWrite-ContentBox-Salary {
+    display: flex;
+    flex-direction: column;
+    margin-left: 12px;
+    
+}
+
+.Salary-Input-Box {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 267px;
+    height: 55px;
+    background-color: #d9d9d9;
+    border: none;
+    border-radius: 15px;
+    outline: none;
+    font-family: 'Pretendard-Medium';
+    font-size: 20px;
+    padding-left: 19px;
+}
+
+.Salary-Input {
+    width: 80%;
+    height: 100%;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    font-family: 'Pretendard-Medium';
+    font-size: 20px;
+
+}
+
+.Salary-Input::placeholder {
+    font-family: 'Pretendard-Medium';
+    color: #A9A9A9;
+    font-size: 20px;
+}
+
+.Salary-Text {
+    font-family: 'Pretendard-Medium';
+    font-size: 20px;
+}
+
+.ProjWrite-Target-Content {
+    width: 466px;
+    height: 117px;
+    border: none;
+    border-radius: 15px;
+    background-color: #d9d9d9;
+}
+
+.Target-Text {
+    font-family: 'Pretendard-Medium';
+    font-size: 20px;
+    width: 384px;
+    padding-top: 46px;
+    padding-bottom: 46px;
+    padding-left: 42px;
+    padding-right: 42px;
+    height: 25px;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    overflow-y: auto;
+    resize: none;
+}
+
+
+
+.ProjWrite-ContentBox-TargetTech {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 49px;
+
+}
+
+.ProjWrite-Tech-Content {
+    width: 466px;
+    max-height: 117px;
+    border: none;
+    border-radius: 15px;
+    background-color: #d9d9d9;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    
+    gap: 10px;
+    padding: 10px 0;
+    
+}
+
+.ProjWrite-Tech-Input {
+    width: 391px;
+    height: 29px;
+    border-radius: 15px;
+    border: none;
+    resize: none;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    outline: none;
+    text-align: center;
+    font-family: 'Pretendard-Medium';
+    font-size: 15px;
+    margin-left: 11px;
+
+}
+
+.ProjWrite-Tech-Input::placeholder {
+    font-family: 'Pretendard-Medium';
+    color: #A9A9A9;
+    font-size: 15px;
+    text-align: center;
+}
+
+.ProjWrite-AddButton{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 391px;
+    height: 45px;
+    background-color: #ffffff;
+    border: none;
+    border-radius: 15px;
+    flex-shrink: 0; /* 버튼 크기가 줄어들지 않도록 설정 */
+    margin-left: 11px;
+    
+}
+
+.Tech-Input-Button{
+    width: 20px;
+    height: 18px;
+}
+
+.ProjWrite-ContentBox-Projdetail{
+   display: flex;
+   flex-direction: column;
+   justify-content: flex-start;
+}
+
+.ProjWrite-Prjdetail-Content {
+    width: 981px;
+    height: 220px;
+    border: none;
+    border-radius: 15px;
+    background-color: #d9d9d9;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.Project-Detail-Content {
+ 
+    width: 94%;
+    height: 24px;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    font-family: 'Pretendard-Medium';
+    font-size: 20px;
+    
+    padding-top: 47px;
+    padding-bottom: 149px;
+    padding-left: 41px;
+    padding-right: 791px;
+    
+}
+
+.Create-Project {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    margin-top: 20px;
+}
+
+.Create-Button {
+    width: 177px;
+    height: 63px;
+    border: none;
+    border-radius: 15px;
+    background-color: #d9d9d9;
+    font-family: 'Pretendard-Medium';
+    font-size: 25px;
+    color: #A1A6A9;
+}
+
+

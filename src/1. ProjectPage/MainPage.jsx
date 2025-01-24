@@ -7,7 +7,7 @@ function MainPage() {
     <div className="MainPage-container">
       <div className="MainPage-Header">
         <div className="MainPage-Header-Left">
-          <div className="MainPage-Header-LOGO">P-eeting</div>
+          <div className="MainPage-Header-LOGO"><span>P</span>-eeting</div>
           <div className="MainPage-Header-Search">
             <div className="MainPage-Header-SearchIcon"><img src={searchIcon} alt="돋보기아이콘" /></div>
             <input className="MainPage-Header-InputArea" type="text" placeholder="프로젝트 미팅, 피팅"/>
