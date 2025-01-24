@@ -12,7 +12,6 @@ createRoot(document.getElementById('root')).render(
       <Routes>
         <Route path="/" element={<MainPage />} />
         <Route path="/ProjectWrite" element={<ProjWrite />} />
-
         <Route path="/FreeView" element={<FreeLancerPage />} />
       </Routes>
     </Router>
