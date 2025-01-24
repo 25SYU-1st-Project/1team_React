@@ -104,14 +104,16 @@ html {
 .MainPage-Header-Right-ProMatch,
 .MainPage-Header-Right-FreeMatch,
 .MainPage-Header-Right-MyProject,
-.MainPage-Header-Right-LoginButton {
+.MainPage-Header-Right-LoginButton,
+.MainPage-Header-Right-LogoutButton {
     font-family: 'Pretendard-Semibold';
     cursor: pointer;
 }
 
 .MainPage-Header-Right-FreeMatch,
 .MainPage-Header-Right-MyProject,
-.MainPage-Header-Right-LoginButton {
+.MainPage-Header-Right-LoginButton,
+.MainPage-Header-Right-LogoutButton {
     color: #A1A6A9;
 }
 
