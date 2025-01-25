@@ -209,13 +209,6 @@ html {
     color: #BE3838;
 }
 
-.AdSlide {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: 7%;
-    background-color: #000000;
-}
 
 /* 모달 css */
 .overlay {
@@ -429,7 +422,7 @@ html {
     padding-left: 30px;
     font-family: 'Pretendard-Medium';
     font-size: 22px;
-    
+
     color: #000000;
     text-align: left;
     cursor: pointer;
@@ -437,11 +430,11 @@ html {
 
 .modal2-content-Track-Dropdown.placeholder {
     color: #BCC2C6;
-  }
-  
-  .modal2-content-Track-Dropdown:not(.placeholder) {
+}
+
+.modal2-content-Track-Dropdown:not(.placeholder) {
     color: #000000;
-  }
+}
 
 .dropdown-list {
     position: absolute;
@@ -497,4 +490,125 @@ html {
     border-radius: 15px;
     font-family: 'Pretendard-Semibold';
     font-size: 24px;
+}
+
+ul,
+li {
+    list-style: none;
+}
+
+.AdSlide {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+    height: 70px;
+
+    .slide_container {
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 80%;
+        height: 100%;
+        
+        .slide_wrapper {
+            display: flex;
+            flex-wrap: nowrap;
+            width: 50%;
+            height: 100%;
+        }
+
+        .slide {
+            display: flex;
+            align-items: center;
+            flex-wrap: nowrap;
+            position: relative;
+
+            &::before {
+                content: "";
+                display: block;
+                width: 100%;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                /* background-color: #bbb; */
+                z-index: 1;
+            }
+
+            &.original {
+                animation: 100s linear infinite normal none running infiniteAnimation1;
+            }
+
+            &.clone {
+                animation: 100s linear infinite infiniteAnimation2;
+            }
+
+            &.stop {
+                animation-play-state: paused;
+            }
+
+            li {
+                margin: 0;
+                cursor: pointer;
+                z-index: 2;
+                transition: 1s;
+
+
+                &.big {
+                    width: 400px;
+                    height: 70px;
+                }
+
+                &.small {
+                    width: 400px;
+                    height: 70px;
+                }
+
+                .item {
+                    width: 100%;
+                    height: 100%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    padding-left: 10px;
+                    padding-right: 10px;
+                }
+
+                .slide-text {
+                    color: white;
+                    font-size: 30px;
+                    font-weight: bold;
+                }
+            }
+        }
+    }
+}
+
+@keyframes infiniteAnimation1 {
+    0% {
+        transform: translateX(0%);
+    }
+
+    50% {
+        transform: translateX(-100%);
+    }
+
+    50.1% {
+        transform: translateX(100%);
+    }
+
+    100% {
+        transform: translateX(0%);
+    }
+}
+
+@keyframes infiniteAnimation2 {
+    0% {
+        transform: translateX(0%);
+    }
+
+    100% {
+        transform: translateX(-200%);
+    }
 }

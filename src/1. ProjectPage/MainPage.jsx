@@ -186,6 +186,21 @@ function MainPage() {
     }
   };
 
+  //애니메이션
+  const slides = [
+    { color: "#000000", text: "LIKELION", target: "#" },
+    { color: "#000000", text: "장준익", target: "#" },
+    { color: "#000000", text: "강승진 강사님 화이팅", target: "#" },
+    { color: "#000000", text: "삼육대학교", target: "#" },
+    { color: "#000000", text: "못난이 사자들", target: "#" },
+    { color: "#000000", text: "유광렬", target: "#" },
+    { color: "#000000", text: "정서우", target: "#" },
+  ];
+
+  const [animate, setAnimate] = useState(true);
+  const onStop = () => setAnimate(false);
+  const onRun = () => setAnimate(true);
+
   return (
     <div className="MainPage-container">
       <div className="MainPage-Header">
@@ -252,7 +267,52 @@ function MainPage() {
           <img src={lastIcon} alt="Last" width="20" height="20" />
         </button>
       </div>
-      <div className="AdSlide" />
+        <div className="AdSlide">
+          <div className="slide_container">
+            <ul
+              className="slide_wrapper"
+              onMouseEnter={onStop}
+              onMouseLeave={onRun}
+            >
+              <div
+                className={"slide original".concat(
+                  animate ? "" : " stop"
+                )}
+              >
+                {slides.map((s, i) => (
+                  <li
+                    key={i}
+                    className={i % 2 === 0 ? "big" : "small"}
+                  >
+                    <div
+                      className="item"
+                      style={{ background: s.color }}
+                    >
+                      <span className="slide-text">{s.text}</span>
+                    </div>
+                  </li>
+                ))}
+              </div>
+              <div
+                className={"slide clone".concat(animate ? "" : " stop")}
+              >
+                {slides.map((s, i) => (
+                  <li
+                    key={i}
+                    className={i % 2 === 0 ? "big" : "small"}
+                  >
+                    <div
+                      className="item"
+                      style={{ background: s.color }}
+                    >
+                      <span className="slide-text">{s.text}</span>
+                    </div>
+                  </li>
+                ))}
+              </div>
+            </ul>
+          </div>
+      </div>
       <Modal
         isOpen={loginModalIsOpen}
         onRequestClose={closeLoginModal}
