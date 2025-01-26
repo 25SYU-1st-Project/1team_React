@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 import searchIcon from '../images/search.png';
 import './MainPage.css';
@@ -12,6 +12,7 @@ import lastIcon from '../images/last.png';
 import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { doc, setDoc } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 import { auth, db } from '../firebase';
 
 Modal.setAppElement('#root');
@@ -30,7 +31,7 @@ function MainPage() {
   const [currentUser, setCurrentUser] = useState(null); // 현재 로그인한 사용자 정보
 
   // 그리드에 표시되는 포스트들, 페이징 버튼
-  const posts = Array.from({ length: 30 }, (_, index) => `Post ${index + 1}`);
+  const [posts, setPosts] = useState([]);
 
   const postsPerPage = 6;
   const [currentPage, setCurrentPage] = useState(1);
@@ -188,18 +189,37 @@ function MainPage() {
 
   //애니메이션
   const slides = [
-    { color: "#000000", text: "LIKELION", target: "#" },
-    { color: "#000000", text: "장준익", target: "#" },
+    { color: "#000000", text: "LIKELION 13기 모집중", target: "#" },
+    { color: "#000000", text: "1팀 장준익 유광렬 정서우 ", target: "#" },
     { color: "#000000", text: "강승진 강사님 화이팅", target: "#" },
-    { color: "#000000", text: "삼육대학교", target: "#" },
-    { color: "#000000", text: "못난이 사자들", target: "#" },
-    { color: "#000000", text: "유광렬", target: "#" },
-    { color: "#000000", text: "정서우", target: "#" },
+    { color: "#000000", text: "삼육대 컴공 4학년 화이팅", target: "#" },
+    { color: "#000000", text: "잼띵이 유튜브 구독!!", target: "#" },
+    { color: "#000000", text: "우리 모두 잘 취직해보아요", target: "#" },
+    { color: "#000000", text: "P-EETING은 최고야!", target: "#" },
   ];
 
   const [animate, setAnimate] = useState(true);
   const onStop = () => setAnimate(false);
   const onRun = () => setAnimate(true);
+
+
+  //포스트 Get함수
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, "projects"));
+        const fetchedProjects = querySnapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setPosts(fetchedProjects);
+      } catch (error) {
+        console.error("프로젝트 데이터를 가져오는 중 오류:", error);
+      }
+    };
+  
+    fetchProjects();
+  }, []);
 
   return (
     <div className="MainPage-container">
@@ -239,7 +259,13 @@ function MainPage() {
         <div className="MainPage-Contents-body">
           {currentPosts.map((post, index) => (
             <div key={index} className="MainPage-Contents-item">
-              {post}
+              <h3 className="project-title">{post.name}</h3>
+              <p className="project-category">카테고리: {post.category}</p>
+              <p className="project-dates">
+                작성일: {new Date(post.deadLine[0].seconds * 1000).toLocaleString()} <br />
+                마감일: {new Date(post.deadLine[1].seconds * 1000).toLocaleString()}
+              </p>
+              <p className="project-creator">작성자: {post.creatorId}</p>
             </div>
           ))}
         </div>
@@ -267,51 +293,51 @@ function MainPage() {
           <img src={lastIcon} alt="Last" width="20" height="20" />
         </button>
       </div>
-        <div className="AdSlide">
-          <div className="slide_container">
-            <ul
-              className="slide_wrapper"
-              onMouseEnter={onStop}
-              onMouseLeave={onRun}
+      <div className="AdSlide">
+        <div className="slide_container">
+          <ul
+            className="slide_wrapper"
+            onMouseEnter={onStop}
+            onMouseLeave={onRun}
+          >
+            <div
+              className={"slide original".concat(
+                animate ? "" : " stop"
+              )}
             >
-              <div
-                className={"slide original".concat(
-                  animate ? "" : " stop"
-                )}
-              >
-                {slides.map((s, i) => (
-                  <li
-                    key={i}
-                    className={i % 2 === 0 ? "big" : "small"}
+              {slides.map((s, i) => (
+                <li
+                  key={i}
+                  className={i % 2 === 0 ? "big" : "small"}
+                >
+                  <div
+                    className="item"
+                    style={{ background: s.color }}
                   >
-                    <div
-                      className="item"
-                      style={{ background: s.color }}
-                    >
-                      <span className="slide-text">{s.text}</span>
-                    </div>
-                  </li>
-                ))}
-              </div>
-              <div
-                className={"slide clone".concat(animate ? "" : " stop")}
-              >
-                {slides.map((s, i) => (
-                  <li
-                    key={i}
-                    className={i % 2 === 0 ? "big" : "small"}
+                    <span className="slide-text">{s.text}</span>
+                  </div>
+                </li>
+              ))}
+            </div>
+            <div
+              className={"slide clone".concat(animate ? "" : " stop")}
+            >
+              {slides.map((s, i) => (
+                <li
+                  key={i}
+                  className={i % 2 === 0 ? "big" : "small"}
+                >
+                  <div
+                    className="item"
+                    style={{ background: s.color }}
                   >
-                    <div
-                      className="item"
-                      style={{ background: s.color }}
-                    >
-                      <span className="slide-text">{s.text}</span>
-                    </div>
-                  </li>
-                ))}
-              </div>
-            </ul>
-          </div>
+                    <span className="slide-text">{s.text}</span>
+                  </div>
+                </li>
+              ))}
+            </div>
+          </ul>
+        </div>
       </div>
       <Modal
         isOpen={loginModalIsOpen}
@@ -419,7 +445,7 @@ function MainPage() {
           )}
         </div>
       </Modal>
-    </div>
+    </div >
   )
 }
 
