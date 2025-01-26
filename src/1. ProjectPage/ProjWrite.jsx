@@ -173,9 +173,12 @@ function ProjWrite() {
                         </div>
 
                        <div className='Create-Project'>
-                        </div>                     
-                        <button className='Create-Button'>작성 완료</button>
+                        <div className='Create-Project-Content'>
+                            </div>                     
+                            <button className='Create-Button'>작성 완료</button>
                         </div>
+                        </div>                 
+                       
 
 
                 </div>
