@@ -12,7 +12,7 @@ import lastIcon from '../images/last.png';
 import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { doc, setDoc } from "firebase/firestore";
-import { collection, getDocs } from "firebase/firestore";
+import { Timestamp, collection, getDocs } from "firebase/firestore";
 import { auth, db } from '../firebase';
 
 Modal.setAppElement('#root');
@@ -204,6 +204,15 @@ function MainPage() {
 
 
   //포스트 Get함수
+  const formatDate = (timestamp) => {
+    if (!timestamp) return "";
+    const date = timestamp instanceof Timestamp ? timestamp.toDate() : new Date(timestamp);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}.${month}.${day}`;
+  };
+
   useEffect(() => {
     const fetchProjects = async () => {
       try {
@@ -212,14 +221,32 @@ function MainPage() {
           id: doc.id,
           ...doc.data(),
         }));
+        fetchedProjects.sort((a, b) => b.createdAt - a.createdAt);
         setPosts(fetchedProjects);
       } catch (error) {
         console.error("프로젝트 데이터를 가져오는 중 오류:", error);
       }
     };
-  
+
     fetchProjects();
   }, []);
+
+  const [selectedCategory, setSelectedCategory] = useState("전체");
+
+  // 카테고리별 필터링 함수
+  const filteredPosts = selectedCategory === "전체"
+    ? posts
+    : posts.filter(post => post.category === selectedCategory);
+
+  const currentFilteredPosts = filteredPosts.slice(
+    (currentPage - 1) * postsPerPage,
+    currentPage * postsPerPage
+  );
+
+  const handleCategoryClick = (category) => {
+    setSelectedCategory(category);
+    setCurrentPage(1);
+  };
 
   return (
     <div className="MainPage-container">
@@ -250,22 +277,52 @@ function MainPage() {
         <div className="MainPage-Contents-header">
           <div className="MainPage-Contents-header-title">프로젝트 목록</div>
           <div className="MainPage-Contents-header-category">
-            <div className="MainPage-Contents-header-category1">문화 · 스포츠</div>
-            <div className="MainPage-Contents-header-category2">금융 · 보험</div>
-            <div className="MainPage-Contents-header-category3">의료서비스</div>
-            <div className="MainPage-Contents-header-category4">건설 · 건축</div>
+            {["전체", "문화 · 스포츠", "금융 · 보험", "의료서비스", "건설 · 건축"].map((category) => (
+              <div
+                key={category}
+                className={`MainPage-Contents-header-category-item ${selectedCategory === category ? "active" : ""
+                  }`}
+                onClick={() => handleCategoryClick(category)}
+              >
+                {category}
+              </div>
+            ))}
           </div>
         </div>
         <div className="MainPage-Contents-body">
-          {currentPosts.map((post, index) => (
+          {currentFilteredPosts.map((post, index) => (
             <div key={index} className="MainPage-Contents-item">
-              <h3 className="project-title">{post.name}</h3>
-              <p className="project-category">카테고리: {post.category}</p>
-              <p className="project-dates">
-                작성일: {new Date(post.deadLine[0].seconds * 1000).toLocaleString()} <br />
-                마감일: {new Date(post.deadLine[1].seconds * 1000).toLocaleString()}
-              </p>
-              <p className="project-creator">작성자: {post.creatorId}</p>
+              <div className="MainPage-Contents-item-poster">
+                {formatDate(post.createdAt)}
+              </div>
+              <div className="MainPage-Contents-item-contents">
+                <div className="MainPage-Contents-item-left">
+                  <div className="MainPage-Contents-item-projectInfo">
+                    <div className="MainPage-Contents-item-projectCreator">{post.creatorId}</div>
+                    <div className="MainPage-Contents-item-projectTitle">{post.name}</div>
+                  </div>
+                  <div className="MainPage-Contents-item-stacks">
+                    {post.tracks.map((track, index) => (
+                      <span key={index}># {track} </span>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="MainPage-Contents-item-right">
+                  <div className="MainPage-Contents-item-Date">
+                    <div className="MainPage-Contents-item-DateTitle">모집 기간</div>
+                    <div className="MainPage-Contents-item-Deadline">
+                      <div className="MainPage-Contents-item-DeadlineFrom">{formatDate(post.deadLine[0])}</div>
+                      <div className="MainPage-Contents-item-~">~</div>
+                      <div className="MainPage-Contents-item-DeadlineTo">{formatDate(post.deadLine[1])}</div>
+                    </div>
+                  </div>
+                  <div className="MainPage-Contents-item-CategoryReward">
+                    <div className="MainPage-Contents-item-Category">{post.category}</div>
+                    <div className="MainPage-Contents-item-Reward"><span>1인</span> {post.salary} 만원</div>
+                  </div>
+                </div>
+              </div>
             </div>
           ))}
         </div>
