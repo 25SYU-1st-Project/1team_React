@@ -129,6 +129,7 @@ html {
 }
 
 .MainPage-Contents {
+    position: relative;
     margin-top: 62px;
     width: 1100px;
     height: 570px;
@@ -312,6 +313,24 @@ html {
     color: #BE3838;
 }
 
+.MainPage-Contents-createProjButton{
+    position: absolute;
+    right: -100px;
+    bottom: 0px;
+    width: 75px;
+    height: 75px;
+    border-radius: 15px;
+    background-color: #BE3838;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.MainPage-Contents-createProjButton img {
+    width: 30px;
+    height: 30px;
+}
 
 /* 모달 css */
 .overlay {

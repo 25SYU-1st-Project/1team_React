@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
+import { useNavigate } from 'react-router-dom';
 import searchIcon from '../images/search.png';
 import './MainPage.css';
 
@@ -7,6 +8,7 @@ import firstIcon from '../images/first.png';
 import prevIcon from '../images/prev.png';
 import nextIcon from '../images/next.png';
 import lastIcon from '../images/last.png';
+import plusIcon from '../images/plusIcon.png';
 
 //firebase 임포트
 import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
@@ -29,6 +31,13 @@ function MainPage() {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태 추가
   const [currentUser, setCurrentUser] = useState(null); // 현재 로그인한 사용자 정보
+
+  //라우터 핸들러
+  const navigate = useNavigate();
+  const handleProjButton = () => {
+    navigate('/projectWrite')
+  }
+
 
   // 그리드에 표시되는 포스트들, 페이징 버튼
   const [posts, setPosts] = useState([]);
@@ -325,6 +334,10 @@ function MainPage() {
               </div>
             </div>
           ))}
+
+          <div className="MainPage-Contents-createProjButton" onClick={handleProjButton}>
+            <img src={plusIcon} />
+          </div>
         </div>
       </div>
       <div className="pagination">
