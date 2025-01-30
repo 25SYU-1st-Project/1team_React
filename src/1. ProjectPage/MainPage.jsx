@@ -33,6 +33,7 @@ function MainPage() {
   const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태 추가
   const [currentUser, setCurrentUser] = useState(null); // 현재 로그인한 사용자 정보
 
+  // 회원가입 라디오버튼 핸들러
   const handleRadioChange = (event) => {
     setSelectedMemberClass(event.target.value);
   };
