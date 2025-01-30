@@ -204,7 +204,7 @@ function MainPage() {
     { color: "#000000", text: "삼육대 컴공 4학년 화이팅", target: "#" },
     { color: "#000000", text: "잼띵이 유튜브 구독!!", target: "#" },
     { color: "#000000", text: "우리 모두 잘 취직해보아요", target: "#" },
-    { color: "#000000", text: "P-EETING은 최고야!", target: "#" },
+    { color: "#000000", text: "PEETING은 최고야!", target: "#" },
   ];
 
   const [animate, setAnimate] = useState(true);
