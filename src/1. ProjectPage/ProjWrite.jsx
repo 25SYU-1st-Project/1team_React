@@ -1,12 +1,21 @@
 import CheckedIcon from '../images/CheckedIcon.png';
 import UncheckedIcon from '../images/UncheckedIcon.png';
 import CalendarIcon from '../images/calendar.png';
-import InputButton from '../images/InputButton.png'
-import React, { useState } from 'react';
+import InputButton from '../images/InputButton.png';
+import React, {  useEffect , useState } from 'react';
+import Modal from 'react-modal';
+import { IoIosCloseCircle } from "react-icons/io";
+import { getDaysInMonth, subMonths, addMonths } from 'date-fns';
 
-import "./ProjWrite.css";
+
+import './ProjWrite.css';
+
+
+
+
+      
+
 function ProjWrite() {
-
     const [techStacks, setTechStacks] = useState(['']);
 
     // input 추가하는 함수
@@ -21,11 +30,109 @@ function ProjWrite() {
         setTechStacks(newTechStacks); // 변경된 값을 상태에 저장
     };
 
+    const [modalOpen, setModalOpen] = useState(false);
+    const [currentDate, setCurrentDate] = useState(new Date()); 
+     // modal 창 팝업 시 뒤에 배경 scroll 막기
+     useEffect(() => {
+        modalOpen === true
+            ? (document.body.style.overflow = "hidden")
+            : (document.body.style.overflow = "unset");
+    }, [modalOpen]);
 
+     // modal 창 닫기
+     const closeModal = () => {
+        setModalOpen(false);
+    };
 
+    // 캘린더 관련 로직
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth();
+
+    const firstDayOfMonth = new Date(year, month, 1);
+    const startDay = new Date(firstDayOfMonth);
+    startDay.setDate(1 - firstDayOfMonth.getDay());
+
+    const lastDayOfMonth = new Date(year, month + 1, 0);
+    const endDay = new Date(lastDayOfMonth);
+    endDay.setDate(lastDayOfMonth.getDate() + (6 - lastDayOfMonth.getDay()));
+
+    // 주 단위로 날짜 그룹화
+    const groupDatesByWeek = (startDay, endDay) => {
+        const weeks = [];
+        let currentWeek = [];
+        let currentDate = new Date(startDay);
+
+        while (currentDate <= endDay) {
+        currentWeek.push(new Date(currentDate));
+        if (currentWeek.length === 7 || currentDate.getDay() === 6) {
+            weeks.push(currentWeek);
+            currentWeek = [];
+        }
+        currentDate.setDate(currentDate.getDate() + 1);
+        }
+
+        if (currentWeek.length > 0) {
+        weeks.push(currentWeek);
+        }
+
+        return weeks;
+    };
+
+    const handlePrevMonth = () => {
+        setCurrentDate(new Date(year, month - 1, 1));
+    };
+
+    const handleNextMonth = () => {
+        setCurrentDate(new Date(year, month + 1, 1));
+    };
+        
 
     return (
+        
         <div className="ProjWrite-Container">
+        <Modal isOpen={modalOpen} className="modal-content" overlayClassName="modal-overlay">
+            <div className="modal-close-btn">
+                <button type="button" onClick={closeModal}>
+                    <IoIosCloseCircle size={30} />
+                </button>
+            </div>
+            <div className="calendar-modal">
+            <div className="calendar-header">
+                <button onClick={handlePrevMonth} className="calendar-nav">
+                {"<"}
+                </button>
+                <span>
+                {year}년 {month + 1}월
+                </span>
+                <button onClick={handleNextMonth} className="calendar-nav">
+                {">"}
+                </button>
+            </div>
+            <div className="calendar-body">
+                <div className="calendar-weekday">
+                {["일", "월", "화", "수", "목", "금", "토"].map((day, i) => (
+                    <div key={i} className="calendar-weekday-item">
+                    {day}
+                    </div>
+                ))}
+                </div>
+                {groupDatesByWeek(startDay, endDay).map((week, index) => (
+                <div key={index} className="calendar-week">
+                    {week.map((date, i) => (
+                    <div
+                        key={i}
+                        className={`calendar-day ${
+                        date.getMonth() === month ? "current-month" : "other-month"
+                        }`}
+                    >
+                        {date.getDate()}
+                    </div>
+                    ))}
+                </div>
+                ))}
+                </div>
+            </div>
+      </Modal>
             <div className="ProjWrite-Header">
                 <div className="ProjWrite-Header-Left">
                     <div className="ProjWrite-Header-Left-Logo"><span>P</span>-eeting</div>
@@ -37,6 +144,7 @@ function ProjWrite() {
                     <div className="ProjWrite-Header-Right-LoginButton">로그인</div>
                 </div>
             </div>
+
             <div className='ProjWrite-Body'>
                 <div className='ProjWrite-Body-Title-Box'>
                     <div className='ProjWrite-Body-Title'>프로젝트 공고 작성</div>
@@ -44,7 +152,7 @@ function ProjWrite() {
                 <div className='ProjWrite-Body-MainBox'>
                     <input className='ProjWrite-Body-MainBox-Title' type="text" placeholder='프로젝트명을 작성해주세요.' />
                     <div className='ProjWrite-Body-MainBox-ContentBox'>
-                        <p className='ProjWrite-Body-ContentBox-Title'>프로젝트 카테고리</p>
+                    <p className='ProjWrite-Body-ContentBox-Title'>프로젝트 카테고리</p>
                         <div className='ProjWrite-ContentBox-Container'>
                             <div className='ProjWrite-Category'>
                                 <img
@@ -118,7 +226,8 @@ function ProjWrite() {
                             <div className='ProjWrite-ContentBox-Limit'>
                                 <div className='Limit-title'>
                                     <p className='ProjWrite-Body-ContentBox-Title'>모집 기한</p>
-                                    <img src={CalendarIcon} alt="calendar" className="calendar-icon" />
+                                    <img src={CalendarIcon} alt="calendar" className="calendar-icon" 
+                                    onClick={() => {setModalOpen(true);}} />
                                 </div>
                                 <div className='Limit-content'>
                                     <div className='ProjWrite-LimitBox1' placeholder='YYYY-MM-DD'></div>
@@ -127,13 +236,14 @@ function ProjWrite() {
                                 </div>
                             </div>
                             <div className='ProjWrite-ContentBox-Salary'>
-                                <p className='ProjWrite-Body-ContentBox-Title'>급여(월)</p>
+                                <p className='ProjWrite-Body-ContentBox-Title'>수당</p>
                                 <div className='Salary-Input-Box'>
                                     <input type="text" placeholder='금액 입력' className='Salary-Input' />
                                     <span className='Salary-Text'>만원</span>
                                 </div>
                             </div>
                         </div>
+
                         <div className='ProjWrite-ContentBox-TargetTech'>
                             <div className='ProjWrite-ContentBox-Target'>
                                 <p className='ProjWrite-Body-ContentBox-Title'>지원 대상</p>
@@ -172,20 +282,30 @@ function ProjWrite() {
                             </div>
                         </div>
 
-                       <div className='Create-Project'>
-                        <div className='Create-Project-Content'>
-                            </div>                     
+                        <div className='Create-Project'>
+                            <div className='Create-Project-Content'></div>
                             <button className='Create-Button'>작성 완료</button>
                         </div>
-                        </div>                 
-                       
+                    </div>
 
-
+                    
+                        
+    
+                  
                 </div>
-            </div>
 
+            </div>
         </div>
-    )
+
+     
+    );
+   
+
+   
 }
 
-export default ProjWrite
+
+
+
+
+export default ProjWrite;
