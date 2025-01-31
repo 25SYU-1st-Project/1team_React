@@ -2,10 +2,12 @@ import CheckedIcon from '../images/CheckedIcon.png';
 import UncheckedIcon from '../images/UncheckedIcon.png';
 import CalendarIcon from '../images/calendar.png';
 import InputButton from '../images/InputButton.png';
-import React, {  useEffect , useState } from 'react';
+import React, {  useEffect , useState, useRef } from 'react';
 import Modal from 'react-modal';
 import { IoIosCloseCircle } from "react-icons/io";
 import { getDaysInMonth, subMonths, addMonths } from 'date-fns';
+import previousMonth from '../images/arrow-left.png';
+import nextMonth from '../images/arrow-right.png'
 
 
 import './ProjWrite.css';
@@ -17,6 +19,14 @@ import './ProjWrite.css';
 
 function ProjWrite() {
     const [techStacks, setTechStacks] = useState(['']);
+    const [modalOpen, setModalOpen] = useState(false);
+    const modalRef = useRef(null); // 모달을 참조할 ref 생성
+
+    const [currentDate, setCurrentDate] = useState(new Date()); 
+    const [startDate, setStartDate] = useState(null); // 시작일
+    const [endDate, setEndDate] = useState(null); // 종료일
+
+    
 
     // input 추가하는 함수
     const addInput = () => {
@@ -30,13 +40,26 @@ function ProjWrite() {
         setTechStacks(newTechStacks); // 변경된 값을 상태에 저장
     };
 
-    const [modalOpen, setModalOpen] = useState(false);
-    const [currentDate, setCurrentDate] = useState(new Date()); 
-     // modal 창 팝업 시 뒤에 배경 scroll 막기
-     useEffect(() => {
-        modalOpen === true
-            ? (document.body.style.overflow = "hidden")
-            : (document.body.style.overflow = "unset");
+    
+// modal 관련 로직
+    // modal 창 팝업 시 뒤에 배경 scroll 막기
+    useEffect(() => {
+        if (modalOpen) {
+            document.body.style.overflow = "hidden";
+            // 외부 클릭 감지
+            const handleClickOutside = (event) => {
+                if (modalRef.current && !modalRef.current.contains(event.target)) {
+                    setModalOpen(false);  // 외부 클릭 시 모달 닫기
+                }
+            };
+            document.addEventListener("mousedown", handleClickOutside); // 외부 클릭 감지
+
+            return () => {
+                document.removeEventListener("mousedown", handleClickOutside); // 컴포넌트 unmount 시 이벤트 리스너 정리
+            };
+        } else {
+            document.body.style.overflow = "unset";
+        }
     }, [modalOpen]);
 
      // modal 창 닫기
@@ -45,6 +68,7 @@ function ProjWrite() {
     };
 
     // 캘린더 관련 로직
+
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
 
@@ -85,51 +109,66 @@ function ProjWrite() {
     const handleNextMonth = () => {
         setCurrentDate(new Date(year, month + 1, 1));
     };
+
+    // 날짜를 YYYY-MM-DD 형식으로 변환
+    const formatDate = (date) => {
+        return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+    };
+    
+    // 날짜 클릭 시 처리
+    const handleDateClick = (date) => {
+        if (!startDate) {
+            setStartDate(date);
+        } else if (!endDate && date > startDate) {
+            setEndDate(date);
+        } else {
+            setStartDate(date);
+            setEndDate(null);
+        }
+        };
         
 
     return (
         
         <div className="ProjWrite-Container">
         <Modal isOpen={modalOpen} className="modal-content" overlayClassName="modal-overlay">
-            <div className="modal-close-btn">
-                <button type="button" onClick={closeModal}>
-                    <IoIosCloseCircle size={30} />
-                </button>
-            </div>
-            <div className="calendar-modal">
+            <div ref={modalRef} className="calendar-modal">
             <div className="calendar-header">
-                <button onClick={handlePrevMonth} className="calendar-nav">
-                {"<"}
-                </button>
+                <img src={previousMonth} alt="previous" className='calendar-nav' onClick={handlePrevMonth} />
+                
                 <span>
-                {year}년 {month + 1}월
+                {year}년  {month + 1}월
                 </span>
-                <button onClick={handleNextMonth} className="calendar-nav">
-                {">"}
-                </button>
+                <img src={nextMonth} alt="next" className='calendar-nav' onClick={handleNextMonth}/>
             </div>
             <div className="calendar-body">
                 <div className="calendar-weekday">
                 {["일", "월", "화", "수", "목", "금", "토"].map((day, i) => (
-                    <div key={i} className="calendar-weekday-item">
+                    <div key={i} className={`calendar-day day-header ${i === 0 ? "sunday" : ""} ${i === 6 ? "saturday" : ""}`}>
                     {day}
                     </div>
                 ))}
                 </div>
                 {groupDatesByWeek(startDay, endDay).map((week, index) => (
-                <div key={index} className="calendar-week">
-                    {week.map((date, i) => (
-                    <div
-                        key={i}
-                        className={`calendar-day ${
-                        date.getMonth() === month ? "current-month" : "other-month"
-                        }`}
-                    >
-                        {date.getDate()}
+                    <div key={index} className="calendar-week">
+                        {week.map((date, i) => {
+                        const dayOfWeek = date.getDay(); // 0 = 일요일, 6 = 토요일
+                        return (
+                            <div
+                            key={i}
+                            className={`calendar-day 
+                                ${date.getMonth() === month ? "current-month" : "other-month"} 
+                                ${dayOfWeek === 0 ? "sunday" : ""} 
+                                ${dayOfWeek === 6 ? "saturday" : ""}
+                            `}
+                            onClick={() => handleDateClick(date)} // 날짜 클릭 시 handleDateClick 실행
+                            >
+                            {date.getDate()}
+                            </div>
+                        );
+                        })}
                     </div>
                     ))}
-                </div>
-                ))}
                 </div>
             </div>
       </Modal>
@@ -230,9 +269,9 @@ function ProjWrite() {
                                     onClick={() => {setModalOpen(true);}} />
                                 </div>
                                 <div className='Limit-content'>
-                                    <div className='ProjWrite-LimitBox1' placeholder='YYYY-MM-DD'></div>
+                                    <div className='ProjWrite-LimitBox1' placeholder='YYYY-MM-DD'>{startDate ? formatDate(startDate) : ''}</div>
                                     <div className='LimitBox-Text'>~</div>
-                                    <div className='ProjWrite-LimitBox2' placeholder='YYYY-MM-DD'></div>
+                                    <div className='ProjWrite-LimitBox2' placeholder='YYYY-MM-DD'>{endDate ? formatDate(endDate) : ''}</div>
                                 </div>
                             </div>
                             <div className='ProjWrite-ContentBox-Salary'>
