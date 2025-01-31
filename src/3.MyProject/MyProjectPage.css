@@ -25,42 +25,43 @@ body, html {
     justify-content: center;
 }
 
-.FreeLancer-container{
+.MyProject-container{
     width: 100vw;
     height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
+    gap: 53px;
 }
 
-.FreeLancer-Header {
+.MyProject-Header {
     margin-top: 50px;
     display: flex;
     justify-content: center;
     gap: 90px;
 }
 
-.FreeLancer-Header-Left {
+.MyProject-Header-Left {
     display: flex;
     align-items: center;
     justify-content: flex-start;
     gap: 26px;
 }
 
-.FreeLancer-Header-LOGO {
+.MyProject-Header-LOGO {
     font-family: 'Montserrat-Bold';
     font-size: 32px;
 }
 
-.FreeLancer-Header-Right {
+.MyProject-Header-Right {
     display: flex;
     justify-content: flex-start;
     gap: 30px;
     align-items: center;
 }
 
-.FreeLancer-Header-Search {
+.MyProject-Header-Search {
     width: 412px;
     height: 54px;
     padding-left: 24px;
@@ -73,12 +74,12 @@ body, html {
     background-color: #F2F2F2;
 }
 
-.FreeLancer-Header-SearchIcon, .FreeLancer-Header-SearchIcon img {
+.MyProject-Header-SearchIcon, .MyProject-Header-SearchIcon img {
     width: 26px;
     height: 26px;
 }
 
-.FreeLancer-Header-InputArea {
+.MyProject-Header-InputArea {
     outline: none;
     border: none;
     background-color: transparent;
@@ -87,84 +88,52 @@ body, html {
     color: #000000  ;
 }
 
-.FreeLancer-Header-InputArea::placeholder {
+.MyProject-Header-InputArea::placeholder {
     font-family: 'Pretendard-Medium';
     color: #A1A6A9;
 }
 
-.FreeLancer-Header-Right-ProMatch,
-.FreeLancer-Header-Right-FreeMatch,
-.FreeLancer-Header-Right-MyProject,
-.FreeLancer-Header-Right-LoginButton {
+.MyProject-Header-Right-ProMatch,
+.MyProject-Header-Right-FreeMatch,
+.MyProject-Header-Right-MyProject,
+.MyProject-Header-Right-LoginButton {
     font-family: 'Pretendard-Semibold';
     cursor: pointer;
 }
 
-.FreeLancer-Header-Right-ProMatch,
-.FreeLancer-Header-Right-MyProject,
-.FreeLancer-Header-Right-LoginButton {
+.MyProject-Header-Right-ProMatch,
+.MyProject-Header-Right-FreeMatch,
+.MyProject-Header-Right-LoginButton {
     color: #A1A6A9;
 }
 
-.FreeLancer-Header-Right-FreeMatch{
+.MyProject-Header-Right-MyProject {
     color: #000000;
 }
 
 
-.FreeLancer-Body{
-    width: 1159px;
-    height: 572px;
-    margin-top: 62px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 39px;
-}
-
-.FreeLancer-Body-Kategory{
-    margin-left: 20px;
-    display: flex;
-    justify-content: flex-start;
-    flex-direction: row;
-    gap: 50px
-}
-
-
-.FreeLancer-Body-Kategory-Left{
-    font-family: 'Pretendard-Medium';
-    font-size: 18px;
-}
-
-.FreeLancer-Body-Kategory-Right{
+.MyProject-Body {
+    width: 1119px;
+    height:658px;
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 26px;
-}
-
-.FreeLancer-Body-Content{
-    width: 1159px;
-    height: 503.7px;
-    display: flex;
-    justify-content: center;
     flex-direction: row;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 19px;
+    gap: 32px;
 }
 
-.FreeLancer-Body-Content-Box1 {
-    width: 275.36px;
-    height: 502.75px;
+.MyProject-Body-Left {
+    width: 275px;
+    height: 588px;
     display: flex;
-    justify-content: flex-start;
     flex-direction: column;
+    align-self: flex-start;
     gap: 19px;
     border-radius: 15px;
     background-color: #F2F2F2;
 }
 
-.FreeLancer-Body-Content-Box1-Profile {
+.MyProject-Body-Left-Profile {
     width: 223px;
     height: 223px;
     margin-top: 20px;
@@ -173,7 +142,7 @@ body, html {
     background-color: #D9D9D9;
 }
 
-.FreeLancer-Body-Content-Box1-Inform {
+.MyProject-Body-Left-Inform {
     margin-left: 30px;
     display: flex;
     justify-content: flex-start;
@@ -183,44 +152,96 @@ body, html {
     gap: 10px;
 }
 
-.FreeLancer-Body-Kategory-Right-Designer,
-.FreeLancer-Body-Kategory-Right-BE,
-.FreeLancer-Body-Kategory-Right-FE,
-.FreeLancer-Body-Kategory-Right-PM{
-    width: 118.68px;
-    height: 30px;
+.MyProject-Body-Right {
+    width: 812px;
+    height: 658px;
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.MyProject-Body-Right-Content {
+    width: 812px;
+    height: 558px;
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.MyProject-Body-Right-Content-Box1 {
+    width: 812px;
+    height: 180px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border-radius: 15px;
     background-color: #F2F2F2;
-    border: none;
-    border-radius: 51px;
+}
+
+.MyProject-Body-Right-Content-Box1-Record{
+    width: 715px;
+    margin-left: 41px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.MyProject-Body-Right-Content-Box1-PrjName {
+    font-family: 'Pretendard-SemiBold';
+    font-size: 18px;
+}
+
+.MyProject-Body-Right-Content-Box1-Kategory {
+    display: flex;
+    flex-direction: row;
+    font-family: 'Pretendard-SemiBold';
+    font-size: 13px;
+    gap: 8px;
+}
+
+.MyProject-Body-Right-Content-Box1-Kategory-K1,
+.MyProject-Body-Right-Content-Box1-Kategory-K2,
+.MyProject-Body-Right-Content-Box1-Kategory-K3 {
+    width: 114px;
+    height: 38px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #D9D9D9;
+    border: 1.5px, solid, #BE3838;
+    border-radius: 15px;
+}
+
+.MyProject-Body-Right-Content-Box1-Salary {
     font-family: 'Pretendard-Medium';
-    font-size: 14px;
-    color: #A1A6A9;
-    cursor: pointer;
+    font-size: 10px;
 }
 
-.FreeLancer-Body-Kategory-Right-BE{
-    background-color: #BE3838;
-    color: #F2F2F2;
+.MyProject-Body-Right-Content-Box1-Detail {
+    font-family: 'Pretendard-Medium';
+    font-size: 15px;
 }
 
+.MyProject-Body-Right-Content-Box1-Trash {
+    display: flex;
+    align-self: flex-start;
+    margin-top: 15px;
+    margin-left: auto;
+    margin-right: 15px;
+}
 
+.MyProject-Body-Right-Content-Box1-trashIcon {
 
-
-
-
-
-
-
-
-
-
+}
 
 
 .pagination {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 3%;
 }
 
 .pagination button {
