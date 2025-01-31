@@ -4,8 +4,6 @@ import CalendarIcon from '../images/calendar.png';
 import InputButton from '../images/InputButton.png';
 import React, {  useEffect , useState, useRef } from 'react';
 import Modal from 'react-modal';
-import { IoIosCloseCircle } from "react-icons/io";
-import { getDaysInMonth, subMonths, addMonths } from 'date-fns';
 import previousMonth from '../images/arrow-left.png';
 import nextMonth from '../images/arrow-right.png'
 
@@ -153,6 +151,7 @@ function ProjWrite() {
                     <div key={index} className="calendar-week">
                         {week.map((date, i) => {
                         const dayOfWeek = date.getDay(); // 0 = 일요일, 6 = 토요일
+                        const isSelected = (startDate && date.toDateString() === startDate.toDateString()) || (endDate && date.toDateString() === endDate.toDateString());
                         return (
                             <div
                             key={i}
@@ -160,6 +159,7 @@ function ProjWrite() {
                                 ${date.getMonth() === month ? "current-month" : "other-month"} 
                                 ${dayOfWeek === 0 ? "sunday" : ""} 
                                 ${dayOfWeek === 6 ? "saturday" : ""}
+                                ${isSelected ? "selected" : ""}  
                             `}
                             onClick={() => handleDateClick(date)} // 날짜 클릭 시 handleDateClick 실행
                             >
