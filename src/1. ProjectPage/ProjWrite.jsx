@@ -113,17 +113,27 @@ function ProjWrite() {
         return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
     };
     
-    // 날짜 클릭 시 처리
     const handleDateClick = (date) => {
-        if (!startDate) {
+        if (startDate && date.toDateString() === startDate.toDateString()) {
+            // 시작일자 클릭 시, 시작일자 취소
+            setStartDate(null);
+        } else if (endDate && date.toDateString() === endDate.toDateString()) {
+            // 종료일자 클릭 시, 종료일자 취소
+            setEndDate(null);
+        } else if (!startDate) {
+            // 시작일자가 없으면 시작일 설정
             setStartDate(date);
-        } else if (!endDate && date > startDate) {
+        } else if (startDate && !endDate && date > startDate) {
+            // 시작일이 있으면 종료일 설정
             setEndDate(date);
         } else {
+            // 시작일자와 종료일자 모두 선택되어 있지 않으면, 새로운 시작일 설정
             setStartDate(date);
             setEndDate(null);
         }
-        };
+    };
+    
+    
         
 
     return (
