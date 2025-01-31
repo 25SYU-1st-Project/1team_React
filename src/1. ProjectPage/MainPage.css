@@ -171,7 +171,7 @@ html {
     cursor: pointer;
 }
 
-.MainPage-Contents-header-category-item.active{
+.MainPage-Contents-header-category-item.active {
     color: #FFFFFF;
     background-color: #BE3838;
 }
@@ -280,7 +280,7 @@ html {
     font-size: 20px;
 }
 
-.MainPage-Contents-item-Reward span{
+.MainPage-Contents-item-Reward span {
     font-size: 13px;
 }
 
@@ -313,7 +313,7 @@ html {
     color: #BE3838;
 }
 
-.MainPage-Contents-createProjButton{
+.MainPage-Contents-createProjButton {
     position: absolute;
     right: -100px;
     bottom: 0px;
@@ -536,7 +536,7 @@ html {
 }
 
 .modal2-content-Track-Dropdown {
-    width: 100%;
+    width: 215px;
     height: 70px;
     background-color: #FFFFFF;
     border: 1px, solid, #BCC2C6;
@@ -562,7 +562,7 @@ html {
     position: absolute;
     top: 100%;
     left: 10px;
-    width: 63%;
+    width: 27%;
     background-color: #FFFFFF;
     border-radius: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -586,19 +586,53 @@ html {
     background-color: #D9D9D9;
 }
 
-.modal2-content-Age {
-    width: 30%;
-    padding-left: 30px;
+.modal2-content-memberClass {
+    width: 215px;
     background-color: #FFFFFF;
     border: 1px, solid, #BCC2C6;
     border-radius: 15px;
     font-family: 'Pretendard-Medium';
     font-size: 22px;
+    color: #A1A6A9;
     outline: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 11px;
 }
 
-.modal2-content-Age::placeholder {
-    color: #BCC2C6;
+.modal2-content-memberClass-personal, .modal2-content-memberClass-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+.modal2-content-memberClass-radio {
+    appearance: none;
+    background-color: #D9D9D9;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    outline: none;
+    cursor: pointer;
+    position: relative;
+}
+
+.modal2-content-memberClass-radio:checked {
+    background-color: #D9D9D9;
+}
+
+.modal2-content-memberClass-radio:checked::before {
+    content: "";
+    width: 16px;
+    height: 16px;
+    background-color: #BE3838;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .modal2-content-joinButton {
@@ -612,6 +646,9 @@ html {
     border-radius: 15px;
     font-family: 'Pretendard-Semibold';
     font-size: 24px;
+    outline: none;
+    border: none;
+    cursor: pointer;
 }
 
 ul,
@@ -633,7 +670,7 @@ li {
         align-items: center;
         width: 80%;
         height: 100%;
-        
+
         .slide_wrapper {
             display: flex;
             flex-wrap: nowrap;

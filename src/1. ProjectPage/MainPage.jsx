@@ -25,12 +25,17 @@ function MainPage() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [selectedTracks, setSelectedTracks] = useState([]);
-  const [age, setAge] = useState("");
+  const [selectedMemberClass, setSelectedMemberClass] = useState("");
   const [error, setError] = useState("");
   const [signupSuccess, setSignupSuccess] = useState(false);
 
+
   const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태 추가
   const [currentUser, setCurrentUser] = useState(null); // 현재 로그인한 사용자 정보
+
+  const handleRadioChange = (event) => {
+    setSelectedMemberClass(event.target.value);
+  };
 
   //라우터 핸들러
   const navigate = useNavigate();
@@ -155,7 +160,7 @@ function MainPage() {
   //회원가입 함수
   const handleSignup = async (e) => {
     e.preventDefault();
-    if (!email || !password || !confirmPassword || !age || selectedTracks.length === 0) {
+    if (!email || !password || !confirmPassword || !selectedMemberClass || selectedTracks.length === 0) {
       setError("모든 필드를 채워주세요.");
       return;
     }
@@ -165,18 +170,13 @@ function MainPage() {
       return;
     }
 
-    if (isNaN(age) || age <= 0) {
-      setError("유효한 나이를 입력하세요.");
-      return;
-    }
-
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
       await setDoc(doc(db, "users", user.uid), {
         email,
-        age: parseInt(age, 10),
+        memberClass: selectedMemberClass,
         tracks: selectedTracks,
         appliedProjects: [],
         joinedProjects: [],
@@ -189,7 +189,7 @@ function MainPage() {
       setEmail("");
       setPassword("");
       setConfirmPassword("");
-      setAge("");
+      setSelectedMemberClass("");
       setSelectedTracks([]);
     } catch (err) {
       setError(`회원가입 실패: ${err.message}`);
@@ -500,13 +500,28 @@ function MainPage() {
                     ))}
                   </ul>
                 )}
-                <input
-                  className="modal2-content-Age"
-                  type="text"
-                  placeholder="나이"
-                  value={age}
-                  onChange={(e) => setAge(e.target.value)}
-                />
+                <div className="modal2-content-memberClass">
+                  <div className="modal2-content-memberClass-personal">
+                    <input
+                      className="modal2-content-memberClass-radio"
+                      type="radio"
+                      name="memberClass"
+                      value="basic"
+                      checked={selectedMemberClass === "basic"}
+                      onChange={handleRadioChange}
+                    /> 개인
+                  </div>
+                  <div className="modal2-content-memberClass-group">
+                    <input
+                      className="modal2-content-memberClass-radio"
+                      type="radio"
+                      name="memberClass"
+                      value="premium"
+                      checked={selectedMemberClass === "premium"}
+                      onChange={handleRadioChange}
+                    /> 단체
+                  </div>
+                </div>
               </div>
 
               {error && <div className="modal2-content-error">{error}</div>}
