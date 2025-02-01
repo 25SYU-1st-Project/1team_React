@@ -13,14 +13,14 @@ import plusIcon from '../images/plusIcon.png';
 //firebase 임포트
 import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { doc, setDoc } from "firebase/firestore";
-import { Timestamp, collection, getDocs } from "firebase/firestore";
+import { doc, setDoc, Timestamp, collection, getDocs } from "firebase/firestore";
 import { auth, db } from '../firebase';
 
 Modal.setAppElement('#root');
 
 function MainPage() {
 
+  // 회원 정보 변수
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -264,7 +264,7 @@ function MainPage() {
         <div className="MainPage-Header-Left">
           <div className="MainPage-Header-LOGO"><span>P</span>-eeting</div>
           <div className="MainPage-Header-Search">
-            <div className="MainPage-Header-SearchIcon"><img src={searchIcon} alt="돋보기아이콘" /></div>
+            <div className="MainPage-Header-SearchIcon"><img src={searchIcon} /></div>
             <input className="MainPage-Header-InputArea" type="text" placeholder="프로젝트 미팅, 피팅" />
           </div>
         </div>

@@ -230,6 +230,7 @@ html {
 .MainPage-Contents-item-projectTitle {
     font-family: 'Pretendard-Medium';
     font-size: 20px;
+    word-break: keep-all;
 }
 
 .MainPage-Contents-item-stacks {
