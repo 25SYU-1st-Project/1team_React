@@ -262,18 +262,107 @@
 .ProjWrite-ContentBox-Container {
     display: flex;
     justify-content: flex-start;
+
     gap: 21px;
+    font-family: 'Pretendard-Medium';
+    font-size: 20px;
+    color: #A1A6A9;
 }
 
+.ProjWrite-Category-radio {
+    appearance: none;
+    background-color: #D9D9D9;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    outline: none;
+    cursor: pointer;
+    position: relative;
+}
 
+.ProjWrite-Category-radio:checked {
+    background-color: #D9D9D9;
+}
 
-.ProjWrite-Category {
+.ProjWrite-Category-radio:checked::before {
+    content: "";
+    width: 16px;
+    height: 16px;
+    background-color: #BE3838;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.ProjWrite-Category-Culture, .ProjWrite-Category-Finance, .ProjWrite-Category-Medical, .ProjWrite-Category-Building {
     display: flex;
     align-items: center;
     gap: 14px;
 }
 
-.category-icon {
+
+
+.ProjWrite-Tracks-Back, .ProjWrite-Tracks-Front, .ProjWrite-Tracks-PM, .ProjWrite-Tracks-Design {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.ProjWrite-Tracks-Front {
+    margin-left: 19px;
+}
+
+.ProjWrite-Tracks-PM {
+    margin-left: 5px;
+}
+
+.ProjWrite-Tracks-Design {
+    margin-left: 62.5px;
+}
+
+
+
+
+.ProjWrite-Tracks-radio {
+    appearance: none;
+    background-color: #D9D9D9;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    outline: none;
+    cursor: pointer;
+    position: relative;
+}
+
+.ProjWrite-Tracks-radio:checked {
+    background-color: #D9D9D9;
+}
+
+.ProjWrite-Tracks-radio:checked::before {
+    content: "";
+    width: 16px;
+    height: 16px;
+    background-color: #BE3838;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+
+
+
+
+/* .ProjWrite-Category {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+} */
+
+/* .category-icon {
     width: 34px;
     height: 34px;
 }
@@ -283,7 +372,7 @@
     font-size: 20px;
     color: #A1A6A9;
     width: 102px;
-}
+} */
 
 .ProjWrite-ContentBox-LimitSalary {
     display: flex;
