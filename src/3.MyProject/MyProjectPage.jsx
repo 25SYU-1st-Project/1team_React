@@ -78,7 +78,7 @@ function MyProjectPage() {
                             <div className="MyProject-Body-Left-Inform-Track">트랙</div>
                             <div className="MyProject-Body-Left-Inform-Record">이력</div>
                         </div>
-                        <input className="MyProject-Body-Left-Complete" type="button" value="수정완료"/>
+                        <div className="MyProject-Body-Left-Complete">수정 완료</div>
                     </div>
                     <div className="MyProject-Body-Right">
                         <div className="MyProject-Body-Right-Content">
