@@ -16,127 +16,137 @@
     font-style: normal;
 }
 
-/* 모달 오버레이 스타일 */
-.modal-overlay {
-    position: fixed;
-    z-index: 9999;
-    width: 100vw;
-    height: 100vh;
-    /* background: rgba(71, 71, 71, 0.75);  */
-    /* display: flex;
-    align-items: center;
-    justify-content: center; */
-
+@font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('../Fonts/Pretendard-Regular.ttf') format('truetype');
+    font-style: normal;
 }
-
-/* 모달 콘텐츠 스타일 */
-.modal-content {
-    outline: 3px solid #BE3838; /* 빨간색 외곽선 */
-    border-radius: 15px;
-    background: white;
-    width: 275px;
-    height: 275px;
-    position: fixed;
-    top: calc(50% + 80px);
-    left: calc(50% - 490px); 
-
-}
-
 
 /* 캘린더 스타일 */
-.calendar-modal {
+.calendar-dropdown {
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
-  
-  .calendar-header {
+    background-color: #ffffff;
+    margin-top: 10px;
+    width: 275px;
+    height: 275px;
+    border: 3px solid #BE3838;
+    border-radius: 15px;
+}
+
+.calendar-header {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     gap: 10px;
     font-family: 'Pretendard-SemiBold';
     font-size: 16px;
-    margin-top: 22px;
-    margin-bottom: 12px;
-  }
-  
-  .calendar-nav {
+    margin-top: 16px;
+
+}
+
+.calendar-nav {
     border: none;
     width: 23px;
     height: 23px;
     cursor: pointer;
-  }
-  
-  .calendar-body {
+}
+
+.calendar-body {
+    margin-top: 10px;
     display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+    width: 231px;
+    height: 195px;
     flex-direction: column;
-    width: 90%;
-  }
-  
-  .calendar-weekday {
+}
+
+.calendar-weekday {
+    width: 230px;
+    height: 20px;
     display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+
+}
+
+.calendar-day-day-header{
+    width: 20px;
+    height: 20px;
     color: #A1A6A9;
-    
-  }
-  
-  .calendar-weekday-item {
-    flex: 1;
-    text-align: center;
-    padding: 5px;
-  }
-  
-  .calendar-week {
+    font-family: 'Pretendard-Semibold';
     display: flex;
-  }
-  
-  .calendar-day {
-    font-family: 'Pretendard-Medium';
-    flex: 1;
-    padding: 8px;
+    justify-content: center;
+    align-items: center;
+}
+
+/*   
+  .calendar-weekday-item {
+    display: flex;
+
+  } */
+
+.calendar-week {
+    display: flex;
+    width: 230px;
+    height: 20px;
+    gap: 15px;
+}
+
+.calendar-day {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 20px;
+    height: 20px;
+    font-family: 'Pretendard-Regular';
     text-align: center;
-    font-size: 12px;
     cursor: pointer;
-  }
+}
 
-    /* 선택한 날짜 스타일 */
-    .calendar-day.selected {
-        background-color: #E99A9A; 
-        color: #ffffff;
-        border-radius: 50%;
-        
-    }
+/* 선택한 날짜 스타일 */
+.calendar-day.selected {
+    background-color: #E99A9A;
+    color: #ffffff;
+    border-radius: 50%;
+
+}
 
 
 
-    .current-month {
+.current-month {
     background: #fff;
     color: black;
-  }
-  
-  .other-month {
+}
+
+.other-month {
     /* background: #f8f8f8; */
     color: #aaa;
-  }
+}
 
-  .other-month.sunday {
+.other-month.sunday {
     color: #aaa;
-  }
+}
 
-  .other-month.saturday {
+.other-month.saturday {
     color: #aaa;
-  }
+}
 
-  /* 일요일 (빨간색) */
-  .sunday {
+/* 일요일 (빨간색) */
+.sunday {
     color: #FF5D5D;
-    
-  }
-  
-  /* 토요일 (파란색) */
-  .saturday {
+
+}
+
+/* 토요일 (파란색) */
+.saturday {
     color: #789EFF;
-    
-  }
+
+}
 
 
 
@@ -296,7 +306,10 @@
     transform: translate(-50%, -50%);
 }
 
-.ProjWrite-Category-Culture, .ProjWrite-Category-Finance, .ProjWrite-Category-Medical, .ProjWrite-Category-Building {
+.ProjWrite-Category-Culture,
+.ProjWrite-Category-Finance,
+.ProjWrite-Category-Medical,
+.ProjWrite-Category-Building {
     display: flex;
     align-items: center;
     gap: 14px;
@@ -304,7 +317,10 @@
 
 
 
-.ProjWrite-Tracks-Back, .ProjWrite-Tracks-Front, .ProjWrite-Tracks-PM, .ProjWrite-Tracks-Design {
+.ProjWrite-Tracks-Back,
+.ProjWrite-Tracks-Front,
+.ProjWrite-Tracks-PM,
+.ProjWrite-Tracks-Design {
     display: flex;
     align-items: center;
     gap: 14px;
@@ -379,7 +395,7 @@
     flex-direction: row;
     justify-content: flex-start;
     gap: 125px;
-    
+
 }
 
 .ProjWrite-ContentBox-Limit {
@@ -457,7 +473,7 @@
     display: flex;
     flex-direction: column;
     margin-left: 12px;
-    
+
 }
 
 .Salary-Input-Box {
@@ -542,10 +558,10 @@
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
-    
+
     gap: 10px;
     padding: 10px 0;
-    
+
 }
 
 .ProjWrite-Tech-Input {
@@ -571,7 +587,7 @@
     text-align: center;
 }
 
-.ProjWrite-AddButton{
+.ProjWrite-AddButton {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -580,20 +596,21 @@
     background-color: #ffffff;
     border: none;
     border-radius: 15px;
-    flex-shrink: 0; /* 버튼 크기가 줄어들지 않도록 설정 */
+    flex-shrink: 0;
+    /* 버튼 크기가 줄어들지 않도록 설정 */
     margin-left: 11px;
-    
+
 }
 
-.Tech-Input-Button{
+.Tech-Input-Button {
     width: 20px;
     height: 18px;
 }
 
-.ProjWrite-ContentBox-Projdetail{
-   display: flex;
-   flex-direction: column;
-   justify-content: flex-start;
+.ProjWrite-ContentBox-Projdetail {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
 }
 
 .ProjWrite-Prjdetail-Content {
@@ -607,7 +624,7 @@
 }
 
 .Project-Detail-Content {
- 
+
     width: 94%;
     height: 24px;
     background-color: transparent;
@@ -615,12 +632,12 @@
     outline: none;
     font-family: 'Pretendard-Medium';
     font-size: 20px;
-    
+
     padding-top: 47px;
     padding-bottom: 149px;
     padding-left: 41px;
     padding-right: 791px;
-    
+
 }
 
 .Create-Project {
@@ -640,10 +657,5 @@
     font-family: 'Pretendard-Medium';
     font-size: 25px;
     color: #A1A6A9;
-   
+
 }
-
-
-
-
-

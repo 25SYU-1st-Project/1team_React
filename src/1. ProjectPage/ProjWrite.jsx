@@ -15,17 +15,16 @@ import './ProjWrite.css';
 
 function ProjWrite() {
     const [techStacks, setTechStacks] = useState(['']);
-    const [modalOpen, setModalOpen] = useState(false);
-    const modalRef = useRef(null); // 모달을 참조할 ref 생성
-
     const [currentDate, setCurrentDate] = useState(new Date());
     const [startDate, setStartDate] = useState(null); // 시작일
     const [endDate, setEndDate] = useState(null); // 종료일
     const [selectedCategory, setSelectedCategory] = useState("");
+    const [isSelectingStartDate, setIsSelectingStartDate] = useState(true);
+    const [isCalendarVisible, setIsCalendarVisible] = useState(false); // 캘린더 표시 여부 상태
 
 
 
-      // 카테고리리 라디오버튼 핸들러
+    // 카테고리 라디오버튼 핸들러
     const handleRadioChange = (event) => {
         setSelectedCategory(event.target.value);
     };
@@ -44,33 +43,10 @@ function ProjWrite() {
     };
 
 
-    // modal 관련 로직
-    // modal 창 팝업 시 뒤에 배경 scroll 막기
-    useEffect(() => {
-        if (modalOpen) {
-            document.body.style.overflow = "hidden";
-            // 외부 클릭 감지
-            const handleClickOutside = (event) => {
-                if (modalRef.current && !modalRef.current.contains(event.target)) {
-                    setModalOpen(false);  // 외부 클릭 시 모달 닫기
-                }
-            };
-            document.addEventListener("mousedown", handleClickOutside); // 외부 클릭 감지
 
-            return () => {
-                document.removeEventListener("mousedown", handleClickOutside); // 컴포넌트 unmount 시 이벤트 리스너 정리
-            };
-        } else {
-            document.body.style.overflow = "unset";
-        }
-    }, [modalOpen]);
-
-    // modal 창 닫기
-    const closeModal = () => {
-        setModalOpen(false);
-    };
 
     // 캘린더 관련 로직
+
 
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
@@ -106,11 +82,15 @@ function ProjWrite() {
     };
 
     const handlePrevMonth = () => {
-        setCurrentDate(new Date(year, month - 1, 1));
+        const prevMonth = new Date(currentDate);
+        prevMonth.setMonth(currentDate.getMonth() - 1);
+        setCurrentDate(prevMonth);
     };
 
     const handleNextMonth = () => {
-        setCurrentDate(new Date(year, month + 1, 1));
+        const nextMonth = new Date(currentDate);
+        nextMonth.setMonth(currentDate.getMonth() + 1);
+        setCurrentDate(nextMonth);
     };
 
     // 날짜를 YYYY-MM-DD 형식으로 변환
@@ -118,75 +98,45 @@ function ProjWrite() {
         return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
     };
 
+    // 시작일을 클릭했을 때 캘린더 토글
+    const handleStartDateSelection = () => {
+        setIsSelectingStartDate(true); // 시작일 선택 모드
+        setIsCalendarVisible((prev) => !prev);  // 캘린더 토글
+    };
+
+    // 종료일을 클릭했을 때 캘린더 토글
+    const handleEndDateSelection = () => {
+        setIsSelectingStartDate(false); // 종료일 선택 모드
+        setIsCalendarVisible((prev) => !prev);  // 캘린더 토글
+    };
+
+
+    // 날짜 클릭 시
     const handleDateClick = (date) => {
-        if (startDate && date.toDateString() === startDate.toDateString()) {
-            // 시작일자 클릭 시, 시작일자 취소
-            setStartDate(null);
-        } else if (endDate && date.toDateString() === endDate.toDateString()) {
-            // 종료일자 클릭 시, 종료일자 취소
-            setEndDate(null);
-        } else if (!startDate) {
-            // 시작일자가 없으면 시작일 설정
-            setStartDate(date);
-        } else if (startDate && !endDate && date > startDate) {
-            // 시작일이 있으면 종료일 설정
-            setEndDate(date);
+        if (isSelectingStartDate) {
+            // 시작일 선택
+            if (startDate && date.toDateString() === startDate.toDateString()) {
+                setStartDate(null); // 시작일자 취소
+            } else {
+                setStartDate(date); // 새로운 시작일 설정
+                if (endDate && date > endDate) {
+                    setEndDate(null); // 종료일이 시작일 이전일 때 종료일 취소
+                }
+            }
         } else {
-            // 시작일자와 종료일자 모두 선택되어 있지 않으면, 새로운 시작일 설정
-            setStartDate(date);
-            setEndDate(null);
+            // 종료일 선택
+            if (endDate && date.toDateString() === endDate.toDateString()) {
+                setEndDate(null); // 종료일자 취소
+            } else if (startDate && date >= startDate) {
+                setEndDate(date); // 시작일 이후로 종료일 설정
+            }
         }
     };
 
 
 
-
     return (
-
         <div className="ProjWrite-Container">
-            <Modal isOpen={modalOpen} className="modal-content" overlayClassName="modal-overlay">
-                <div ref={modalRef} className="calendar-modal">
-                    <div className="calendar-header">
-                        <img src={previousMonth} alt="previous" className='calendar-nav' onClick={handlePrevMonth} />
-
-                        <span>
-                            {year}년  {month + 1}월
-                        </span>
-                        <img src={nextMonth} alt="next" className='calendar-nav' onClick={handleNextMonth} />
-                    </div>
-                    <div className="calendar-body">
-                        <div className="calendar-weekday">
-                            {["일", "월", "화", "수", "목", "금", "토"].map((day, i) => (
-                                <div key={i} className={`calendar-day day-header ${i === 0 ? "sunday" : ""} ${i === 6 ? "saturday" : ""}`}>
-                                    {day}
-                                </div>
-                            ))}
-                        </div>
-                        {groupDatesByWeek(startDay, endDay).map((week, index) => (
-                            <div key={index} className="calendar-week">
-                                {week.map((date, i) => {
-                                    const dayOfWeek = date.getDay(); // 0 = 일요일, 6 = 토요일
-                                    const isSelected = (startDate && date.toDateString() === startDate.toDateString()) || (endDate && date.toDateString() === endDate.toDateString());
-                                    return (
-                                        <div
-                                            key={i}
-                                            className={`calendar-day 
-                                ${date.getMonth() === month ? "current-month" : "other-month"} 
-                                ${dayOfWeek === 0 ? "sunday" : ""} 
-                                ${dayOfWeek === 6 ? "saturday" : ""}
-                                ${isSelected ? "selected" : ""}  
-                            `}
-                                            onClick={() => handleDateClick(date)} // 날짜 클릭 시 handleDateClick 실행
-                                        >
-                                            {date.getDate()}
-                                        </div>
-                                    );
-                                })}
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </Modal>
             <div className="ProjWrite-Header">
                 <div className="ProjWrite-Header-Left">
                     <div className="ProjWrite-Header-Left-Logo"><span>P</span>-eeting</div>
@@ -291,51 +241,60 @@ function ProjWrite() {
                                     onChange={handleRadioChange}
                                 /> 디자이너
                             </div>
-                            {/* <div className='ProjWrite-Category'>
-                                <img
-                                    src={UncheckedIcon}
-                                    alt="Backend"
-                                    className="category-icon"
-                                />
-                                <span className='category-text'>BE 개발자</span>
-                            </div> */}
-                            {/* <div className='ProjWrite-Category'>
-                                <img
-                                    src={UncheckedIcon}
-                                    alt="FrontEnd"
-                                    className="category-icon"
-                                />
-                                <span className='category-text'>FE 개발자</span>
-                            </div> */}
-                            {/* <div className='ProjWrite-Category'>
-                                <img
-                                    src={UncheckedIcon}
-                                    alt="PM"
-                                    className="category-icon"
-                                />
-                                <span className='category-text'>PM</span>
-                            </div> */}
-                            {/* <div className='ProjWrite-Category'>
-                                <img
-                                    src={UncheckedIcon}
-                                    alt="Designer"
-                                    className="category-icon"
-                                />
-                                <span className='category-text'>디자이너</span>
-                            </div> */}
                         </div>
                         <div className='ProjWrite-ContentBox-LimitSalary'>
                             <div className='ProjWrite-ContentBox-Limit'>
                                 <div className='Limit-title'>
                                     <p className='ProjWrite-Body-ContentBox-Title'>모집 기한</p>
-                                    <img src={CalendarIcon} alt="calendar" className="calendar-icon"
-                                        onClick={() => { setModalOpen(true); }} />
                                 </div>
                                 <div className='Limit-content'>
-                                    <div className='ProjWrite-LimitBox1' placeholder='YYYY-MM-DD'>{startDate ? formatDate(startDate) : ''}</div>
+                                    <div className='ProjWrite-LimitBox1' placeholder='YYYY-MM-DD' onClick={handleStartDateSelection} >{startDate ? formatDate(startDate) : ''}</div>
                                     <div className='LimitBox-Text'>~</div>
-                                    <div className='ProjWrite-LimitBox2' placeholder='YYYY-MM-DD'>{endDate ? formatDate(endDate) : ''}</div>
+                                    <div className='ProjWrite-LimitBox2' placeholder='YYYY-MM-DD' onClick={handleEndDateSelection}>{endDate ? formatDate(endDate) : ''}</div>
                                 </div>
+                                {isCalendarVisible && (
+                                    <div className="calendar-dropdown">
+                                        <div className="calendar-header">
+                                            <img src={previousMonth} alt="previous" className='calendar-nav' onClick={handlePrevMonth} />
+
+                                            <span>
+                                                {year}년  {month + 1}월
+                                            </span>
+                                            <img src={nextMonth} alt="next" className='calendar-nav' onClick={handleNextMonth} />
+                                        </div>
+                                        <div className="calendar-body">
+                                            <div className="calendar-weekday">
+                                                {["일", "월", "화", "수", "목", "금", "토"].map((day, i) => (
+                                                    <div key={i} className={`calendar-day-day-header ${i === 0 ? "sunday" : ""} ${i === 6 ? "saturday" : ""}`}>
+                                                        {day}
+                                                    </div>
+                                                ))}
+                                            </div>
+                                            {groupDatesByWeek(startDay, endDay).map((week, index) => (
+                                                <div key={index} className="calendar-week">
+                                                    {week.map((date, i) => {
+                                                        const dayOfWeek = date.getDay(); // 0 = 일요일, 6 = 토요일
+                                                        const isSelected = (startDate && date.toDateString() === startDate.toDateString()) || (endDate && date.toDateString() === endDate.toDateString());
+                                                        return (
+                                                            <div
+                                                                key={i}
+                                                                className={`calendar-day 
+                                                    ${date.getMonth() === month ? "current-month" : "other-month"} 
+                                                    ${dayOfWeek === 0 ? "sunday" : ""} 
+                                                    ${dayOfWeek === 6 ? "saturday" : ""}
+                                                    ${isSelected ? "selected" : ""}  
+                                                `}
+                                                                onClick={() => handleDateClick(date)} // 날짜 클릭 시 handleDateClick 실행
+                                                            >
+                                                                {date.getDate()}
+                                                            </div>
+                                                        );
+                                                    })}
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
                             </div>
                             <div className='ProjWrite-ContentBox-Salary'>
                                 <p className='ProjWrite-Body-ContentBox-Title'>수당</p>
