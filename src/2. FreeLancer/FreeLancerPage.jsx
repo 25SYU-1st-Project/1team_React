@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 //firebase 임포트
 import { getDocs, collection } from "firebase/firestore";
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import { db } from '../firebase';
 
 import searchIcon from '../images/search.png';
@@ -9,12 +10,13 @@ import firstIcon from '../images/first.png';
 import prevIcon from '../images/prev.png';
 import nextIcon from '../images/next.png';
 import lastIcon from '../images/last.png';
+import defaultProfile from '../images/profileImage.png';
 import './FreeLancerPage.css';
 
 function FreeLancerPage() {
     //라우터 핸들러
     const navigate = useNavigate();
-    
+
     const handleMain = () => {
         navigate('/')
     }
@@ -79,6 +81,23 @@ function FreeLancerPage() {
         setCurrentPage(prev => (prev < totalPages ? prev + 1 : totalPages));
     };
 
+    // useEffect(() => {
+    //     const fetchProjects = async () => {
+    //         try {
+    //             const querySnapshot = await getDocs(collection(db, "users"));
+    //             const fetchedProjects = querySnapshot.docs.map(doc => ({
+    //                 id: doc.id,
+    //                 ...doc.data(),
+    //             }));
+    //             setPosts(fetchedProjects);
+    //         } catch (error) {
+    //             console.error("프로젝트 데이터를 가져오는 중 오류:", error);
+    //         }
+    //     };
+
+    //     fetchProjects();
+    // }, []);
+
     useEffect(() => {
         const fetchProjects = async () => {
             try {
@@ -87,7 +106,24 @@ function FreeLancerPage() {
                     id: doc.id,
                     ...doc.data(),
                 }));
-                setPosts(fetchedProjects);
+
+                // Firebase Storage에서 이미지 URL 변환
+                const storage = getStorage();
+                const updatedProjects = await Promise.all(
+                    fetchedProjects.map(async (post) => {
+                        if (post.profileImage && post.profileImage.startsWith("gs://")) {
+                            try {
+                                const storageRef = ref(storage, post.profileImage);
+                                post.profileImage = await getDownloadURL(storageRef);
+                            } catch (error) {
+                                console.error("이미지 URL 변환 실패:", error);
+                            }
+                        }
+                        return post;
+                    })
+                );
+
+                setPosts(updatedProjects);
             } catch (error) {
                 console.error("프로젝트 데이터를 가져오는 중 오류:", error);
             }
@@ -151,12 +187,18 @@ function FreeLancerPage() {
                 <div className="FreeLancer-Body-Content">
                     {currentFilteredPosts.map((post, index) => (
                         <div key={index} className="FreeLancer-Body-Content-Box1">
-                            <div className="FreeLancer-Body-Content-Box1-Profile"></div>
+                            <div className="FreeLancer-Body-Content-Box1-Profile">
+                                <img
+                                    src={post.profileImage || defaultProfile}
+                                    alt={`${post.name}의 프로필`}
+                                    className="FreeLancer-Body-Content-profileImage"
+                                />
+                            </div>
                             <div className="FreeLancer-Body-Content-Box1-Inform">
                                 <div className="FreeLancer-Body-Content-Box1-Inform-Name">이름 : {post.name}</div>
                                 <div className="FreeLancer-Body-Content-Box1-Inform-Email">이메일 : {post.email}</div>
                                 <div className="FreeLancer-Body-Content-Box1-Inform-record">이력<br />{post.resume}</div>
-                                <div>{post.tracks.join(', ')}</div>
+                                <div>트랙 : {post.tracks.join(', ')}</div>
                             </div>
                         </div>
                     ))}

@@ -153,6 +153,7 @@
     height: 502.75px;
     display: flex;
     justify-content: flex-start;
+    align-items: center;
     flex-direction: column;
     gap: 19px;
     border-radius: 15px;
@@ -163,17 +164,25 @@
     width: 223px;
     height: 223px;
     margin-top: 20px;
-    align-self: center;
     border-radius: 15px;
-    background-color: #D9D9D9;
+    background-color: #000000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
+.FreeLancer-Body-Content-profileImage {
+    object-fit: cover;
+    width: 210px;
+    height: 210px;
+}
+
+
 .FreeLancer-Body-Content-Box1-Inform {
-    margin-left: 30px;
+    width: 223px;
     display: flex;
     justify-content: flex-start;
     flex-direction: column;
-    align-self: flex-start;
     font-family: 'Pretendard-Medium';
     gap: 10px;
 }
