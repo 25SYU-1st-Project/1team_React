@@ -40,8 +40,16 @@ function MainPage() {
 
   //라우터 핸들러
   const navigate = useNavigate();
+  
+  const handleMain = () => {
+    navigate('/')
+}
   const handleProjButton = () => {
     navigate('/projectWrite')
+  }
+
+  const handleFreePage = () => {
+    navigate('/FreeView');
   }
 
 
@@ -262,7 +270,7 @@ function MainPage() {
     <div className="MainPage-container">
       <div className="MainPage-Header">
         <div className="MainPage-Header-Left">
-          <div className="MainPage-Header-LOGO"><span>P</span>-eeting</div>
+          <div className="MainPage-Header-LOGO" onClick={handleMain}><span>P</span>-eeting</div>
           <div className="MainPage-Header-Search">
             <div className="MainPage-Header-SearchIcon"><img src={searchIcon} /></div>
             <input className="MainPage-Header-InputArea" type="text" placeholder="프로젝트 미팅, 피팅" />
@@ -270,7 +278,7 @@ function MainPage() {
         </div>
         <div className="MainPage-Header-Right">
           <div className="MainPage-Header-Right-ProMatch">프로젝트 매칭</div>
-          <div className="MainPage-Header-Right-FreeMatch">프리랜서 매칭</div>
+          <div className="MainPage-Header-Right-FreeMatch" onClick={handleFreePage}>프리랜서 매칭</div>
           <div className="MainPage-Header-Right-MyProject">마이 프로젝트</div>
           {isLoggedIn ? (
             <div className="MainPage-Header-Right-LogoutButton" onClick={handleLogout}>

@@ -1,0 +1,199 @@
+@font-face {
+    font-family: 'Montserrat-Bold';
+    src: url('../Fonts/Montserrat-Bold.ttf') format('truetype');
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Pretendard-SemiBold';
+    src: url('../Fonts/Pretendard-SemiBold.ttf') format('truetype');
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Pretendard-Medium';
+    src: url('../Fonts/Pretendard-Medium.ttf') format('truetype');
+    font-style: normal;
+}
+
+.FreeLancer-container{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.FreeLancer-Header {
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;
+    gap: 90px;
+}
+
+.FreeLancer-Header-Left {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 26px;
+}
+
+.FreeLancer-Header-LOGO {
+    font-family: 'Montserrat-Bold';
+    font-size: 32px;
+    cursor: pointer;
+}
+
+.FreeLancer-Header-LOGO span{
+    color: #BE3838;
+}
+
+.FreeLancer-Header-Right {
+    display: flex;
+    justify-content: flex-start;
+    gap: 30px;
+    align-items: center;
+}
+
+.FreeLancer-Header-Search {
+    width: 412px;
+    height: 54px;
+    padding-left: 24px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+    border: 2px, solid, #BE3838;
+    border-radius: 51px;
+    background-color: #F2F2F2;
+}
+
+.FreeLancer-Header-SearchIcon, .FreeLancer-Header-SearchIcon img {
+    width: 26px;
+    height: 26px;
+}
+
+.FreeLancer-Header-InputArea {
+    outline: none;
+    border: none;
+    background-color: transparent;
+    font-family: 'Pretendard-Medium';
+    font-size: 16px;
+    color: #000000  ;
+}
+
+.FreeLancer-Header-InputArea::placeholder {
+    font-family: 'Pretendard-Medium';
+    color: #A1A6A9;
+}
+
+.FreeLancer-Header-Right-ProMatch,
+.FreeLancer-Header-Right-FreeMatch,
+.FreeLancer-Header-Right-MyProject,
+.FreeLancer-Header-Right-LoginButton {
+    font-family: 'Pretendard-Semibold';
+    cursor: pointer;
+}
+
+.FreeLancer-Header-Right-ProMatch,
+.FreeLancer-Header-Right-MyProject,
+.FreeLancer-Header-Right-LoginButton {
+    color: #A1A6A9;
+}
+
+.FreeLancer-Header-Right-FreeMatch{
+    color: #000000;
+}
+
+
+.FreeLancer-Body{
+    margin-top: 62px;
+    width: 1100px;
+    height: 570px;
+    display: flex;
+    flex-direction: column;
+}
+
+.FreeLancer-Body-Kategory{
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: row;
+    gap: 3%;
+}
+
+
+.FreeLancer-Body-Kategory-Left{
+    font-family: 'Pretendard-Semibold';
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+}
+
+.FreeLancer-Body-Kategory-Right{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5%;
+}
+
+.FreeLancer-Body-Content{
+    width: 1159px;
+    height: 503.7px;
+    margin-top: 16px;
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 19px;
+}
+
+.FreeLancer-Body-Content-Box1 {
+    width: 275.36px;
+    height: 502.75px;
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    gap: 19px;
+    border-radius: 15px;
+    background-color: #F2F2F2;
+}
+
+.FreeLancer-Body-Content-Box1-Profile {
+    width: 223px;
+    height: 223px;
+    margin-top: 20px;
+    align-self: center;
+    border-radius: 15px;
+    background-color: #D9D9D9;
+}
+
+.FreeLancer-Body-Content-Box1-Inform {
+    margin-left: 30px;
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    align-self: flex-start;
+    font-family: 'Pretendard-Medium';
+    gap: 10px;
+}
+
+.FreeLancer-Body-Kategory-Right-item {
+    width: 118.68px;
+    height: 30px;
+    background-color: #F2F2F2;
+    border: none;
+    border-radius: 51px;
+    font-family: 'Pretendard-Medium';
+    font-size: 14px;
+    color: #A1A6A9;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.FreeLancer-Body-Kategory-Right-item.active {
+    background-color: #BE3838;
+    color: #FFFFFF;
+}
