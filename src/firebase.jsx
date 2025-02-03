@@ -3,15 +3,15 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
-// Firebase 설정 정보 (Firebase Console에서 복사)
+// 환경 변수에서 Firebase 설정 정보 불러오기
 const firebaseConfig = {
-  apiKey: "AIzaSyBbWuTCOc_gCwphF2fUAZERd_KQh5LlzOg",
-  authDomain: "p-eeting.firebaseapp.com",
-  projectId: "p-eeting",
-  storageBucket: "p-eeting.firebasestorage.app",
-  messagingSenderId: "239193857892",
-  appId: "1:239193857892:web:6abc69da717fbd5f4e6471",
-  measurementId: "G-42507EMC9K"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 };
 
 // Initialize Firebase
