@@ -75,8 +75,10 @@ function MyProjectPage() {
                             <div className="MyProject-Body-Left-Inform-Name">이름 : </div>
                             <div className="MyProject-Body-Left-Inform-Email"> 이메일</div>
                             <div className="MyProject-Body-Left-Inform-Password">비밀번호</div>
+                            <div className="MyProject-Body-Left-Inform-Track">트랙</div>
                             <div className="MyProject-Body-Left-Inform-Record">이력</div>
                         </div>
+                        <input className="MyProject-Body-Left-Complete" type="button" value="수정완료"/>
                     </div>
                     <div className="MyProject-Body-Right">
                         <div className="MyProject-Body-Right-Content">
@@ -90,13 +92,10 @@ function MyProjectPage() {
                                         <div className="MyProject-Body-Right-Content-Box1-Kategory-K3"># 디자이너</div>
                                     </div>
                                     <div className="MyProject-Body-Right-Content-Box1-Salary">급여: </div>
-                                    <div className="MyProject-Body-Right-Content-Box1-Detail">초보개발자</div>
-                                    <div>{post}</div>
+                                    <div className="MyProject-Body-Right-Content-Box1-Detail">초보개발자 {post}</div>
                                 </div>
                                 <div className="MyProject-Body-Right-Content-Box1-Trash">
-                                    <div className="MyProject-Body-Right-Content-Box1-TrashIcon">
                                     <img src={trashIcon} alt="Trash" width="20" height="20" />
-                                    </div>
                                 </div>
                             </div>
                         ))}
