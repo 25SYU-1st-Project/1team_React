@@ -159,13 +159,16 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+    align-items: center;
 }
 
 .ProjWrite-Header {
     display: flex;
-    justify-content: center;
-    gap: 552px;
-    margin-top: 56px;
+    justify-content: space-between;
+    gap: 545px;
+    width: 1100px;
+    margin-top: 50px;
+    
 }
 
 .ProjWrite-Header-Left {
@@ -237,6 +240,7 @@
     border: 3px solid #BE3838;
     border-radius: 15px;
     overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 .ProjWrite-Body-MainBox::-webkit-scrollbar {
@@ -540,7 +544,7 @@
 }
 
 .Target-Text {
-    width: 466px;
+    width: 414px;
     height: 117px;
     font-family: 'Pretendard-Medium';
     font-size: 20px;
