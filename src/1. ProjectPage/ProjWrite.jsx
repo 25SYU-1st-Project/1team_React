@@ -1,7 +1,5 @@
-import CalendarIcon from '../images/calendar.png';
 import InputButton from '../images/InputButton.png';
 import React, { useEffect, useState, useRef } from 'react';
-import Modal from 'react-modal';
 import previousMonth from '../images/arrow-left.png';
 import nextMonth from '../images/arrow-right.png'
 
@@ -18,15 +16,30 @@ function ProjWrite() {
     const [currentDate, setCurrentDate] = useState(new Date());
     const [startDate, setStartDate] = useState(null); // 시작일
     const [endDate, setEndDate] = useState(null); // 종료일
-    const [selectedCategory, setSelectedCategory] = useState("");
     const [isSelectingStartDate, setIsSelectingStartDate] = useState(true);
     const [isCalendarVisible, setIsCalendarVisible] = useState(false); // 캘린더 표시 여부 상태
+
+    const [selectedCategory, setSelectedCategory] = useState("");
+    const [selectedTracks, setSelectedTracks] = useState([]);
+    
 
 
 
     // 카테고리 라디오버튼 핸들러
     const handleRadioChange = (event) => {
         setSelectedCategory(event.target.value);
+    };
+
+    // 트랙 카테괴 체크박스 핸들러
+    const handleCheckboxChange = (event) => {
+        const { value, checked } = event.target;
+        if (checked) {
+            // 선택된 카테고리를 배열에 추가
+            setSelectedTracks([...selectedTracks, value]);
+        } else {
+            // 선택을 해제하면 배열에서 제거
+            setSelectedTracks(selectedTracks.filter(category => category !== value));
+        }
     };
 
 
@@ -204,41 +217,41 @@ function ProjWrite() {
                             <div className='ProjWrite-Tracks-Back'>
                                 <input
                                     className="ProjWrite-Tracks-radio"
-                                    type="radio"
+                                    type="checkbox"
                                     name="projwrite-tracks"
                                     value="five"
-                                    checked={selectedCategory === "five"}
-                                    onChange={handleRadioChange}
+                                    checked={selectedTracks.includes("five")}
+                                    onChange={handleCheckboxChange}
                                 /> BE 개발자
                             </div>
                             <div className='ProjWrite-Tracks-Front'>
                                 <input
                                     className="ProjWrite-Tracks-radio"
-                                    type="radio"
+                                    type="checkbox"
                                     name="projwrite-tracks"
                                     value="six"
-                                    checked={selectedCategory === "six"}
-                                    onChange={handleRadioChange}
+                                    checked={selectedTracks.includes("six")}
+                                    onChange={handleCheckboxChange}
                                 /> FE 개발자
                             </div>
                             <div className='ProjWrite-Tracks-PM'>
                                 <input
                                     className="ProjWrite-Tracks-radio"
-                                    type="radio"
+                                    type="checkbox"
                                     name="projwrite-tracks"
                                     value="seven"
-                                    checked={selectedCategory === "seven"}
-                                    onChange={handleRadioChange}
+                                    checked={selectedTracks.includes("seven")}
+                                    onChange={handleCheckboxChange}
                                 /> PM
                             </div>
                             <div className='ProjWrite-Tracks-Design'>
                                 <input
                                     className="ProjWrite-Tracks-radio"
-                                    type="radio"
+                                    type="checkbox"
                                     name="projwrite-tracks"
                                     value="eight"
-                                    checked={selectedCategory === "eight"}
-                                    onChange={handleRadioChange}
+                                    checked={selectedTracks.includes("eight")}
+                                    onChange={handleCheckboxChange}
                                 /> 디자이너
                             </div>
                         </div>
@@ -361,12 +374,7 @@ function ProjWrite() {
 
     );
 
-
-
 }
-
-
-
 
 
 export default ProjWrite;

@@ -33,6 +33,7 @@
     height: 275px;
     border: 3px solid #BE3838;
     border-radius: 15px;
+
 }
 
 .calendar-header {
@@ -236,6 +237,25 @@
     border: 3px solid #BE3838;
     border-radius: 15px;
     overflow-y: scroll;
+}
+
+.ProjWrite-Body-MainBox::-webkit-scrollbar {
+    width: 50px;
+}
+
+.ProjWrite-Body-MainBox::-webkit-scrollbar-track {
+    background-color: transparent;
+    margin-top: 17px;
+    margin-bottom: 17px;
+}
+
+.ProjWrite-Body-MainBox::-webkit-scrollbar-thumb {
+    background-color: #D9D9D9;
+    /* 스크롤바 색상 */
+    border-radius: 50px;
+    /* 스크롤바 모서리 둥글게 */
+    border: 16px solid #F2F2F2;
+    /* 스크롤바를 오른쪽에서 떨어지게 하는 여백 */
 }
 
 .ProjWrite-Body-MainBox-Title {
@@ -547,6 +567,8 @@
 
 }
 
+
+
 .ProjWrite-Tech-Content {
     width: 466px;
     max-height: 117px;
@@ -556,12 +578,30 @@
     overflow-y: scroll;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-
+    /* justify-content: center;
+    align-items: flex-start; */
     gap: 10px;
     padding: 10px 0;
 
+}
+
+.ProjWrite-Tech-Content::-webkit-scrollbar {
+    width: 40px;
+}
+
+.ProjWrite-Tech-Content::-webkit-scrollbar-track {
+    background-color: transparent;
+    /* margin-top: 17px;
+    margin-bottom: 17px; */
+}
+
+.ProjWrite-Tech-Content::-webkit-scrollbar-thumb {
+    background-color: #F2F2F2;
+    /* 스크롤바 색상 */
+    border-radius: 50px;
+    /* 스크롤바 모서리 둥글게 */
+    border: 14px solid #D9D9D9;
+    /* 스크롤바를 오른쪽에서 떨어지게 하는 여백 */
 }
 
 .ProjWrite-Tech-Input {
@@ -611,41 +651,53 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-}
-
-.ProjWrite-Prjdetail-Content {
+  }
+  
+  .ProjWrite-Prjdetail-Content {
     width: 981px;
     height: 220px;
     border: none;
     border-radius: 15px;
     background-color: #d9d9d9;
-    overflow-y: scroll;
+    overflow-y: auto; /* 스크롤 자동 생성 */
     overflow-x: hidden;
-}
-
-.Project-Detail-Content {
-
-    width: 94%;
-    height: 24px;
+  }
+  
+  .ProjWrite-Prjdetail-Content::-webkit-scrollbar {
+    width: 40px; /* 스크롤바 너비를 줄임 */
+  }
+  
+  .ProjWrite-Prjdetail-Content::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+  
+  .ProjWrite-Prjdetail-Content::-webkit-scrollbar-thumb {
+    background-color: #F2F2F2;
+    border-radius: 50px;
+    border: 14px solid #D9D9D9; /* 스크롤바와 배경 사이 간격 조정 */
+    min-height: 50px; /* thumb 길이 줄임 */
+  }
+  
+  .Project-Detail-Content {
+    width: 100%;
+    height: 100%;
     background-color: transparent;
     border: none;
     outline: none;
     font-family: 'Pretendard-Medium';
     font-size: 20px;
-
-    padding-top: 47px;
-    padding-bottom: 149px;
-    padding-left: 41px;
-    padding-right: 791px;
-
-}
+    padding: 25px; /* padding 추가로 글씨가 너무 가장자리에 붙지 않게 조정 */
+    resize: none; /* textarea 크기 조정 금지 */
+  }
+  
+  
 
 .Create-Project {
     display: flex;
     justify-content: flex-end;
     align-items: flex-end;
     margin-top: 20px;
-    margin-right: 75px;
+    margin-right: 25px;
 }
 
 .Create-Button {
