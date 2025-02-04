@@ -50,8 +50,9 @@ html {
 
 .MainPage-Header {
     margin-top: 50px;
+    width: 1100px;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     gap: 90px;
 }
 
