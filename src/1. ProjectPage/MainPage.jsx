@@ -40,10 +40,10 @@ function MainPage() {
 
   //라우터 핸들러
   const navigate = useNavigate();
-  
+
   const handleMain = () => {
     navigate('/')
-}
+  }
   const handleProjButton = () => {
     navigate('/projectWrite')
   }
@@ -52,6 +52,14 @@ function MainPage() {
     navigate('/FreeView');
   }
 
+  const handleMyProject = () => {
+    if (isLoggedIn) {
+      navigate('/mypage');
+    } else {
+      alert('마이페이지는 로그인 후 이용 가능합니다.');
+      setLoginModalIsOpen(true);
+    }
+  };
 
   // 그리드에 표시되는 포스트들, 페이징 버튼
   const [posts, setPosts] = useState([]);
@@ -130,6 +138,21 @@ function MainPage() {
     );
   };
 
+  // 로그인 세션 로컬 선택
+  useEffect(() => {
+    const storedLoginStatus = localStorage.getItem("isLoggedIn") || sessionStorage.getItem("isLoggedIn");
+    if (storedLoginStatus === "true") {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
+
+  const [keepLoggedIn, setKeepLoggedIn] = useState(false);
+
+  const handleCheckboxChange = () => {
+    setKeepLoggedIn(!keepLoggedIn); // 체크 여부 토글
+  };
+
   // 로그인 함수
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -148,9 +171,16 @@ function MainPage() {
       setLoginModalIsOpen(false); // 로그인 모달 닫기
       setEmail('');
       setPassword('');
-      console.log('로그인 성공:', user);
+
+      if (keepLoggedIn) {
+        localStorage.setItem("isLoggedIn", "true");
+        localStorage.setItem("user", JSON.stringify(user)); // 사용자 정보 저장
+      } else {
+        sessionStorage.setItem("isLoggedIn", "true");
+        sessionStorage.setItem("user", JSON.stringify(user)); // 사용자 정보 저장
+      }
     } catch (err) {
-      setError(`로그인 실패: ${err.message}`);
+      setError(`로그인 실패`);
     }
   };
 
@@ -160,7 +190,10 @@ function MainPage() {
       await signOut(auth);
       setIsLoggedIn(false); // 로그인 상태 해제
       setCurrentUser(null); // 현재 사용자 초기화
-      console.log('로그아웃 성공');
+      localStorage.removeItem("isLoggedIn");
+      localStorage.removeItem("user");
+      sessionStorage.removeItem("isLoggedIn");
+      sessionStorage.removeItem("user");
     } catch (err) {
       console.error('로그아웃 실패:', err.message);
     }
@@ -279,7 +312,7 @@ function MainPage() {
         <div className="MainPage-Header-Right">
           <div className="MainPage-Header-Right-ProMatch">프로젝트 매칭</div>
           <div className="MainPage-Header-Right-FreeMatch" onClick={handleFreePage}>프리랜서 매칭</div>
-          <div className="MainPage-Header-Right-MyProject">마이 프로젝트</div>
+          <div className="MainPage-Header-Right-MyProject" onClick={handleMyProject}>마이 프로젝트</div>
           {isLoggedIn ? (
             <div className="MainPage-Header-Right-LogoutButton" onClick={handleLogout}>
               로그아웃
@@ -444,11 +477,20 @@ function MainPage() {
             />
             {error && <div className="modal1-content-error">{error}</div>}
           </form>
+          <div className="modal1-content-loginType">
+            <input
+              className="modal1-content-memberClass-radio"
+              type="checkbox"
+              checked={keepLoggedIn}
+              onChange={handleCheckboxChange}
+            />
+            로그인 상태 유지
+          </div>
+          <div className="modal1-content-loginButton" onClick={handleLogin}>로그인</div>
           <div className="modal1-content-joinSuggestion">
             <div className="modal1-content-openJoin1">P-eeting이 처음이라면?</div>
             <div className="modal1-content-openJoin2" onClick={openSignupModal}>회원가입하기</div>
           </div>
-          <div className="modal1-content-loginButton" onClick={handleLogin}>로그인</div>
         </div>
       </Modal>
 

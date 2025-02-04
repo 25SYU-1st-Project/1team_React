@@ -412,6 +412,45 @@ html {
     color: #BCC2C6;
 }
 
+.modal1-content-loginType {
+    
+    margin-top: -10px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 5px;
+    align-items: center;
+    font-family: 'Pretendard-Medium';
+    color: #949799;
+    font-size: 20px;
+}
+
+.modal1-content-memberClass-radio {
+    appearance: none;
+    position: relative;
+    background-color: #D9D9D9;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    outline: none;
+    cursor: pointer;
+}
+
+.modal1-content-memberClass-radio:checked {
+    background-color: #D9D9D9;
+}
+
+.modal1-content-memberClass-radio:checked::before {
+    content: "";
+    width: 13px;
+    height: 13px;
+    background-color: #BE3838;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
 .modal1-content-joinSuggestion {
     display: flex;
     justify-content: center;
