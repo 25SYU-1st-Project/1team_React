@@ -52,9 +52,14 @@ function MainPage() {
     navigate('/FreeView');
   }
 
+  const handleDetail = (post) => {
+    localStorage.setItem("selectedPost", JSON.stringify(post)); // 데이터 저장
+    navigate("/detail");
+  };
+
   const handleMyProject = () => {
     if (isLoggedIn) {
-      navigate('/mypage');
+      navigate('/MyProject');
     } else {
       alert('마이페이지는 로그인 후 이용 가능합니다.');
       setLoginModalIsOpen(true);
@@ -168,6 +173,7 @@ function MainPage() {
       const user = userCredential.user;
       setIsLoggedIn(true); // 로그인 상태 변경
       setCurrentUser(user); // 현재 사용자 설정
+
       setLoginModalIsOpen(false); // 로그인 모달 닫기
       setEmail('');
       setPassword('');
@@ -342,7 +348,7 @@ function MainPage() {
         </div>
         <div className="MainPage-Contents-body">
           {currentFilteredPosts.map((post, index) => (
-            <div key={index} className="MainPage-Contents-item">
+            <div key={index} className="MainPage-Contents-item" onClick={() => handleDetail(post)}>
               <div className="MainPage-Contents-item-poster">
                 {formatDate(post.createdAt)}
               </div>

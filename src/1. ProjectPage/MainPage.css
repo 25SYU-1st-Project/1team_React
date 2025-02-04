@@ -194,6 +194,7 @@ html {
     display: flex;
     flex-direction: column;
     align-items: center;
+    cursor: pointer;
 }
 
 .MainPage-Contents-item-poster {
