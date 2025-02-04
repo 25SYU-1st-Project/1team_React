@@ -2,13 +2,9 @@ import InputButton from '../images/InputButton.png';
 import React, { useEffect, useState, useRef } from 'react';
 import previousMonth from '../images/arrow-left.png';
 import nextMonth from '../images/arrow-right.png'
-
-
 import './ProjWrite.css';
-
-
-
-
+import { collection, addDoc } from "firebase/firestore";
+import { db } from "../firebase"; // Assuming you have Firebase configured in a `firebase.js` file
 
 
 function ProjWrite() {
@@ -21,6 +17,86 @@ function ProjWrite() {
 
     const [selectedCategory, setSelectedCategory] = useState("");
     const [selectedTracks, setSelectedTracks] = useState([]);
+
+
+    const [projectData, setProjectData] = useState({
+        name: "",
+        category: "",
+        creatorId: "",
+        description: "",
+        eligibility: "",
+        salary: 0,
+        status: "open",
+        projectPoster: "",
+        techStack: [],
+        tracks: [],
+        deadLine: [],
+
+        applicantsId: [],
+        participantsId: []
+      });
+
+      
+    // 입력 값 변경 핸들러
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setProjectData((prevData) => ({
+        ...prevData,
+        [name]: value,
+        }));
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        const currentDate = new Date(); 
+    
+        try {
+            // Firestore에 저장할 데이터
+            const newProject = {
+                ...projectData,
+                category: selectedCategory, // 라디오 버튼 선택 값
+                tracks: selectedTracks, // 체크박스 선택 값
+                techStack: techStacks, // 기술 스택 배열
+                deadLine: startDate && endDate ? [formatDate(startDate), formatDate(endDate)] : [], // 모집 기한 배열
+                creatorId: "", // 빈값 저장
+                applicantsId: [], // 빈 배열 저장
+                participantsId: [], // 빈 배열 저장
+                createdAt: currentDate // 현재 시간 추가
+            };
+    
+            // Firestore에 데이터 추가
+            const docRef = await addDoc(collection(db, "projects"), newProject);
+            console.log("프로젝트 생성됨, 문서 ID: ", docRef.id);
+            alert("프로젝트 공고가 성공적으로 생성되었습니다!");
+    
+            // 입력 필드 초기화
+            setProjectData({
+                name: "",
+                category: "",
+                description: "",
+                eligibility: "",
+                salary: 0,
+                status: "open",
+                projectPoster: "",
+                techStack: [],
+                tracks: [],
+                deadLine: "",
+                creatorId: "",
+                applicantsId: [],
+                participantsId: []
+            });
+    
+            setSelectedCategory("");
+            setSelectedTracks([]);
+            setTechStacks([""]);
+            setStartDate(null);
+            setEndDate(null);
+        } catch (error) {
+            console.error("프로젝트 추가 중 오류 발생: ", error);
+            alert("프로젝트 생성 중 오류가 발생했습니다.");
+        }
+    };
     
 
 
@@ -30,12 +106,13 @@ function ProjWrite() {
         setSelectedCategory(event.target.value);
     };
 
-    // 트랙 카테괴 체크박스 핸들러
+    // 트랙 카테고리 체크박스 핸들러
     const handleCheckboxChange = (event) => {
         const { value, checked } = event.target;
         if (checked) {
             // 선택된 카테고리를 배열에 추가
-            setSelectedTracks([...selectedTracks, value]);
+            setSelectedTracks([...selectedTracks, value]); 
+            // 기존 배열이 아닌 카테고리를 선택할 때마다 ... 을 사용해 새로운 배열을 만들어 상태 설정
         } else {
             // 선택을 해제하면 배열에서 제거
             setSelectedTracks(selectedTracks.filter(category => category !== value));
@@ -59,8 +136,6 @@ function ProjWrite() {
 
 
     // 캘린더 관련 로직
-
-
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
 
@@ -167,7 +242,8 @@ function ProjWrite() {
                     <div className='ProjWrite-Body-Title'>프로젝트 공고 작성</div>
                 </div>
                 <div className='ProjWrite-Body-MainBox'>
-                    <input className='ProjWrite-Body-MainBox-Title' type="text" placeholder='프로젝트명을 작성해주세요.' />
+                    <input className='ProjWrite-Body-MainBox-Title' type="text" placeholder='프로젝트명을 작성해주세요.' 
+                    name='name' value={projectData.name} onChange={handleChange} required />
                     <div className='ProjWrite-Body-MainBox-ContentBox'>
                         <p className='ProjWrite-Body-ContentBox-Title'>프로젝트 카테고리</p>
                         <div className='ProjWrite-ContentBox-Container'>
@@ -176,8 +252,8 @@ function ProjWrite() {
                                     className="ProjWrite-Category-radio"
                                     type="radio"
                                     name="projwrite-category"
-                                    value="one"
-                                    checked={selectedCategory === "one"}
+                                    value="문화 · 스포츠"
+                                    checked={selectedCategory === "문화 · 스포츠"}
                                     onChange={handleRadioChange}
                                 /> 문화 · 스포츠
                             </div>
@@ -186,8 +262,8 @@ function ProjWrite() {
                                     className="ProjWrite-Category-radio"
                                     type="radio"
                                     name="projwrite-category"
-                                    value="two"
-                                    checked={selectedCategory === "two"}
+                                    value="금융 · 보험"
+                                    checked={selectedCategory === "금융 · 보험"}
                                     onChange={handleRadioChange}
                                 /> 금융 · 보험
                             </div>
@@ -196,8 +272,8 @@ function ProjWrite() {
                                     className="ProjWrite-Category-radio"
                                     type="radio"
                                     name="projwrite-category"
-                                    value="three"
-                                    checked={selectedCategory === "three"}
+                                    value="의료 서비스"
+                                    checked={selectedCategory === "의료 서비스"}
                                     onChange={handleRadioChange}
                                 /> 의료 서비스
                             </div>
@@ -206,8 +282,8 @@ function ProjWrite() {
                                     className="ProjWrite-Category-radio"
                                     type="radio"
                                     name="projwrite-category"
-                                    value="four"
-                                    checked={selectedCategory === "four"}
+                                    value="건설 · 건축"
+                                    checked={selectedCategory === "건설 · 건축"}
                                     onChange={handleRadioChange}
                                 /> 건설 · 건축
                             </div>
@@ -219,8 +295,8 @@ function ProjWrite() {
                                     className="ProjWrite-Tracks-radio"
                                     type="checkbox"
                                     name="projwrite-tracks"
-                                    value="five"
-                                    checked={selectedTracks.includes("five")}
+                                    value="BE 개발자"
+                                    checked={selectedTracks.includes("BE 개발자")}
                                     onChange={handleCheckboxChange}
                                 /> BE 개발자
                             </div>
@@ -229,8 +305,8 @@ function ProjWrite() {
                                     className="ProjWrite-Tracks-radio"
                                     type="checkbox"
                                     name="projwrite-tracks"
-                                    value="six"
-                                    checked={selectedTracks.includes("six")}
+                                    value="FE 개발자"
+                                    checked={selectedTracks.includes("FE 개발자")}
                                     onChange={handleCheckboxChange}
                                 /> FE 개발자
                             </div>
@@ -239,8 +315,8 @@ function ProjWrite() {
                                     className="ProjWrite-Tracks-radio"
                                     type="checkbox"
                                     name="projwrite-tracks"
-                                    value="seven"
-                                    checked={selectedTracks.includes("seven")}
+                                    value="PM"
+                                    checked={selectedTracks.includes("PM")}
                                     onChange={handleCheckboxChange}
                                 /> PM
                             </div>
@@ -249,8 +325,8 @@ function ProjWrite() {
                                     className="ProjWrite-Tracks-radio"
                                     type="checkbox"
                                     name="projwrite-tracks"
-                                    value="eight"
-                                    checked={selectedTracks.includes("eight")}
+                                    value="디자이너"
+                                    checked={selectedTracks.includes("디자이너")}
                                     onChange={handleCheckboxChange}
                                 /> 디자이너
                             </div>
@@ -312,7 +388,11 @@ function ProjWrite() {
                             <div className='ProjWrite-ContentBox-Salary'>
                                 <p className='ProjWrite-Body-ContentBox-Title'>수당</p>
                                 <div className='Salary-Input-Box'>
-                                    <input type="text" placeholder='금액 입력' className='Salary-Input' />
+                                    <input 
+                                    type="text" placeholder='금액 입력' className='Salary-Input' 
+                                    value={projectData.salary} onChange={handleChange}
+                                    name='salary'
+                                    />
                                     <span className='Salary-Text'>만원</span>
                                 </div>
                             </div>
@@ -322,7 +402,10 @@ function ProjWrite() {
                             <div className='ProjWrite-ContentBox-Target'>
                                 <p className='ProjWrite-Body-ContentBox-Title'>지원 대상</p>
                                 <div className='ProjWrite-Target-Content' >
-                                    <textarea name="Target" className='Target-Text' placeholder='내용을 입력하세요.'></textarea>
+                                    <textarea 
+                                    name="eligibility" className='Target-Text' placeholder='내용을 입력하세요.'
+                                    value={projectData.eligibility} onChange={handleChange}
+                                    ></textarea>
                                 </div>
                             </div>
                             <div className='ProjWrite-Body-ContentBox-Tech'>
@@ -352,22 +435,19 @@ function ProjWrite() {
                         <div className='ProjWrite-ContentBox-Projdetail'>
                             <p className='ProjWrite-Body-ContentBox-Title'>프로젝트 설명</p>
                             <div className='ProjWrite-Prjdetail-Content'>
-                                <textarea name="PrjDetail" className='Project-Detail-Content' placeholder='내용을 입력하세요.'></textarea>
+                                <textarea 
+                                name="description" className='Project-Detail-Content' placeholder='내용을 입력하세요.'
+                                value={projectData.description} onChange={handleChange}
+                                ></textarea>
                             </div>
                         </div>
 
                         <div className='Create-Project'>
                             <div className='Create-Project-Content'></div>
-                            <button className='Create-Button'>작성 완료</button>
+                            <button className='Create-Button' onClick={handleSubmit}>작성 완료</button>
                         </div>
                     </div>
-
-
-
-
-
                 </div>
-
             </div>
         </div>
 
