@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Modal from 'react-modal';
 //firebase 임포트
+import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { getDocs, collection } from "firebase/firestore";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
-import { db } from '../firebase';
+import { auth, db } from '../firebase';
 
 import searchIcon from '../images/search.png';
 import firstIcon from '../images/first.png';
@@ -14,16 +17,53 @@ import defaultProfile from '../images/profileImage.png';
 import './FreeLancerPage.css';
 
 function FreeLancerPage() {
+
+    // 회원 정보 변수
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+    const [selectedTracks, setSelectedTracks] = useState([]);
+    const [selectedMemberClass, setSelectedMemberClass] = useState("");
+    const [error, setError] = useState("");
+    const [signupSuccess, setSignupSuccess] = useState(false);
+
+
+    const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태 추가
+    const [currentUser, setCurrentUser] = useState(null); // 현재 로그인한 사용자 정보
+
+    // 회원가입 라디오버튼 핸들러
+    const handleRadioChange = (event) => {
+        setSelectedMemberClass(event.target.value);
+    };
+
     //라우터 핸들러
     const navigate = useNavigate();
 
     const handleMain = () => {
         navigate('/')
     }
+    const handleProjButton = () => {
+        navigate('/projectWrite')
+    }
 
     const handleFreePage = () => {
         navigate('/FreeView');
     }
+
+    const handleDetail = (post) => {
+        localStorage.setItem("selectedPost", JSON.stringify(post)); // 데이터 저장
+        navigate("/detail");
+    };
+
+    const handleMyProject = () => {
+        if (isLoggedIn) {
+            navigate('/MyProject');
+        } else {
+            alert('마이페이지는 로그인 후 이용 가능합니다.');
+            setLoginModalIsOpen(true);
+        }
+    };
+
     //애니메이션
     const slides = [
         { color: "#000000", text: "LIKELION 13기 모집중", target: "#" },
@@ -81,23 +121,6 @@ function FreeLancerPage() {
         setCurrentPage(prev => (prev < totalPages ? prev + 1 : totalPages));
     };
 
-    // useEffect(() => {
-    //     const fetchProjects = async () => {
-    //         try {
-    //             const querySnapshot = await getDocs(collection(db, "users"));
-    //             const fetchedProjects = querySnapshot.docs.map(doc => ({
-    //                 id: doc.id,
-    //                 ...doc.data(),
-    //             }));
-    //             setPosts(fetchedProjects);
-    //         } catch (error) {
-    //             console.error("프로젝트 데이터를 가져오는 중 오류:", error);
-    //         }
-    //     };
-
-    //     fetchProjects();
-    // }, []);
-
     useEffect(() => {
         const fetchProjects = async () => {
             try {
@@ -148,6 +171,144 @@ function FreeLancerPage() {
         setCurrentPage(1);
     };
 
+    // 로그인, 로그아웃, 회원가입 함수
+    //모달 함수
+    const [loginModalIsOpen, setLoginModalIsOpen] = useState(false);
+    const [signupModalIsOpen, setSignupModalIsOpen] = useState(false);
+
+    const openLoginModal = () => {
+        setLoginModalIsOpen(true);
+    };
+
+    const closeLoginModal = () => {
+        setLoginModalIsOpen(false);
+    };
+
+    const openSignupModal = () => {
+        setSignupModalIsOpen(true);
+        setLoginModalIsOpen(false);
+    };
+
+    const closeSignupModal = () => {
+        setSignupModalIsOpen(false);
+    };
+
+    //트랙 선택 드롭다운 함수
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const trackOptions = ['디자이너', 'BE 개발자', 'FE 개발자', 'PM'];
+
+    const toggleDropdown = () => {
+        setIsDropdownOpen((prev) => !prev);
+    };
+
+    const handleTrackSelect = (track) => {
+        setSelectedTracks((prev) =>
+            prev.includes(track) ? prev.filter((item) => item !== track) : [...prev, track]
+        );
+    };
+
+    // 로그인 세션 로컬 선택
+    useEffect(() => {
+        const storedLoginStatus = localStorage.getItem("isLoggedIn") || sessionStorage.getItem("isLoggedIn");
+        if (storedLoginStatus === "true") {
+            setIsLoggedIn(true);
+        }
+    }, []);
+
+
+    const [keepLoggedIn, setKeepLoggedIn] = useState(false);
+
+    const handleCheckboxChange = () => {
+        setKeepLoggedIn(!keepLoggedIn); // 체크 여부 토글
+    };
+
+    // 로그인 함수
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        setError(""); // 기존 에러 초기화
+
+        if (!email || !password) {
+            setError("이메일과 비밀번호를 입력해주세요.");
+            return;
+        }
+
+        try {
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+            setIsLoggedIn(true); // 로그인 상태 변경
+            setCurrentUser(user); // 현재 사용자 설정
+
+            setLoginModalIsOpen(false); // 로그인 모달 닫기
+            setEmail('');
+            setPassword('');
+
+            if (keepLoggedIn) {
+                localStorage.setItem("isLoggedIn", "true");
+                localStorage.setItem("user", JSON.stringify(user)); // 사용자 정보 저장
+            } else {
+                sessionStorage.setItem("isLoggedIn", "true");
+                sessionStorage.setItem("user", JSON.stringify(user)); // 사용자 정보 저장
+            }
+        } catch (err) {
+            setError(`로그인 실패`);
+        }
+    };
+
+    // 로그아웃 함수
+    const handleLogout = async () => {
+        try {
+            await signOut(auth);
+            setIsLoggedIn(false); // 로그인 상태 해제
+            setCurrentUser(null); // 현재 사용자 초기화
+            localStorage.removeItem("isLoggedIn");
+            localStorage.removeItem("user");
+            sessionStorage.removeItem("isLoggedIn");
+            sessionStorage.removeItem("user");
+        } catch (err) {
+            console.error('로그아웃 실패:', err.message);
+        }
+    };
+
+    //회원가입 함수
+    const handleSignup = async (e) => {
+        e.preventDefault();
+        if (!email || !password || !confirmPassword || !selectedMemberClass || selectedTracks.length === 0) {
+            setError("모든 필드를 채워주세요.");
+            return;
+        }
+
+        if (password !== confirmPassword) {
+            setError("비밀번호가 일치하지 않습니다.");
+            return;
+        }
+
+        try {
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            await setDoc(doc(db, "users", user.uid), {
+                email,
+                memberClass: selectedMemberClass,
+                tracks: selectedTracks,
+                appliedProjects: [],
+                joinedProjects: [],
+                profileImage: "",
+                resume: "",
+                name: "",
+            });
+
+            setSignupSuccess(true);
+            setEmail("");
+            setPassword("");
+            setConfirmPassword("");
+            setSelectedMemberClass("");
+            setSelectedTracks([]);
+        } catch (err) {
+            setError(`회원가입 실패: ${err.message}`);
+        }
+    };
+
+
     return (
         <div className="FreeLancer-container">
             <div className="FreeLancer-Header">
@@ -161,8 +322,16 @@ function FreeLancerPage() {
                 <div className="FreeLancer-Header-Right">
                     <div className="FreeLancer-Header-Right-ProMatch" onClick={handleMain}>프로젝트 매칭</div>
                     <div className="FreeLancer-Header-Right-FreeMatch" onClick={handleFreePage}>프리랜서 매칭</div>
-                    <div className="FreeLancer-Header-Right-MyProject">마이 프로젝트</div>
-                    <div className="FreeLancer-Header-Right-LoginButton">로그인</div>
+                    <div className="FreeLancer-Header-Right-MyProject" onClick={handleMyProject}>마이 프로젝트</div>
+                    {isLoggedIn ? (
+                        <div className="FreeLancer-Header-Right-LogoutButton" onClick={handleLogout}>
+                            로그아웃
+                        </div>
+                    ) : (
+                        <div className="FreeLancer-Header-Right-LoginButton" onClick={() => setLoginModalIsOpen(true)}>
+                            로그인
+                        </div>
+                    )}
                 </div>
             </div>
 
@@ -275,6 +444,136 @@ function FreeLancerPage() {
                     </ul>
                 </div>
             </div>
+            <Modal
+                isOpen={loginModalIsOpen}
+                onRequestClose={closeLoginModal}
+                contentLabel="로그인"
+                className="modal1"
+                overlayClassName="overlay"
+            >
+                <div className="modal1-content">
+                    <div className="modal1-content-loginTitle">로그인</div>
+                    <form className="modal1-content-loginContents" onSubmit={handleLogin}>
+                        <input
+                            className="modal1-content-Email"
+                            type="email"
+                            placeholder="이메일"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                        />
+                        <input
+                            className="modal1-content-Password"
+                            type="password"
+                            placeholder="비밀번호"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
+                        {error && <div className="modal1-content-error">{error}</div>}
+                    </form>
+                    <div className="modal1-content-loginType">
+                        <input
+                            className="modal1-content-memberClass-radio"
+                            type="checkbox"
+                            checked={keepLoggedIn}
+                            onChange={handleCheckboxChange}
+                        />
+                        로그인 상태 유지
+                    </div>
+                    <div className="modal1-content-loginButton" onClick={handleLogin}>로그인</div>
+                    <div className="modal1-content-joinSuggestion">
+                        <div className="modal1-content-openJoin1">P-eeting이 처음이라면?</div>
+                        <div className="modal1-content-openJoin2" onClick={openSignupModal}>회원가입하기</div>
+                    </div>
+                </div>
+            </Modal>
+
+            <Modal
+                isOpen={signupModalIsOpen}
+                onRequestClose={closeSignupModal}
+                contentLabel="회원가입"
+                className="modal2"
+                overlayClassName="overlay"
+            >
+                <div className="modal2-content">
+                    <div className="modal2-content-joinTitle">회원가입</div>
+                    {signupSuccess ? (
+                        <div className="modal2-content-success">회원가입이 완료되었습니다!</div>
+                    ) : (
+                        <form className="modal2-content-joinContents" onSubmit={handleSignup}>
+                            <input
+                                className="modal2-content-Email"
+                                type="email"
+                                placeholder="이메일"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                            />
+                            <input
+                                className="modal2-content-Password"
+                                type="password"
+                                placeholder="비밀번호"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                            />
+                            <input
+                                className="modal2-content-Password2"
+                                type="password"
+                                placeholder="비밀번호 확인"
+                                value={confirmPassword}
+                                onChange={(e) => setConfirmPassword(e.target.value)}
+                            />
+                            <div className="modal2-content-Track">
+                                <button
+                                    type="button"
+                                    className={`modal2-content-Track-Dropdown ${selectedTracks.length === 0 ? 'placeholder' : ''}`}
+                                    onClick={toggleDropdown}
+                                >
+                                    {selectedTracks.length > 0
+                                        ? `${selectedTracks.join(', ')}`
+                                        : '트랙 선택'}
+                                </button>
+                                {isDropdownOpen && (
+                                    <ul className="dropdown-list">
+                                        {trackOptions.map((track, index) => (
+                                            <li
+                                                key={index}
+                                                className={`dropdown-item ${selectedTracks.includes(track) ? 'selected' : ''}`}
+                                                onClick={() => handleTrackSelect(track)}
+                                            >
+                                                {track}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                )}
+                                <div className="modal2-content-memberClass">
+                                    <div className="modal2-content-memberClass-personal">
+                                        <input
+                                            className="modal2-content-memberClass-radio"
+                                            type="radio"
+                                            name="memberClass"
+                                            value="basic"
+                                            checked={selectedMemberClass === "basic"}
+                                            onChange={handleRadioChange}
+                                        /> 개인
+                                    </div>
+                                    <div className="modal2-content-memberClass-group">
+                                        <input
+                                            className="modal2-content-memberClass-radio"
+                                            type="radio"
+                                            name="memberClass"
+                                            value="premium"
+                                            checked={selectedMemberClass === "premium"}
+                                            onChange={handleRadioChange}
+                                        /> 단체
+                                    </div>
+                                </div>
+                            </div>
+
+                            {error && <div className="modal2-content-error">{error}</div>}
+                            <button type="submit" className="modal2-content-joinButton">회원가입</button>
+                        </form>
+                    )}
+                </div>
+            </Modal>
         </div>
     )
 }

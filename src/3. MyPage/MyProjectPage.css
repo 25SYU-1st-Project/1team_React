@@ -90,8 +90,7 @@
 .MyProject-Header-Right-ProMatch,
 .MyProject-Header-Right-FreeMatch,
 .MyProject-Header-Right-MyProject,
-.MyProject-Header-Right-LoginButton,
-.MyProject-Header-Right-LogoutButton {
+.MyProject-Header-Right-Logout {
     width: 90px;
     font-family: 'Pretendard-Semibold';
     cursor: pointer;
@@ -99,7 +98,7 @@
 
 .MyProject-Header-Right-ProMatch,
 .MyProject-Header-Right-FreeMatch,
-.MyProject-Header-Right-LogoutButton {
+.MyProject-Header-Right-Logout {
     color: #A1A6A9;
 }
 

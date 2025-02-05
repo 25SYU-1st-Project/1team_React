@@ -91,7 +91,8 @@
 .FreeLancer-Header-Right-ProMatch,
 .FreeLancer-Header-Right-FreeMatch,
 .FreeLancer-Header-Right-MyProject,
-.FreeLancer-Header-Right-LoginButton {
+.FreeLancer-Header-Right-LoginButton,
+.FreeLancer-Header-Right-LogoutButton {
     width: 90px;
     font-family: 'Pretendard-Semibold';
     cursor: pointer;
@@ -99,7 +100,8 @@
 
 .FreeLancer-Header-Right-ProMatch,
 .FreeLancer-Header-Right-MyProject,
-.FreeLancer-Header-Right-LoginButton {
+.FreeLancer-Header-Right-LoginButton,
+.FreeLancer-Header-Right-LogoutButton {
     color: #A1A6A9;
 }
 

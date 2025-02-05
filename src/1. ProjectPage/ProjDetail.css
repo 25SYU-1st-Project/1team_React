@@ -30,7 +30,6 @@
     margin-top: 50px;
     display: flex;
     justify-content: space-between;
-    gap: 90px;
 }
 
 .Detail-Header-Left {
@@ -41,6 +40,7 @@
 }
 
 .Detail-Header-LOGO {
+    width: 150px;
     font-family: 'Montserrat-Bold';
     font-size: 32px;
     cursor: pointer;
@@ -86,7 +86,7 @@
 .Detail-Header-Right {
     display: flex;
     justify-content: flex-start;
-    gap: 30px;
+    gap: 15px;
     align-items: center;
 }
 
@@ -95,6 +95,7 @@
 .Detail-Header-Right-MyProject,
 .Detail-Header-Right-LoginButton,
 .Detail-Header-Right-LogoutButton {
+    width: 90px;
     font-family: 'Pretendard-Semibold';
     cursor: pointer;
 }
