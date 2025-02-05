@@ -53,7 +53,6 @@ html {
     width: 1100px;
     display: flex;
     justify-content: space-between;
-    gap: 90px;
 }
 
 .MainPage-Header-Left {
@@ -64,6 +63,7 @@ html {
 }
 
 .MainPage-Header-LOGO {
+    width: 150px;
     font-family: 'Montserrat-Bold';
     font-size: 32px;
     cursor: pointer;
@@ -109,7 +109,7 @@ html {
 .MainPage-Header-Right {
     display: flex;
     justify-content: flex-start;
-    gap: 30px;
+    gap: 15px;
     align-items: center;
 }
 
@@ -118,6 +118,7 @@ html {
 .MainPage-Header-Right-MyProject,
 .MainPage-Header-Right-LoginButton,
 .MainPage-Header-Right-LogoutButton {
+    width: 90px;
     font-family: 'Pretendard-Semibold';
     cursor: pointer;
 }

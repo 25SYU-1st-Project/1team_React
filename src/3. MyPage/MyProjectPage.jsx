@@ -39,8 +39,7 @@ function MyProjectPage() {
     const onRun = () => setAnimate(true);
 
 
-    const posts = Array.from({ length: 30 }, (_, index) => `Post ${index + 1}`);
-
+    const [posts, setPosts] = useState([]);
     const postsPerPage = 3;
     const [currentPage, setCurrentPage] = useState(1);
 
@@ -80,11 +79,11 @@ function MyProjectPage() {
         setCurrentPage(prev => (prev < totalPages ? prev + 1 : totalPages));
     };
 
-    // 유저 정보 get
     const [userInfo, setUserInfo] = useState(null);
+    const [currentFilteredPosts, setCurrentPosts] = useState([]);
 
     useEffect(() => {
-        const fetchUserData = async () => {
+        const fetchUserAndProjects = async () => {
             const storedUser = localStorage.getItem("user");
             if (!storedUser) return;
 
@@ -93,16 +92,34 @@ function MyProjectPage() {
             try {
                 const userDoc = await getDoc(doc(db, "users", uid));
                 if (userDoc.exists()) {
-                    setUserInfo(userDoc.data()); // Firestore에서 가져온 데이터 저장
+                    const userData = userDoc.data();
+                    setUserInfo(userData);
+
+                    const { joinedProjects } = userData; // 참여한 프로젝트 목록 가져오기
+
+                    if (!joinedProjects || joinedProjects.length === 0) {
+                        setPosts([]);  // posts 상태를 비우기
+                        return;
+                    }
+
+                    // 프로젝트 정보 가져오기
+                    const projectPromises = joinedProjects.map(async (projectId) => {
+                        const projectRef = doc(db, "projects", projectId);
+                        const projectSnap = await getDoc(projectRef);
+                        return projectSnap.exists() ? { id: projectId, ...projectSnap.data() } : null;
+                    });
+
+                    const projects = await Promise.all(projectPromises);
+                    setPosts(projects.filter((project) => project !== null)); // 유효한 프로젝트만 저장
                 } else {
                     console.log("User not found");
                 }
             } catch (error) {
-                console.error("Error fetching user data:", error);
+                console.error("Error fetching user and project data:", error);
             }
         };
 
-        fetchUserData();
+        fetchUserAndProjects();
     }, []);
 
     return (
@@ -110,14 +127,14 @@ function MyProjectPage() {
             <div className="MyProject-container">
                 <div className="MyProject-Header">
                     <div className="MyProject-Header-Left">
-                        <div className="MyProject-Header-LOGO" onclick={handleMain}><span>P</span>-eeting</div>
+                        <div className="MyProject-Header-LOGO" onClick={handleMain}><span>P</span>-eeting</div>
                         <div className="MyProject-Header-Search">
                             <div className="MyProject-Header-SearchIcon"><img src={searchIcon} alt="돋보기아이콘" /></div>
                             <input className="MyProject-Header-InputArea" type="text" placeholder="프로젝트 미팅, 피팅" /></div>
                     </div>
                     <div className="MyProject-Header-Right">
-                        <div className="MyProject-Header-Right-ProMatch" onclick={handleMain}>프로젝트 매칭</div>
-                        <div className="MyProject-Header-Right-FreeMatch" onclick={handleFreePage}>프리랜서 매칭</div>
+                        <div className="MyProject-Header-Right-ProMatch" onClick={handleMain}>프로젝트 매칭</div>
+                        <div className="MyProject-Header-Right-FreeMatch" onClick={handleFreePage}>프리랜서 매칭</div>
                         <div className="MyProject-Header-Right-MyProject">마이 프로젝트</div>
                         <div className="MyProject-Header-Right-LoginButton">로그아웃</div>
                     </div>
@@ -137,23 +154,37 @@ function MyProjectPage() {
                         </div>
                         <div className="MyProject-Body-Right">
                             <div className="MyProject-Body-Right-Content">
-                                {currentPosts.map((post, index) => (
-                                    <div key={index} className="MyProject-Body-Right-Content-Box1">
-                                        <div className="MyProject-Body-Right-Content-Box1-Record">
-                                            <div className="MyProject-Body-Right-Content-Box1-PrjName">Wad</div>
-                                            <div className="MyProject-Body-Right-Content-Box1-Kategory">
-                                                <div className="MyProject-Body-Right-Content-Box1-Kategory-K1"># FE 개발자</div>
-                                                <div className="MyProject-Body-Right-Content-Box1-Kategory-K2"># BE 개발자</div>
-                                                <div className="MyProject-Body-Right-Content-Box1-Kategory-K3"># 디자이너</div>
+                            {currentPosts.map((post, index) => (
+                                <div key={index} className="MyProject-Body-Right-Content-Box1">
+                                    <div className="MyProject-Body-Right-Content-Box1-Record">
+                                        {/* 프로젝트 이름 */}
+                                        <div className="MyProject-Body-Right-Content-Box1-PrjName">{post.name}</div>
+
+                                        {/* 카테고리 */}
+                                        <div className="MyProject-Body-Right-Content-Box1-Kategory">
+                                            <div className="MyProject-Body-Right-Content-Box1-Kategory-K">
+                                                {post.category}
                                             </div>
-                                            <div className="MyProject-Body-Right-Content-Box1-Salary">급여: </div>
-                                            <div className="MyProject-Body-Right-Content-Box1-Detail">초보개발자</div>
                                         </div>
-                                        <div className="MyProject-Body-Right-Content-Box1-Trash">
-                                            <img src={trashIcon} alt="Trash" width="20" height="20" />
+
+                                        {/* 트랙 (추가적인 정보) */}
+                                        <div className="MyProject-Body-Right-Content-Box1-Tracks">
+                                            {post.tracks?.join(", ")}
                                         </div>
+
+                                        {/* 급여 정보 */}
+                                        <div className="MyProject-Body-Right-Content-Box1-Salary">급여: {post.salary}</div>
+
+                                        {/* 상세 설명 */}
+                                        <div className="MyProject-Body-Right-Content-Box1-Detail">{post.description}</div>
                                     </div>
-                                ))}
+
+                                    {/* 삭제 버튼 */}
+                                    <div className="MyProject-Body-Right-Content-Box1-Trash">
+                                        <img src={trashIcon} alt="Trash" width="20" height="20" />
+                                    </div>
+                                </div>
+                            ))}
                             </div>
                             <div className="pagination">
                                 <button onClick={handleFirstPage}>
@@ -179,7 +210,6 @@ function MyProjectPage() {
                                 </button>
                             </div>
 
-
                         </div>
 
                     </div>
@@ -187,6 +217,7 @@ function MyProjectPage() {
                     <p>please, login</p>
                 )
                 }
+
                 <div className="AdSlide">
                     <div className="slide_container">
                         <ul
