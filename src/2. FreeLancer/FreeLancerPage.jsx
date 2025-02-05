@@ -139,7 +139,6 @@ function FreeLancerPage() {
                                 const storageRef = ref(storage, post.profileImage);
                                 post.profileImage = await getDownloadURL(storageRef);
                             } catch (error) {
-                                console.error("이미지 URL 변환 실패:", error);
                             }
                         }
                         return post;
@@ -148,7 +147,6 @@ function FreeLancerPage() {
 
                 setPosts(updatedProjects);
             } catch (error) {
-                console.error("프로젝트 데이터를 가져오는 중 오류:", error);
             }
         };
 
@@ -265,7 +263,6 @@ function FreeLancerPage() {
             sessionStorage.removeItem("isLoggedIn");
             sessionStorage.removeItem("user");
         } catch (err) {
-            console.error('로그아웃 실패:', err.message);
         }
     };
 
