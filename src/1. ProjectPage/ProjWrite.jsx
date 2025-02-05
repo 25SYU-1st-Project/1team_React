@@ -50,6 +50,22 @@ function ProjWrite() {
     e.preventDefault();
 
     const currentDate = new Date();
+     // 🔹 localStorage에서 데이터 가져오기
+
+    // 🔹 localStorage에서 user 데이터 가져오기
+    const storedUser = localStorage.getItem("user");
+    
+    let userData;
+    try {
+      userData = JSON.parse(storedUser);
+    } catch (error) {
+      console.error("로컬스토리지 JSON 파싱 오류:", error);
+      alert("로그인 정보를 가져오는 중 오류가 발생했습니다.");
+      return;
+    }
+
+
+
 
     try {
       // Firestore에 저장할 데이터
@@ -59,7 +75,7 @@ function ProjWrite() {
         tracks: selectedTracks, // 체크박스 선택 값
         techStack: techStacks, // 기술 스택 배열
         deadLine: startDate && endDate ? [formatDate(startDate), formatDate(endDate)] : [], // 모집 기한 배열
-        creatorId: "", // 빈값 저장
+        creatorId: userData.uid, // uid 값 저장 
         applicantsId: [], // 빈 배열 저장
         participantsId: [], // 빈 배열 저장
         createdAt: currentDate // 현재 시간 추가
@@ -508,11 +524,6 @@ function ProjWrite() {
         </div>
       </div>
     </div>
-
-
   );
-
 }
-
-
 export default ProjWrite;
