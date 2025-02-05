@@ -136,7 +136,7 @@ function MyProjectPage() {
                         <div className="MyProject-Header-Right-ProMatch" onClick={handleMain}>프로젝트 매칭</div>
                         <div className="MyProject-Header-Right-FreeMatch" onClick={handleFreePage}>프리랜서 매칭</div>
                         <div className="MyProject-Header-Right-MyProject">마이 프로젝트</div>
-                        <div className="MyProject-Header-Right-LoginButton">로그아웃</div>
+                        <div className="MyProject-Header-Right-Logout">로그아웃</div>
                     </div>
                 </div>
                 {userInfo ? (

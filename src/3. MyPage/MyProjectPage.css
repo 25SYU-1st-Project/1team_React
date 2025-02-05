@@ -22,7 +22,6 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    gap: 53px;
 }
 
 .MyProject-Header {
@@ -40,6 +39,7 @@
 }
 
 .MyProject-Header-LOGO {
+    width: 150px;
     font-family: 'Montserrat-Bold';
     font-size: 32px;
     cursor: pointer;
@@ -90,7 +90,8 @@
 .MyProject-Header-Right-ProMatch,
 .MyProject-Header-Right-FreeMatch,
 .MyProject-Header-Right-MyProject,
-.MyProject-Header-Right-LoginButton {
+.MyProject-Header-Right-LoginButton,
+.MyProject-Header-Right-LogoutButton {
     width: 90px;
     font-family: 'Pretendard-Semibold';
     cursor: pointer;
@@ -98,7 +99,7 @@
 
 .MyProject-Header-Right-ProMatch,
 .MyProject-Header-Right-FreeMatch,
-.MyProject-Header-Right-LoginButton {
+.MyProject-Header-Right-LogoutButton {
     color: #A1A6A9;
 }
 
@@ -108,6 +109,7 @@
 
 
 .MyProject-Body {
+    margin-top: 50px;
     width: 1119px;
     height: 588px;
     display: flex;
