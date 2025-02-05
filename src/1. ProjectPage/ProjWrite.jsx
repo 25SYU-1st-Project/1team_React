@@ -3,8 +3,9 @@ import React, { useEffect, useState, useRef } from 'react';
 import previousMonth from '../images/arrow-left.png';
 import nextMonth from '../images/arrow-right.png'
 import './ProjWrite.css';
-import { collection, addDoc } from "firebase/firestore";
 import { db } from "../firebase"; // Assuming you have Firebase configured in a `firebase.js` file
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import { getFirestore, doc, getDoc, collection, addDoc } from "firebase/firestore";
 
 
 function ProjWrite() {
@@ -31,11 +32,8 @@ function ProjWrite() {
     techStack: [],
     tracks: [],
     deadLine: [],
-
-    applicantsId: [],
     participantsId: []
   });
-
 
   // 입력 값 변경 핸들러
   const handleChange = (e) => {
@@ -50,43 +48,58 @@ function ProjWrite() {
     e.preventDefault();
 
     const currentDate = new Date();
-     // 🔹 localStorage에서 데이터 가져오기
-
-    // 🔹 localStorage에서 user 데이터 가져오기
     const storedUser = localStorage.getItem("user");
-    
+
     let userData;
-    try {
-      userData = JSON.parse(storedUser);
-    } catch (error) {
-      console.error("로컬스토리지 JSON 파싱 오류:", error);
-      alert("로그인 정보를 가져오는 중 오류가 발생했습니다.");
-      return;
-    }
+    userData = JSON.parse(storedUser);
 
-
-
+    const userId = userData.uid;
+    const db = getFirestore();
 
     try {
-      // Firestore에 저장할 데이터
+      // ✅ 1. Firestore에서 사용자 정보(name, projectPoster) 가져오기
+      const userDocRef = doc(db, "users", userId);
+      const userDocSnap = await getDoc(userDocRef);
+
+      let creatorId = "Null"; // 기본값 설정
+      let projectPoster = "Null"; // 🔥 초기화 위치 수정
+
+      if (userDocSnap.exists()) {
+        const userInfo = userDocSnap.data();
+        creatorId = userInfo.name || "익명"; // Firestore에서 name 가져오기
+        projectPoster = userInfo.profileImage || ""; // Firestore에서 projectPoster 가져오기
+      }
+
+      // ✅ 2. Firebase Storage에서 프로젝트 포스터 가져오기 (Firestore에 없을 경우)
+      if (!projectPoster) {
+        const storage = getStorage();
+        const projectPosterRef = ref(storage, `projectPosters/${userId}.jpg`);
+        try {
+          projectPoster = await getDownloadURL(projectPosterRef);
+        } catch (error) {
+          console.warn("프로젝트 포스터를 찾을 수 없음.");
+        }
+      }
+
+      // ✅ 3. Firestore projects 컬렉션에 데이터 저장
       const newProject = {
         ...projectData,
-        category: selectedCategory, // 라디오 버튼 선택 값
-        tracks: selectedTracks, // 체크박스 선택 값
-        techStack: techStacks, // 기술 스택 배열
-        deadLine: startDate && endDate ? [formatDate(startDate), formatDate(endDate)] : [], // 모집 기한 배열
-        creatorId: userData.uid, // uid 값 저장 
-        applicantsId: [], // 빈 배열 저장
-        participantsId: [], // 빈 배열 저장
-        createdAt: currentDate // 현재 시간 추가
+        category: selectedCategory,
+        tracks: selectedTracks,
+        techStack: techStacks,
+        deadLine: startDate && endDate ? [formatDate(startDate), formatDate(endDate)] : [],
+        creatorId, // ✅ 사용자 이름 저장
+        projectPoster, // ✅ 프로젝트 포스터 저장
+        participantsId: [],
+        createdAt: currentDate,
       };
 
-      // Firestore에 데이터 추가
+      // ✅ Firestore에 데이터 추가
       const docRef = await addDoc(collection(db, "projects"), newProject);
       console.log("프로젝트 생성됨, 문서 ID: ", docRef.id);
       alert("프로젝트 공고가 성공적으로 생성되었습니다!");
 
-      // 입력 필드 초기화
+      // ✅ 입력 필드 초기화
       setProjectData({
         name: "",
         category: "",
@@ -99,7 +112,6 @@ function ProjWrite() {
         tracks: [],
         deadLine: "",
         creatorId: "",
-        applicantsId: [],
         participantsId: []
       });
 
@@ -238,18 +250,18 @@ function ProjWrite() {
   };
 
   //애니메이션
-      const slides = [
-          { color: "#000000", text: "LIKELION 13기 모집중", target: "#" },
-          { color: "#000000", text: "1팀 장준익 유광렬 정서우", target: "#" },
-          { color: "#000000", text: "강승진 강사님 화이팅", target: "#" },
-          { color: "#000000", text: "삼육대 컴공 4학년 화이팅", target: "#" },
-          { color: "#000000", text: "개발자 커뮤니티 WAD!", target: "#" },
-          { color: "#000000", text: "챌 서폿 잼띵이 구독!!", target: "#" },
-          { color: "#000000", text: "PEETING은 최고야!", target: "#" },
-      ];
-      const [animate, setAnimate] = useState(true);
-      const onStop = () => setAnimate(false);
-      const onRun = () => setAnimate(true);
+  const slides = [
+    { color: "#000000", text: "LIKELION 13기 모집중", target: "#" },
+    { color: "#000000", text: "1팀 장준익 유광렬 정서우", target: "#" },
+    { color: "#000000", text: "강승진 강사님 화이팅", target: "#" },
+    { color: "#000000", text: "삼육대 컴공 4학년 화이팅", target: "#" },
+    { color: "#000000", text: "개발자 커뮤니티 WAD!", target: "#" },
+    { color: "#000000", text: "챌 서폿 잼띵이 구독!!", target: "#" },
+    { color: "#000000", text: "PEETING은 최고야!", target: "#" },
+  ];
+  const [animate, setAnimate] = useState(true);
+  const onStop = () => setAnimate(false);
+  const onRun = () => setAnimate(true);
 
   return (
     <div className="ProjWrite-Container">
