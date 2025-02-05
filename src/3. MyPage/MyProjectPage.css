@@ -168,7 +168,7 @@
 
 .MyProject-Body-Right {
     width: 812px;
-    height: auto;
+    height: 658px;
     display: flex;
     justify-content: flex-start;
     flex-direction: column;
@@ -254,10 +254,3 @@
     cursor: pointer;
 }
 
-
-.pagination {
-    bottom: 60px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
