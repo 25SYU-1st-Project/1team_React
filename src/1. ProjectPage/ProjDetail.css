@@ -1,0 +1,329 @@
+@font-face {
+    font-family: 'Pretendard-Medium';
+    src: url('../Fonts/Pretendard-Medium.ttf') format('truetype');
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('../Fonts/Pretendard-Regular.ttf') format('truetype');
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Pretendard-Semibold';
+    src: url('../Fonts/Pretendard-Semibold.ttf') format('truetype');
+    font-style: normal;
+}
+
+.Detail-Container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.Detail-Header {
+    width: 1100px;
+    margin-top: 50px;
+    display: flex;
+    justify-content: space-between;
+    gap: 90px;
+}
+
+.Detail-Header-Left {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 26px;
+}
+
+.Detail-Header-LOGO {
+    font-family: 'Montserrat-Bold';
+    font-size: 32px;
+    cursor: pointer;
+}
+
+.Detail-Header-LOGO span {
+    color: #BE3838;
+}
+
+.Detail-Header-Search {
+    width: 412px;
+    height: 54px;
+    padding-left: 24px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+    border: 2px, solid, #BE3838;
+    border-radius: 51px;
+    background-color: #F2F2F2;
+}
+
+.Detail-Header-SearchIcon,
+.Detail-Header-SearchIcon img {
+    width: 26px;
+    height: 26px;
+}
+
+.Detail-Header-InputArea {
+    outline: none;
+    border: none;
+    background-color: transparent;
+    font-family: 'Pretendard-Medium';
+    font-size: 16px;
+    color: #000000;
+}
+
+.Detail-Header-InputArea::placeholder {
+    font-family: 'Pretendard-Medium';
+    color: #A1A6A9;
+}
+
+.Detail-Header-Right {
+    display: flex;
+    justify-content: flex-start;
+    gap: 30px;
+    align-items: center;
+}
+
+.Detail-Header-Right-ProMatch,
+.Detail-Header-Right-FreeMatch,
+.Detail-Header-Right-MyProject,
+.Detail-Header-Right-LoginButton,
+.Detail-Header-Right-LogoutButton {
+    font-family: 'Pretendard-Semibold';
+    cursor: pointer;
+}
+
+.Detail-Header-Right-FreeMatch,
+.Detail-Header-Right-MyProject,
+.Detail-Header-Right-LoginButton,
+.Detail-Header-Right-LogoutButton {
+    color: #A1A6A9;
+}
+
+.Detail-Contents {
+    position: relative;
+    margin-top: 62px;
+    width: 1100px;
+    height: 570px;
+    display: flex;
+    flex-direction: column;
+}
+
+.Detail-Contents-header {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 3%;
+}
+
+.Detail-Contents-header-title {
+    font-family: 'Pretendard-Semibold';
+    font-size: 18px;
+}
+
+.Detail-Contents-header-category {
+    display: flex;
+    align-items: center;
+    gap: 1.5%;
+    font-family: 'Pretendard-Medium';
+    font-size: 14px;
+}
+
+.Detail-Contents-header-category-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 118.5px;
+    height: 30px;
+    border-radius: 32.37px;
+    font-family: 'Pretendard-Medium';
+    font-size: 14px;
+    color: #A1A6A9;
+    background-color: #F2F2F2;
+    cursor: pointer;
+}
+
+.Detail-Contents-header-category-item.active {
+    color: #FFFFFF;
+    background-color: #BE3838;
+}
+
+.Detail-Body {
+    font-family: 'Pretendard-Medium';
+    font-size: 18px;
+    margin-top: 55px;
+    width: 960px;
+    height: 599px;
+    padding-top: 36px;
+    padding-left: 70px;
+    padding-right: 70px;
+    border-radius: 15px;
+    border: #BE3838, 3px, solid;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 20px;
+
+}
+
+.Detail-Body-contents1 {
+    background-color: #000000;
+    width: 100%;
+    height: 200px;
+    border-radius: 15px;
+}
+
+.Detail-Body-contents2 {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.Detail-Body-pName{
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.Detail-Body-pDeadline{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.Detail-Body-pName-label, .Detail-Body-pDeadline-label, .Detail-Body-pCategory-label, .Detail-Body-pTracks-label, .Detail-Body-pTechStacks-label, .Detail-Body-pEligibility-label, .Detail-Body-pDescription-label {
+    color: #741C1C;
+    font-size: 17px;
+}
+
+.Detail-Body-contents3 {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 15px;
+}
+
+.Detail-Body-pCategory {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.Detail-Body-pTracks {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.Detail-Body-pTracks-items{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 5px;
+}
+
+.Detail-Body-contents4 {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+}
+
+.Detail-Body-pTechStacks-items{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 5px;
+}
+
+.Detail-Body-contents5 {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content:flex-start;
+    gap: 10px;
+}
+
+.Detail-Body-contents6 {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    height: 195px;
+}
+
+.Detail-Body-contents6-left {
+    width: 666px;
+    height: 195px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 17px;
+}
+
+.Detail-Body-pDescription-item {
+    font-family: 'Pretendard-Regular';
+    width: 596px;
+    height: 115px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 35px;
+    padding-right: 35px;
+    background-color: #D9D9D9;
+    border-radius: 15px;
+    overflow-y: auto;
+}
+
+.Detail-Body-contents6-right {
+    width: 177px;
+    height: 195px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 5px;
+}
+
+.Detail-Body-pSalary-box {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 5px;
+}
+
+.Detail-Body-pSalary-label1 {
+    height: 17px;
+    font-size: 13px;
+}
+
+.Detail-Body-pSalary {
+    font-size: 20px;
+}
+
+.Detail-Body-pSalary-label2 {
+    font-size: 20px;
+}
+
+
+.Detail-Body-pApplicate {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Pretendard-Semibold';
+    font-size: 25px;
+    width: 100%;
+    height: 63px;
+    border: #741C1C, 3px, solid;
+    border-radius: 15px;
+    cursor: pointer;
+    outline: none;
+}

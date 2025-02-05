@@ -5,6 +5,8 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import MainPage from './1. ProjectPage/MainPage'
 import ProjWrite from './1. ProjectPage/ProjWrite'
 import FreeLancerPage from './2. FreeLancer/FreeLancerPage';
+import MyProjectPage from './3. MyPage/MyProjectPage';
+import ProjDetail from './1. ProjectPage/ProjDetail';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -12,8 +14,9 @@ createRoot(document.getElementById('root')).render(
       <Routes>
         <Route path="/" element={<MainPage />} />
         <Route path="/ProjectWrite" element={<ProjWrite />} />
-
+        <Route path="/Detail" element={<ProjDetail />} />
         <Route path="/FreeView" element={<FreeLancerPage />} />
+        <Route path="/MyProject" element={<MyProjectPage />} />
       </Routes>
     </Router>
   </StrictMode>

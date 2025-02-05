@@ -75,7 +75,7 @@
 
 }
 
-.calendar-day-day-header{
+.calendar-day-day-header {
     width: 20px;
     height: 20px;
     color: #A1A6A9;
@@ -150,9 +150,6 @@
 }
 
 
-
-
-
 .ProjWrite-Container {
     width: 100vw;
     height: 100vh;
@@ -165,10 +162,9 @@
 .ProjWrite-Header {
     display: flex;
     justify-content: space-between;
-    gap: 545px;
-    width: 1100px;
     margin-top: 50px;
-    
+    width: 1100px;
+    height: 58px;
 }
 
 .ProjWrite-Header-Left {
@@ -179,8 +175,10 @@
 }
 
 .ProjWrite-Header-Left-Logo {
+    width: 150px;
     font-family: 'Montserrat-Bold';
     font-size: 32px;
+    cursor: pointer;
 }
 
 .ProjWrite-Header-Left-Logo span {
@@ -200,7 +198,9 @@
 .ProjWrite-Header-Right-FreeMatch,
 .ProjWrite-Header-Right-MyProject,
 .ProjWrite-Header-Right-LoginButton {
+    width: 90px;
     font-family: 'Pretendard-SemiBold';
+    cursor: pointer;
 }
 
 .ProjWrite-Header-Right-FreeMatch,
@@ -212,7 +212,7 @@
 
 .ProjWrite-Body {
     display: flex;
-    margin-top: 69px;
+    margin-top: 30px;
     justify-content: flex-start;
     align-items: center;
     flex-direction: column;
@@ -232,15 +232,15 @@
 
 .ProjWrite-Body-MainBox {
     width: 1128px;
-    height: 613px;
+    height: 555px;
     margin-top: 38px;
     padding-bottom: 17px;
     background-color: #F2F2F2;
     justify-content: flex-start;
     border: 3px solid #BE3838;
     border-radius: 15px;
-    overflow-y: scroll;
     overflow-x: hidden;
+    overflow-y: scroll;
 }
 
 .ProjWrite-Body-MainBox::-webkit-scrollbar {
@@ -284,7 +284,7 @@
 }
 
 .ProjWrite-Body-MainBox-ContentBox {
-    margin-top: 56px;
+    margin-top: 25px;
     margin-left: 72px;
 }
 
@@ -544,14 +544,15 @@
 }
 
 .Target-Text {
-    width: 414px;
+    width: 416px;
     height: 117px;
     font-family: 'Pretendard-Medium';
     font-size: 20px;
     border: none;
     border-radius: 15px;
     background-color: #d9d9d9;
-    overflow-y: auto; /* 스크롤 자동 생성 */
+    overflow-y: auto;
+    /* 스크롤 자동 생성 */
     overflow-x: hidden;
     padding: 25px;
     outline: none;
@@ -672,34 +673,35 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-  }
-  
-  .ProjWrite-Prjdetail-Content {
+}
+
+.ProjWrite-Prjdetail-Content {
     width: 981px;
     height: 220px;
     border: none;
     border-radius: 15px;
     background-color: #d9d9d9;
-    overflow-y: auto; /* 스크롤 자동 생성 */
+    overflow-y: auto;
+    /* 스크롤 자동 생성 */
     overflow-x: hidden;
-  }
-  
-  .ProjWrite-Prjdetail-Content::-webkit-scrollbar {
-    width: 40px; /* 스크롤바 너비를 줄임 */
-  }
-  
-  .ProjWrite-Prjdetail-Content::-webkit-scrollbar-track {
+}
+
+.ProjWrite-Prjdetail-Content::-webkit-scrollbar {
+    width: 40px;
+}
+
+.ProjWrite-Prjdetail-Content::-webkit-scrollbar-track {
     background-color: transparent;
-  }
-  
-  .ProjWrite-Prjdetail-Content::-webkit-scrollbar-thumb {
+}
+
+.ProjWrite-Prjdetail-Content::-webkit-scrollbar-thumb {
     background-color: #F2F2F2;
     border-radius: 50px;
-    border: 14px solid #D9D9D9; /* 스크롤바와 배경 사이 간격 조정 */
-    min-height: 50px; /* thumb 길이 줄임 */
-  }
-  
-  .Project-Detail-Content {
+    border: 14px solid #D9D9D9;
+    min-height: 50px;
+}
+
+.Project-Detail-Content {
     width: 100%;
     height: 100%;
     background-color: transparent;
@@ -707,11 +709,11 @@
     outline: none;
     font-family: 'Pretendard-Medium';
     font-size: 20px;
-    padding: 25px; /* padding 추가로 글씨가 너무 가장자리에 붙지 않게 조정 */
-    resize: none; /* textarea 크기 조정 금지 */
-  }
-  
-  
+    padding: 25px;
+    resize: none;
+}
+
+
 
 .Create-Project {
     display: flex;
