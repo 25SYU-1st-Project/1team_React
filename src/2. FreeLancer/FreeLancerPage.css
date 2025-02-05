@@ -15,16 +15,6 @@
     font-style: normal;
 }
 
-body, html {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-}
-
 .FreeLancer-container{
     width: 100vw;
     height: 100vh;
@@ -51,6 +41,11 @@ body, html {
 .FreeLancer-Header-LOGO {
     font-family: 'Montserrat-Bold';
     font-size: 32px;
+    cursor: pointer;
+}
+
+.FreeLancer-Header-LOGO span{
+    color: #BE3838;
 }
 
 .FreeLancer-Header-Right {
@@ -112,41 +107,41 @@ body, html {
 
 
 .FreeLancer-Body{
-    width: 1159px;
-    height: 572px;
     margin-top: 62px;
+    width: 1100px;
+    height: 570px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    gap: 39px;
 }
 
 .FreeLancer-Body-Kategory{
-    margin-left: 20px;
     display: flex;
     justify-content: flex-start;
     flex-direction: row;
-    gap: 50px
+    gap: 3%;
 }
 
 
 .FreeLancer-Body-Kategory-Left{
-    font-family: 'Pretendard-Medium';
+    font-family: 'Pretendard-Semibold';
     font-size: 18px;
+    display: flex;
+    align-items: center;
 }
 
 .FreeLancer-Body-Kategory-Right{
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 26px;
+    gap: 1.5%;
 }
 
 .FreeLancer-Body-Content{
     width: 1159px;
     height: 503.7px;
+    margin-top: 16px;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     flex-direction: row;
     flex-wrap: wrap;
     align-items: center;
@@ -158,6 +153,7 @@ body, html {
     height: 502.75px;
     display: flex;
     justify-content: flex-start;
+    align-items: center;
     flex-direction: column;
     gap: 19px;
     border-radius: 15px;
@@ -168,25 +164,30 @@ body, html {
     width: 223px;
     height: 223px;
     margin-top: 20px;
-    align-self: center;
     border-radius: 15px;
-    background-color: #D9D9D9;
+    background-color: #000000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
+.FreeLancer-Body-Content-profileImage {
+    object-fit: cover;
+    width: 210px;
+    height: 210px;
+}
+
+
 .FreeLancer-Body-Content-Box1-Inform {
-    margin-left: 30px;
+    width: 223px;
     display: flex;
     justify-content: flex-start;
     flex-direction: column;
-    align-self: flex-start;
     font-family: 'Pretendard-Medium';
     gap: 10px;
 }
 
-.FreeLancer-Body-Kategory-Right-Designer,
-.FreeLancer-Body-Kategory-Right-BE,
-.FreeLancer-Body-Kategory-Right-FE,
-.FreeLancer-Body-Kategory-Right-PM{
+.FreeLancer-Body-Kategory-Right-item {
     width: 118.68px;
     height: 30px;
     background-color: #F2F2F2;
@@ -196,51 +197,12 @@ body, html {
     font-size: 14px;
     color: #A1A6A9;
     cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.FreeLancer-Body-Kategory-Right-BE{
+.FreeLancer-Body-Kategory-Right-item.active {
     background-color: #BE3838;
-    color: #F2F2F2;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.pagination {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 3%;
-}
-
-.pagination button {
-    width: 38.38px;
-    height: 38.38px;
-    background-color: #FFFFFF;
-    border-radius: 4px;
-    font-family: 'Pretendard-Medium';
-    font-size: 16px;
-    text-align: center;
-    color: #D1D5D7;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    outline: none;
-    border: none;
-}
-
-.pagination button.active {
-    background-color: #EAEAEA;
-    color: #BE3838;
+    color: #FFFFFF;
 }

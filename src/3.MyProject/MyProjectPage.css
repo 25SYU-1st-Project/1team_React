@@ -15,16 +15,6 @@
     font-style: normal;
 }
 
-body, html {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-}
-
 .MyProject-container{
     width: 100vw;
     height: 100vh;
@@ -32,14 +22,13 @@ body, html {
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    gap: 53px;
 }
 
 .MyProject-Header {
     margin-top: 50px;
+    width: 1100px;
     display: flex;
-    justify-content: center;
-    gap: 90px;
+    justify-content: space-between;
 }
 
 .MyProject-Header-Left {
@@ -50,14 +39,19 @@ body, html {
 }
 
 .MyProject-Header-LOGO {
+    width: 150px;
     font-family: 'Montserrat-Bold';
     font-size: 32px;
+    cursor: pointer;
+}
+.MyProject-Header-LOGO span {
+    color: #BE3838;
 }
 
 .MyProject-Header-Right {
     display: flex;
     justify-content: flex-start;
-    gap: 30px;
+    gap: 15px;
     align-items: center;
 }
 
@@ -96,14 +90,15 @@ body, html {
 .MyProject-Header-Right-ProMatch,
 .MyProject-Header-Right-FreeMatch,
 .MyProject-Header-Right-MyProject,
-.MyProject-Header-Right-LoginButton {
+.MyProject-Header-Right-Logout {
+    width: 90px;
     font-family: 'Pretendard-Semibold';
     cursor: pointer;
 }
 
 .MyProject-Header-Right-ProMatch,
 .MyProject-Header-Right-FreeMatch,
-.MyProject-Header-Right-LoginButton {
+.MyProject-Header-Right-Logout {
     color: #A1A6A9;
 }
 
@@ -113,11 +108,11 @@ body, html {
 
 
 .MyProject-Body {
+    margin-top: 50px;
     width: 1119px;
-    height:658px;
+    height: 588px;
     display: flex;
     justify-content: center;
-    align-items: center;
     flex-direction: row;
     gap: 32px;
 }
@@ -152,14 +147,7 @@ body, html {
     align-self: flex-start;
     font-family: 'Pretendard-Medium';
     gap: 10px;
-}
-
-.MyProject-Body-Left-Inform-Name,
-.MyProject-Body-Left-Inform-Email,
-.MyProject-Body-Left-Inform-Password,
-.MyProject-Body-Left-Inform-Track,
-.MyProject-Body-Left-Inform-Record{
-    width: 193px;
+    word-break: break-all;
 }
 
 .MyProject-Body-Left-Complete {
@@ -183,14 +171,13 @@ body, html {
     width: 812px;
     height: 658px;
     display: flex;
-    justify-content: flex-end;
+    justify-content: flex-start;
     flex-direction: column;
-    gap: 40px;
 }
 
 .MyProject-Body-Right-Content {
     width: 812px;
-    height: 558px;
+    height: 588px;
     display: flex;
     justify-content: flex-start;
     flex-direction: column;
@@ -266,33 +253,4 @@ body, html {
 
 .MyProject-Body-Right-Content-Box1-Trash img{
     cursor: pointer;
-}
-
-
-.pagination {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.pagination button {
-    width: 38.38px;
-    height: 38.38px;
-    background-color: #FFFFFF;
-    border-radius: 4px;
-    font-family: 'Pretendard-Medium';
-    font-size: 16px;
-    text-align: center;
-    color: #D1D5D7;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    outline: none;
-    border: none;
-}
-
-.pagination button.active {
-    background-color: #EAEAEA;
-    color: #BE3838;
 }
