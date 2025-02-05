@@ -71,8 +71,20 @@ function MainPage() {
 
   const postsPerPage = 6;
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedCategory, setSelectedCategory] = useState("전체");
 
-  const totalPages = Math.ceil(posts.length / postsPerPage);
+  // 카테고리별 필터링 함수
+  const filteredPosts = selectedCategory === "전체"
+    ? posts
+    : posts.filter(post => post.category === selectedCategory);
+
+  const currentFilteredPosts = filteredPosts.slice(
+    (currentPage - 1) * postsPerPage,
+    currentPage * postsPerPage
+  );
+
+  const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
+
   const maxPageButtons = 5;
 
   const getPageNumbers = () => {
@@ -288,17 +300,7 @@ function MainPage() {
     fetchProjects();
   }, []);
 
-  const [selectedCategory, setSelectedCategory] = useState("전체");
-
-  // 카테고리별 필터링 함수
-  const filteredPosts = selectedCategory === "전체"
-    ? posts
-    : posts.filter(post => post.category === selectedCategory);
-
-  const currentFilteredPosts = filteredPosts.slice(
-    (currentPage - 1) * postsPerPage,
-    currentPage * postsPerPage
-  );
+  
 
   const handleCategoryClick = (category) => {
     setSelectedCategory(category);
