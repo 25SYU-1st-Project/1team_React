@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { db } from "../firebase"; // Firebase 초기화 파일에서 가져옴
-import { doc, getDoc } from "firebase/firestore";
-import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 import searchIcon from '../images/search.png';
 import trashIcon from '../images/trash.png';
@@ -83,6 +83,27 @@ function MyProjectPage() {
 
     const [userInfo, setUserInfo] = useState(null);
     const [currentFilteredPosts, setCurrentPosts] = useState([]);
+    const [profileImage, setProfileImage] = useState(defaultProfile);
+    const [isUploading, setIsUploading] = useState(false);
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [tracks, setTracks] = useState([]);
+    const [resume, setResume] = useState("");
+
+    //트랙 선택 드롭다운 함수
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const trackOptions = ['디자이너', 'BE 개발자', 'FE 개발자', 'PM'];
+
+    const toggleDropdown = () => {
+        setIsDropdownOpen((prev) => !prev);
+    };
+
+    const handleTrackSelect = (track) => {
+        setTracks((prev) =>
+        prev.includes(track) ? prev.filter((item) => item !== track) : [...prev, track]
+        );
+    };
 
     useEffect(() => {
         const fetchUserAndProjects = async () => {
@@ -95,6 +116,7 @@ function MyProjectPage() {
                 const userDoc = await getDoc(doc(db, "users", uid));
                 if (userDoc.exists()) {
                     const userData = userDoc.data();
+                    console.log(userData);
                     setUserInfo(userData);
 
                     const { joinedProjects } = userData; // 참여한 프로젝트 목록 가져오기
@@ -124,7 +146,13 @@ function MyProjectPage() {
                             console.error("이미지 URL 변환 실패:", error);
                         }
                     }
-                    setUserInfo(userData); // 최종 데이터 저장  
+                    setUserInfo(userData); // 최종 데이터 저장 
+                    setProfileImage(userData.profileImage || defaultProfile);
+                    setName(userData.name || ""); 
+                    setEmail(userData.email || ""); 
+                    setPassword(userData.password || "");
+                    setTracks(userData.setTracks || []); 
+                    setResume(userData.resume || ""); 
                 } else {
                     console.log("User not found");
                 }
@@ -135,6 +163,80 @@ function MyProjectPage() {
 
         fetchUserAndProjects();
     }, []);
+
+    const handleEditButton = async () => {
+        const storedUser = localStorage.getItem("user");
+        if (!storedUser) return;
+
+        const { uid } = JSON.parse(storedUser); // 로컬스토리지에서 UID 가져오기
+        const userDocRef = doc(db, "users", uid); // 해당 유저 문서 참조
+
+        try {
+            await updateDoc(userDocRef, {
+                name: name,
+                email: email,
+                password: password,
+                tracks: tracks,
+                resume: resume
+            });
+
+            alert("수정 완료");
+        } catch (error) {
+            console.error("error", error);
+            alert("수정 실패");
+        }
+    };
+
+    //프로필 이미지 변환
+    const handleProfileImageChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setIsUploading(true);
+
+            // Firebase Storage에 파일 업로드
+            const storage = getStorage();
+            const storageRef = ref(storage, `profileImages/${file.name}`);
+            const uploadTask = uploadBytesResumable(storageRef, file);
+
+            // 업로드 완료 후, 다운로드 URL을 Firestore에 저장
+            uploadTask.on(
+                "state_changed",
+                (snapshot) => {
+                    // 업로드 진행 상태 표시 (예: 진행률 표시)
+                },
+                (error) => {
+                    console.error("파일 업로드 실패:", error);
+                    setIsUploading(false);
+                },
+                () => {
+                    // 업로드 완료
+                    getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                        const storedUser = localStorage.getItem("user");
+                        if (!storedUser) return;
+
+                        const { uid } = JSON.parse(storedUser);
+                        const userDocRef = doc(db, "users", uid);
+                        
+                        // Firestore에 프로필 이미지 URL 업데이트
+                        updateDoc(userDocRef, {
+                            profileImage: downloadURL
+                        }).then(() => {
+                            setProfileImage(downloadURL);  // 프로필 이미지 상태 업데이트
+                            setIsUploading(false);
+                        }).catch((error) => {
+                            console.error("Firestore 업데이트 실패:", error);
+                            setIsUploading(false);
+                        });
+                    });
+                }
+            );
+        }
+    };
+
+    const handleDelte = async () => {
+
+    }
+
 
     return (
         <div>
@@ -163,14 +265,71 @@ function MyProjectPage() {
                                     className="MyProject-Body-Left-profileImage"
                             />
                             </div>
-                            <div className="MyProject-Body-Left-Inform">
-                                <div className="MyProject-Body-Left-Inform-Name">이름 : {userInfo.name}</div>
-                                <div className="MyProject-Body-Left-Inform-Email"> 이메일 : {userInfo.email}</div>
-                                <div className="MyProject-Body-Left-Inform-Password">비밀번호</div>
-                                <div className="MyProject-Body-Left-Inform-Track">트랙 :{userInfo.tracks}</div>
-                                <div className="MyProject-Body-Left-Inform-Record">이력 : {userInfo.resume}</div>
+                            <div className="MyProject-Body-Left-NewProfileImage">
+                                <input
+                                    id="profileImage"
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={handleProfileImageChange}
+                                    disabled={isUploading}
+                                />
+                                {isUploading && <p>업로드 중...</p>}
                             </div>
-                            <div className="MyProject-Body-Left-Complete">수정 완료</div>
+                            <div className="MyProject-Body-Left-Inform">
+                                <div className="MyProject-Body-Left-Inform-Name">이름
+                                    <input
+                                        type="text"
+                                        value={name}
+                                        onChange={(e) => setName(e.target.value)}
+                                    />
+                                </div>
+                                <div className="MyProject-Body-Left-Inform-Email"> 이메일
+                                    <input
+                                        type="email"
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                    />    
+                                </div>
+                                <div className="MyProject-Body-Left-Inform-Password">비밀번호 
+                                    <input
+                                        type="password"
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                    />  
+                                </div>
+                                <div className="MyProject-Body-Left-Inform-Track">트랙
+                                    <button
+                                        type="button"
+                                        className={`MyProject-Body-Left-Inform-Track-Dropdown ${tracks.length === 0 ? 'placeholder' : ''}`}
+                                        onClick={toggleDropdown}
+                                    >
+                                        {tracks.length > 0
+                                            ? `${tracks.join(', ')}`
+                                            : ''}
+                                        </button>
+                                        {isDropdownOpen && (
+                                        <ul className="dropdown-list">
+                                            {trackOptions.map((track, index) => (
+                                            <li
+                                                key={index}
+                                                className={`dropdown-item ${tracks.includes(track) ? 'selected' : ''}`}
+                                                onClick={() => handleTrackSelect(track)}
+                                            >
+                                                {track}
+                                            </li>
+                                            ))}
+                                        </ul>
+                                        )}
+                                </div>
+                                <div className="MyProject-Body-Left-Inform-Record">이력 : 
+                                    <input
+                                        type="text"
+                                        value={resume}
+                                        onChange={(e) => setResume(e.target.value)}
+                                    />  
+                                </div>
+                            </div>
+                            <div className="MyProject-Body-Left-Complete" onClick={handleEditButton}>수정 완료</div>
                         </div>
                         <div className="MyProject-Body-Right">
                             <div className="MyProject-Body-Right-Content">
@@ -200,7 +359,7 @@ function MyProjectPage() {
                                     </div>
 
                                     {/* 삭제 버튼 */}
-                                    <div className="MyProject-Body-Right-Content-Box1-Trash">
+                                    <div className="MyProject-Body-Right-Content-Box1-Trash" onClick={handleDelte}>
                                         <img src={trashIcon} alt="Trash" width="20" height="20" />
                                     </div>
                                 </div>
