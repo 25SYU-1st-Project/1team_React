@@ -2,9 +2,10 @@ import InputButton from '../images/plusIcon.png';
 import React, { useEffect, useState, useRef } from 'react';
 import previousMonth from '../images/arrow-left.png';
 import nextMonth from '../images/arrow-right.png'
+import imgUpload from '../images/file.png';
 import './ProjWrite.css';
 import { db } from "../firebase"; // Assuming you have Firebase configured in a `firebase.js` file
-import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { getFirestore, doc, getDoc, collection, addDoc } from "firebase/firestore";
 
 
@@ -18,6 +19,9 @@ function ProjWrite() {
 
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedTracks, setSelectedTracks] = useState([]);
+
+  const fileInputRef = useRef(null);
+  const [fileName, setFileName] = useState(""); // 파일 이름 상태 추가
 
 
   const [projectData, setProjectData] = useState({
@@ -44,6 +48,38 @@ function ProjWrite() {
     }));
   };
 
+  // 🔹 포스터 선택 핸들러
+  const handlePosterClick = () => {
+    fileInputRef.current.click();
+  };
+
+  // 🔹 포스터 업로드 핸들러
+  const handlePosterChange = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+  
+    // 파일 이름 상태 업데이트
+    setFileName(file.name); 
+
+    try {
+      const storage = getStorage();
+      const fileRef = ref(storage, `projectPosters/${file.name}`);
+      await uploadBytes(fileRef, file);
+      const downloadURL = await getDownloadURL(fileRef);
+
+      setProjectData((prevData) => ({
+        ...prevData,
+        projectPoster: downloadURL
+      }));
+
+    } catch (error) {
+      console.error("포스터 업로드 오류:", error);
+      alert("포스터 업로드 중 오류가 발생했습니다.");
+    }
+  };
+
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -57,29 +93,11 @@ function ProjWrite() {
     const db = getFirestore();
 
     try {
-      // ✅ 1. Firestore에서 사용자 정보(name, projectPoster) 가져오기
+      // ✅ 1. Firestore에서 사용자 정보 가져오기
       const userDocRef = doc(db, "users", userId);
       const userDocSnap = await getDoc(userDocRef);
 
-      let creatorId = "Null"; // 기본값 설정
-      let projectPoster = "Null"; // 🔥 초기화 위치 수정
-
-      if (userDocSnap.exists()) {
-        const userInfo = userDocSnap.data();
-        creatorId = userInfo.name || "익명"; // Firestore에서 name 가져오기
-        projectPoster = userInfo.profileImage || ""; // Firestore에서 projectPoster 가져오기
-      }
-
-      // ✅ 2. Firebase Storage에서 프로젝트 포스터 가져오기 (Firestore에 없을 경우)
-      if (!projectPoster) {
-        const storage = getStorage();
-        const projectPosterRef = ref(storage, `projectPosters/${userId}.jpg`);
-        try {
-          projectPoster = await getDownloadURL(projectPosterRef);
-        } catch (error) {
-          console.warn("프로젝트 포스터를 찾을 수 없음.");
-        }
-      }
+      let creatorId = userDocSnap.exists() ? userDocSnap.data().name || "익명" : "Null";
 
       // ✅ 3. Firestore projects 컬렉션에 데이터 저장
       const newProject = {
@@ -89,7 +107,6 @@ function ProjWrite() {
         techStack: techStacks,
         deadLine: startDate && endDate ? [formatDate(startDate), formatDate(endDate)] : [],
         creatorId, // ✅ 사용자 이름 저장
-        projectPoster, // ✅ 프로젝트 포스터 저장
         participantsId: [],
         createdAt: currentDate,
       };
@@ -481,7 +498,23 @@ function ProjWrite() {
                 ></textarea>
               </div>
             </div>
-
+            <div className='Add-Poster'>
+              <img src={imgUpload} className='img-upload' onClick={handlePosterClick}/>
+              {projectData.projectPoster ? (
+                <>
+                  <p className='imgfile-name'>{fileName}</p> 
+                </>
+              ) : (
+                <p className='add-poster-name'>포스터 첨부</p>
+              )}
+                <input
+                type="file"
+                ref={fileInputRef}
+                onChange={handlePosterChange}
+                style={{ display: "none" }}
+                accept="image/*"
+              />
+            </div>
             <div className='Create-Project'>
               <div className='Create-Project-Content'></div>
               <button className='Create-Button' onClick={handleSubmit}>작성 완료</button>

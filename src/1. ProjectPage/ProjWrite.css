@@ -734,3 +734,34 @@
     color: #000000;
 
 }
+
+.Add-Poster {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-top: 20px;
+    width: 981px;
+    height: 68px;
+    background-color: #F2C6C6;
+    border: none;
+    border-radius: 15px;
+    cursor: "pointer";
+    gap: 19px;
+}
+
+.img-upload{
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    padding-left: 20px;
+}
+
+.imgfile-name,
+.add-poster-name {
+    font-family: 'Pretendard-Medium';
+    size: 20px;
+    color: #741C1C;
+}
+
+
+
