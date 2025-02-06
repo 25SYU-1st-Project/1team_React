@@ -183,6 +183,12 @@
     border-radius: 15px;
 }
 
+.Detail-Body-contents1 img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
 .Detail-Body-contents2 {
     width: 100%;
     display: flex;
@@ -436,6 +442,8 @@
     height: 45px;
     object-fit: cover;
 }
+
+
 
 .Detail-SubBody-commentBox-comment-header-dayAgo {
     font-family: 'Pretendard-Regular';

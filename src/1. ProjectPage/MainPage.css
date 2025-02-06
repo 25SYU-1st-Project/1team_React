@@ -211,6 +211,17 @@ html {
     align-items: center;
 }
 
+.MainPage-Contents-item-poster img {
+    width: 100%;
+    height: 100%;
+    border-radius: 15px 15px 8px 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    object-fit: cover;
+}
+
+
 .MainPage-Contents-item-contents {
     margin-top: 7px;
     width: 90%;

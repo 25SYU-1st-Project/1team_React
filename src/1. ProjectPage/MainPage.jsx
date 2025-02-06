@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import searchIcon from '../images/search.png';
 import './MainPage.css';
 
+import defaultPoster from '../images/defaultPoster.png';
 import firstIcon from '../images/first.png';
 import prevIcon from '../images/prev.png';
 import nextIcon from '../images/next.png';
@@ -14,6 +15,7 @@ import plusIcon from '../images/plusIcon.png';
 import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { doc, setDoc, Timestamp, collection, getDocs } from "firebase/firestore";
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import { auth, db } from '../firebase';
 
 Modal.setAppElement('#root');
@@ -286,19 +288,43 @@ function MainPage() {
     const fetchProjects = async () => {
       try {
         const querySnapshot = await getDocs(collection(db, "projects"));
-        const fetchedProjects = querySnapshot.docs.map(doc => ({
+        let fetchedProjects = querySnapshot.docs.map(doc => ({
           id: doc.id,
           ...doc.data(),
         }));
+  
+        // createdAt을 기준으로 내림차순 정렬
         fetchedProjects.sort((a, b) => b.createdAt - a.createdAt);
-        setPosts(fetchedProjects);
+  
+        // Firebase Storage에서 이미지 URL 변환
+        const storage = getStorage();
+        const updatedProjects = await Promise.all(
+          fetchedProjects.map(async (post) => {
+            if (post.projectPoster && post.projectPoster.startsWith("gs://")) {
+              try {
+                const storageRef = ref(storage, post.projectPoster);
+                post.projectPoster = await getDownloadURL(storageRef);
+              } catch (error) {
+                console.error("이미지 URL을 가져오는 중 오류:", error);
+                post.projectPoster = "https://storage.googleapis.com/p-eeting.firebasestorage.app/profileImage/DefaultImage.png";
+              }
+            } else if (!post.projectPoster) {
+              // projectPoster가 비어 있을 경우 기본 이미지 적용
+              post.projectPoster = defaultPoster;
+            }
+            return post;
+          })
+        );
+  
+        setPosts(updatedProjects); // 불필요한 setPosts 중복 제거
       } catch (error) {
         console.error("프로젝트 데이터를 가져오는 중 오류:", error);
       }
     };
-
+  
     fetchProjects();
   }, []);
+  
 
   
 
@@ -352,7 +378,7 @@ function MainPage() {
           {currentFilteredPosts.map((post, index) => (
             <div key={index} className="MainPage-Contents-item" onClick={() => handleDetail(post)}>
               <div className="MainPage-Contents-item-poster">
-                {formatDate(post.createdAt)}
+                <img src={post.projectPoster || defaultPoster}  />
               </div>
               <div className="MainPage-Contents-item-contents">
                 <div className="MainPage-Contents-item-left">
