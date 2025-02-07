@@ -109,37 +109,79 @@
 
 .MyProject-Body {
     margin-top: 50px;
-    width: 1119px;
+    width: 1152px;
     height: 588px;
     display: flex;
     justify-content: center;
     flex-direction: row;
     gap: 32px;
+    justify-content: space-between;
+
 }
 
 .MyProject-Body-Left {
-    width: 275px;
-    height: 568px;
-    padding-top: 20px;
+    width: 409px;
+    height: 528px;
+    padding-top: 60px;
     display: flex;
     flex-direction: column;
     align-self: flex-start;
-    gap: 19px;
+    gap: 9px;
     border-radius: 15px;
     background-color: #F2F2F2;
 }
 
 .MyProject-Body-Left-Profile {
-    width: 223px;
-    height: 223px;
+    position: relative;
+    width: 144px;
+    height: 144px;
+    display: flex;
+    align-items: end;
     align-self: center;
-    border-radius: 15px;
+    border-radius: 50%;
     background-color: #D9D9D9;
 }
 
+.MyProject-Body-Left-ProfileImage {
+    width: 144px;
+    height: 144px;
+}
+
+.MyProject-Body-Left-ProfileImage img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.MyProject-Body-Left-NewProfileImage img {
+    position: absolute;
+    bottom: 0px;
+    left: 105px;
+    z-index: 2;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+}
+
+
+.MyProject-Body-Left-Name {
+    display: flex;
+    justify-content: center;
+}
+
+.MyProject-Body-Left-Name input {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    text-align: center;
+    font-family: 'Pretendard-SemiBold';
+    font-size: 26px;
+}
+
 .MyProject-Body-Left-Inform {
-    width: 193px;
-    height: 267px;
+    width: 346px;
+    height: 233px;
     padding-left: 30px;
     display: flex;
     justify-content: flex-start;
@@ -150,25 +192,112 @@
     word-break: break-all;
 }
 
-.MyProject-Body-Left-Complete {
-    width: 73px;
-    height: 25px;
-    margin-right: 15px;
+.MyProject-Body-Left-Inform-Email,
+.MyProject-Body-Left-Inform-Track,
+.MyProject-Body-Left-Inform-Password,
+.MyProject-Body-Left-Inform-Resume {
+    width:100%;
     display: flex;
-    align-self: end;
+    justify-content: space-between;
+    color: #741C1C;
+    font-family: 'Pretendard-Medium';
+    font-size: 18px;
+}
+
+.MyProject-Body-Left-Inform-Email input,
+.MyProject-Body-Left-Inform-Track input,
+.MyProject-Body-Left-Inform-Password input,
+.MyProject-Body-Left-Inform-Resume input {
+    width:78%;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    text-align: left;
+    font-family: 'Pretendard-Medium';
+    font-size: 18px;
+}
+
+
+
+.MyProject-Body-Left-Inform-Track {
+    position: relative;
+    display: flex;
+    gap: 28px;
+    border: none;
+    outline: none;
+    word-break: keep-all;
+}
+
+.MyProject-Body-Left-Inform-Track-Dropdown {
+    width: 90%;
+    height: 100%;
+    background-color: transparent;
+    border: none;
+    padding-left: 20px;
+    font-family: 'Pretendard-Medium';
+    color: #000000;
+    text-align: left;
+    cursor: pointer;
+    position: relative;
+    font-size: 15px;
+}
+
+.MyProject-Body-Left-Inform-Track-Dropdown.placeholder {
+    color: #000000;
+}
+
+.MyProject-Body-Left-Inform-Track-Dropdown:not(.placeholder) {
+    color: #000000;
+}
+
+.dropdown-list {
+    position: absolute;
+    top: 100%;
+    left: 78px;
+    width: 60%;
+    background-color: #FFFFFF;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    color: #000000;
+    z-index: 1000;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 13px;
+}
+
+.dropdown-item {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.dropdown-item:hover {
+    background: #f0f0f0;
+}
+
+.dropdown-item.selected {
+    background-color: #D9D9D9;
+}
+
+.MyProject-Body-Left-Complete {
+    width: 354px;
+    height: 55px;
+    display: flex;
+
+    align-self: center;
     justify-content: center;
     align-items: center;
     background-color: #BE3838;
     font-family: 'Pretendard-Medium';
     color: #FFFFFF;
-    font-size: 10px;
+    font-size: 20px;
     border: none;
     border-radius: 50px;
     cursor: pointer;
 }
 
 .MyProject-Body-Right {
-    width: 812px;
+    width: 712px;
     height: 658px;
     display: flex;
     justify-content: flex-start;
@@ -176,7 +305,7 @@
 }
 
 .MyProject-Body-Right-Content {
-    width: 812px;
+    width: 100%;
     height: 588px;
     display: flex;
     justify-content: flex-start;
@@ -185,7 +314,7 @@
 }
 
 .MyProject-Body-Right-Content-Box1 {
-    width: 757px;
+    width: 657px;
     height: 140px;
     padding-top: 20px;
     padding-bottom: 20px;
@@ -199,8 +328,8 @@
     background-color: #F2F2F2;
 }
 
-.MyProject-Body-Right-Content-Box1-Record{
-    width: 715px;
+.MyProject-Body-Right-Content-Box1-Resume {
+    width: 100%;
     height: 100%;
     display: flex;
     justify-content: center;
@@ -221,9 +350,11 @@
     gap: 8px;
 }
 
-.MyProject-Body-Right-Content-Box1-Kategory-K1,
-.MyProject-Body-Right-Content-Box1-Kategory-K2,
-.MyProject-Body-Right-Content-Box1-Kategory-K3 {
+/* .MyProject-Body-Right-Content-Box1-Tracks {
+    
+} */
+
+.track-box {
     width: 114px;
     height: 38px;
     display: flex;
@@ -254,4 +385,3 @@
 .MyProject-Body-Right-Content-Box1-Trash img{
     cursor: pointer;
 }
-
