@@ -1,3 +1,4 @@
+
 @font-face {
     font-family: 'Montserrat-Bold';
     src: url('../Fonts/Montserrat-Bold.ttf') format('truetype');
@@ -189,7 +190,7 @@
 .ProjWrite-Header-Right {
     display: flex;
     justify-content: flex-start;
-    gap: 30px;
+    gap: 15px;
     align-items: center;
 }
 
@@ -197,7 +198,8 @@
 .ProjWrite-Header-Right-ProMatch,
 .ProjWrite-Header-Right-FreeMatch,
 .ProjWrite-Header-Right-MyProject,
-.ProjWrite-Header-Right-LoginButton {
+.ProjWrite-Header-Right-LoginButton,
+.ProjWrite-Header-Right-LogoutButton {
     width: 90px;
     font-family: 'Pretendard-SemiBold';
     cursor: pointer;
@@ -205,7 +207,8 @@
 
 .ProjWrite-Header-Right-FreeMatch,
 .ProjWrite-Header-Right-MyProject,
-.ProjWrite-Header-Right-LoginButton {
+.ProjWrite-Header-Right-LoginButton,
+.ProjWrite-Header-Right-LogoutButton {
     color: #A1A6A9;
 }
 
@@ -733,4 +736,32 @@
     font-size: 25px;
     color: #000000;
 
+}
+
+.Add-Poster {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-top: 20px;
+    width: 981px;
+    height: 68px;
+    background-color: #F2C6C6;
+    border: none;
+    border-radius: 15px;
+    cursor: "pointer";
+    gap: 19px;
+}
+
+.img-upload{
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    padding-left: 20px;
+}
+
+.imgfile-name,
+.add-poster-name {
+    font-family: 'Pretendard-Medium';
+    size: 20px;
+    color: #741C1C;
 }

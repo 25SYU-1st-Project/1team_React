@@ -47,7 +47,12 @@ function MainPage() {
     navigate('/')
   }
   const handleProjButton = () => {
-    navigate('/projectWrite')
+    if (isLoggedIn) {
+      navigate('/projectWrite')
+    } else {
+      alert('글 작성은 로그인 후 단체 회원만 이용 가능합니다.');
+      setLoginModalIsOpen(true);
+    }
   }
 
   const handleFreePage = () => {

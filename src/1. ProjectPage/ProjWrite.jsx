@@ -1,10 +1,15 @@
-import InputButton from '../images/plusIcon.png';
+import InputButton from '../images/plusIcon2.png';
 import React, { useEffect, useState, useRef } from 'react';
 import previousMonth from '../images/arrow-left.png';
 import nextMonth from '../images/arrow-right.png'
+import imgUpload from '../images/file.png';
 import './ProjWrite.css';
-import { collection, addDoc } from "firebase/firestore";
-import { db } from "../firebase"; // Assuming you have Firebase configured in a `firebase.js` file
+
+import { auth, db } from '../firebase';
+import { signOut } from 'firebase/auth';
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { getFirestore, doc, getDoc, collection, addDoc } from "firebase/firestore";
+import { useNavigate } from 'react-router-dom';
 
 
 function ProjWrite() {
@@ -19,6 +24,43 @@ function ProjWrite() {
   const [selectedTracks, setSelectedTracks] = useState([]);
 
 
+
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태 추가
+  const [currentUser, setCurrentUser] = useState(null); // 현재 로그인한 사용자 정보
+
+  const fileInputRef = useRef(null);
+  const [fileName, setFileName] = useState(""); // 파일 이름 상태 추가
+
+  const navigate = useNavigate();
+
+  const handleMain = () => {
+    navigate('/')
+  }
+  const handleProjButton = () => {
+    navigate('/projectWrite')
+  }
+
+  const handleFreePage = () => {
+    navigate('/FreeView');
+  }
+
+  const handleMyProject = () => {
+    if (isLoggedIn) {
+      navigate('/MyProject');
+    } else {
+      alert('마이페이지는 로그인 후 이용 가능합니다.');
+      setLoginModalIsOpen(true);
+    }
+  };
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      alert("로그인 후 이용 가능합니다.");
+      navigate("/"); // 메인 페이지로 이동
+    }
+  }, [isLoggedIn, navigate]);
+  
   const [projectData, setProjectData] = useState({
     name: "",
     category: "",
@@ -31,11 +73,9 @@ function ProjWrite() {
     techStack: [],
     tracks: [],
     deadLine: [],
-
-    applicantsId: [],
-    participantsId: []
+    participantsId: [],
+    creatorName: ""
   });
-
 
   // 입력 값 변경 핸들러
   const handleChange = (e) => {
@@ -46,31 +86,82 @@ function ProjWrite() {
     }));
   };
 
+  // 🔹 포스터 선택 핸들러
+  const handlePosterClick = () => {
+    fileInputRef.current.click();
+  };
+
+  // 🔹 포스터 업로드 핸들러
+  const handlePosterChange = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    // 파일 이름 상태 업데이트
+    setFileName(file.name);
+
+    try {
+      const storage = getStorage();
+      const fileRef = ref(storage, `projectPosters/${file.name}`);
+      await uploadBytes(fileRef, file);
+      const downloadURL = await getDownloadURL(fileRef);
+
+      setProjectData((prevData) => ({
+        ...prevData,
+        projectPoster: downloadURL
+      }));
+
+    } catch (error) {
+      console.error("포스터 업로드 오류:", error);
+      alert("포스터 업로드 중 오류가 발생했습니다.");
+    }
+  };
+
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const currentDate = new Date();
+    const storedUser = localStorage.getItem("user");
+
+    let userData;
+    userData = JSON.parse(storedUser);
+
+    const userId = userData.uid;
+    const db = getFirestore();
 
     try {
-      // Firestore에 저장할 데이터
+      // ✅ 1. Firestore에서 사용자 정보 가져오기
+      const userDocRef = doc(db, "users", userId);
+      const userDocSnap = await getDoc(userDocRef);
+
+      let creatorId = userId; // 🔹 userId 저장
+      let creatorName = "익명"; // 기본값 설정
+
+      if (userDocSnap.exists()) {
+        const userData = userDocSnap.data();
+        creatorName = userData.name || "익명"; // 🔹 Firestore에서 name 필드 가져오기
+      }
+
+      // ✅ 3. Firestore projects 컬렉션에 데이터 저장
       const newProject = {
         ...projectData,
-        category: selectedCategory, // 라디오 버튼 선택 값
-        tracks: selectedTracks, // 체크박스 선택 값
-        techStack: techStacks, // 기술 스택 배열
-        deadLine: startDate && endDate ? [formatDate(startDate), formatDate(endDate)] : [], // 모집 기한 배열
-        creatorId: "", // 빈값 저장
-        applicantsId: [], // 빈 배열 저장
-        participantsId: [], // 빈 배열 저장
-        createdAt: currentDate // 현재 시간 추가
+        category: selectedCategory,
+        tracks: selectedTracks,
+        techStack: techStacks,
+        deadLine: startDate && endDate ? [formatDate(startDate), formatDate(endDate)] : [],
+        creatorId, // ✅ 사용자 ID 저장
+        creatorName, // ✅ 사용자 이름 저장
+        participantsId: [],
+        createdAt: currentDate,
       };
 
-      // Firestore에 데이터 추가
+      // ✅ Firestore에 데이터 추가
       const docRef = await addDoc(collection(db, "projects"), newProject);
       console.log("프로젝트 생성됨, 문서 ID: ", docRef.id);
       alert("프로젝트 공고가 성공적으로 생성되었습니다!");
 
-      // 입력 필드 초기화
+      // ✅ 입력 필드 초기화
       setProjectData({
         name: "",
         category: "",
@@ -83,7 +174,7 @@ function ProjWrite() {
         tracks: [],
         deadLine: "",
         creatorId: "",
-        applicantsId: [],
+        creatorName: "", // 🔹 초기화 추가
         participantsId: []
       });
 
@@ -92,6 +183,10 @@ function ProjWrite() {
       setTechStacks([""]);
       setStartDate(null);
       setEndDate(null);
+
+      // ✅ 프로젝트 생성 완료 후 '/' 페이지로 이동
+      navigate("/");
+
     } catch (error) {
       console.error("프로젝트 추가 중 오류 발생: ", error);
       alert("프로젝트 생성 중 오류가 발생했습니다.");
@@ -222,37 +317,82 @@ function ProjWrite() {
   };
 
   //애니메이션
-      const slides = [
-          { color: "#000000", text: "LIKELION 13기 모집중", target: "#" },
-          { color: "#000000", text: "1팀 장준익 유광렬 정서우", target: "#" },
-          { color: "#000000", text: "강승진 강사님 화이팅", target: "#" },
-          { color: "#000000", text: "삼육대 컴공 4학년 화이팅", target: "#" },
-          { color: "#000000", text: "개발자 커뮤니티 WAD!", target: "#" },
-          { color: "#000000", text: "챌 서폿 잼띵이 구독!!", target: "#" },
-          { color: "#000000", text: "PEETING은 최고야!", target: "#" },
-      ];
-      const [animate, setAnimate] = useState(true);
-      const onStop = () => setAnimate(false);
-      const onRun = () => setAnimate(true);
+  const slides = [
+    { color: "#000000", text: "LIKELION 13기 모집중", target: "#" },
+    { color: "#000000", text: "1팀 장준익 유광렬 정서우", target: "#" },
+    { color: "#000000", text: "강승진 강사님 화이팅", target: "#" },
+    { color: "#000000", text: "삼육대 컴공 4학년 화이팅", target: "#" },
+    { color: "#000000", text: "개발자 커뮤니티 WAD!", target: "#" },
+    { color: "#000000", text: "챌 서폿 잼띵이 구독!!", target: "#" },
+    { color: "#000000", text: "PEETING은 최고야!", target: "#" },
+  ];
+  const [animate, setAnimate] = useState(true);
+  const onStop = () => setAnimate(false);
+  const onRun = () => setAnimate(true);
+
+  // 로그인 세션 로컬 선택
+  useEffect(() => {
+    const storedLoginStatus = localStorage.getItem("isLoggedIn") || sessionStorage.getItem("isLoggedIn");
+    if (storedLoginStatus === "true") {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
+  // 로그아웃 함수
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      setIsLoggedIn(false); // 로그인 상태 해제
+      setCurrentUser(null); // 현재 사용자 초기화
+      localStorage.removeItem("isLoggedIn");
+      localStorage.removeItem("user");
+      sessionStorage.removeItem("isLoggedIn");
+      sessionStorage.removeItem("user");
+      navigate("/");
+    } catch (err) {
+      console.error('로그아웃 실패:', err.message);
+    }
+  };
 
   return (
     <div className="ProjWrite-Container">
-      <div className="ProjWrite-Header">
-        <div className="ProjWrite-Header-Left">
-          <div className="ProjWrite-Header-Left-Logo"><span>P</span>-eeting</div>
-        </div>
-        <div className="ProjWrite-Header-Right">
-          <div className="ProjWrite-Header-Right-ProMatch">프로젝트 매칭</div>
-          <div className="ProjWrite-Header-Right-FreeMatch">프리랜서 매칭</div>
-          <div className="ProjWrite-Header-Right-MyProject">마이 프로젝트</div>
-          <div className="ProjWrite-Header-Right-LoginButton">로그인</div>
-        </div>
-      </div>
 
+      {isLoggedIn ? (
+        <div className="ProjWrite-Header">
+          <div className="ProjWrite-Header-Left">
+            <div className="ProjWrite-Header-Left-Logo" onClick={handleMain}><span>P</span>-eeting</div>
+          </div>
+          <div className="ProjWrite-Header-Right">
+            <div className="ProjWrite-Header-Right-ProMatch" onClick={handleMain}>프로젝트 매칭</div>
+            <div className="ProjWrite-Header-Right-FreeMatch" onClick={handleFreePage}>프리랜서 매칭</div>
+            <div className="ProjWrite-Header-Right-MyProject" onClick={handleMyProject}>마이 프로젝트</div>
+            <div className="ProjWrite-Header-Right-LogoutButton" onClick={handleLogout}>
+              로그아웃
+            </div>
+          </div>
+        </div>
+
+      ) : (
+        <div className="ProjWrite-Header">
+          <div className="ProjWrite-Header-Left">
+            <div className="ProjWrite-Header-Left-Logo" onClick={handleMain}><span>P</span>-eeting</div>
+          </div>
+          <div className="ProjWrite-Header-Right">
+            <div className="ProjWrite-Header-Right-ProMatch" onClick={handleMain}>프로젝트 매칭</div>
+            <div className="ProjWrite-Header-Right-FreeMatch" onClick={handleFreePage}>프리랜서 매칭</div>
+            <div className="ProjWrite-Header-Right-MyProject" onClick={handleMyProject}>마이 프로젝트</div>
+            <div className="ProjWrite-Header-Right-LoginButton" onClick={() => setLoginModalIsOpen(true)}>
+              로그인
+            </div>
+          </div>
+        </div>
+
+      )}
       <div className='ProjWrite-Body'>
         <div className='ProjWrite-Body-Title-Box'>
           <div className='ProjWrite-Body-Title'>프로젝트 공고 작성</div>
         </div>
+
         <div className='ProjWrite-Body-MainBox'>
           <input className='ProjWrite-Body-MainBox-Title' type="text" placeholder='프로젝트명을 작성해주세요.'
             name='name' value={projectData.name} onChange={handleChange} required />
@@ -453,7 +593,23 @@ function ProjWrite() {
                 ></textarea>
               </div>
             </div>
-
+            <div className='Add-Poster'>
+              <img src={imgUpload} className='img-upload' onClick={handlePosterClick} />
+              {projectData.projectPoster ? (
+                <>
+                  <p className='imgfile-name'>{fileName}</p>
+                </>
+              ) : (
+                <p className='add-poster-name'>포스터 첨부</p>
+              )}
+              <input
+                type="file"
+                ref={fileInputRef}
+                onChange={handlePosterChange}
+                style={{ display: "none" }}
+                accept="image/*"
+              />
+            </div>
             <div className='Create-Project'>
               <div className='Create-Project-Content'></div>
               <button className='Create-Button' onClick={handleSubmit}>작성 완료</button>
@@ -508,11 +664,6 @@ function ProjWrite() {
         </div>
       </div>
     </div>
-
-
   );
-
 }
-
-
 export default ProjWrite;
