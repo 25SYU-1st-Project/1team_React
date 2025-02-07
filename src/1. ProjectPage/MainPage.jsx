@@ -383,7 +383,7 @@ function MainPage() {
               <div className="MainPage-Contents-item-contents">
                 <div className="MainPage-Contents-item-left">
                   <div className="MainPage-Contents-item-projectInfo">
-                    <div className="MainPage-Contents-item-projectCreator">{post.creatorId}</div>
+                    <div className="MainPage-Contents-item-projectCreator">{post.creatorName}</div>
                     <div className="MainPage-Contents-item-projectTitle">{post.name}</div>
                   </div>
                   <div className="MainPage-Contents-item-stacks">

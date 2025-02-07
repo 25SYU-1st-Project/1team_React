@@ -15,7 +15,8 @@ import plusIcon from '../images/plusIcon.png';
 //firebase 임포트
 import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { doc, setDoc, Timestamp, collection, getDoc, addDoc, onSnapshot, orderBy, query } from "firebase/firestore";
+import { doc, setDoc, collection, getDoc, addDoc, onSnapshot, orderBy, query } from "firebase/firestore";
+import { updateDoc, arrayUnion } from "firebase/firestore";
 import { auth, db } from '../firebase';
 
 function projDetail() {
@@ -37,8 +38,7 @@ function projDetail() {
   const projectId = post?.id;
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
-
-
+  const [isPostOwner, setIsPostOwner] = useState(false);
 
 
   // 회원가입 라디오버튼 핸들러
@@ -271,6 +271,7 @@ function projDetail() {
     }
   }, [auth.currentUser]);
 
+
   // Firestore에서 댓글 가져오기 (실시간 업데이트)
   useEffect(() => {
     const unsubscribe = onSnapshot(
@@ -284,11 +285,27 @@ function projDetail() {
           ...doc.data(),
         }));
         setComments(fetchedComments);
+        if (post && auth.currentUser) {
+          setIsPostOwner(String(post.creatorId) === String(auth.currentUser.uid));
+        }
       }
     );
 
     return () => unsubscribe();
-  }, [projectId]);
+  }, [projectId, post, auth?.currentUser]);
+
+  const handleAccept = async (commentItem) => {
+    if (!isPostOwner) return;
+  
+    const userRef = doc(db, "users", commentItem.creatorId); // 댓글 작성자의 Firestore 문서
+  
+    try {
+      await updateDoc(userRef, {
+        joinedProjects: arrayUnion(projectId), // 프로젝트 ID 추가
+      });
+    } catch (error) {
+    }
+  };
 
 
   // 그리드에 표시되는 포스트들, 페이징 버튼
@@ -483,14 +500,16 @@ function projDetail() {
                   {c.contents}
                 </div>
                 {/* {c.participateStatus} */}
-                <div className="Detail-SubBody-commentBox-comment-decision">
-                  <div className="Detail-SubBody-commentBox-comment-Accept">
-                    수락
+                {isPostOwner && (
+                  <div className="Detail-SubBody-commentBox-comment-decision">
+                    <div className="Detail-SubBody-commentBox-comment-Accept" onClick={() => handleAccept(c)}>
+                      수락
+                    </div>
+                    <div className="Detail-SubBody-commentBox-comment-Reject" onClick={() => handleReject(c)}>
+                      거절
+                    </div>
                   </div>
-                  <div className="Detail-SubBody-commentBox-comment-Reject">
-                    거절
-                  </div>
-                </div>
+                )}
               </div>
             </div>
           ))}
