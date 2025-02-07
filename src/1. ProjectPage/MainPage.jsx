@@ -53,15 +53,15 @@ function MainPage() {
       setLoginModalIsOpen(true);
       return;
     }
-  
+
     const parsedUser = JSON.parse(storedUser);
-  
+
     const userRef = doc(db, "users", parsedUser.uid);
     const userSnap = await getDoc(userRef);
-  
+
     if (userSnap.exists()) {
       const userData = userSnap.data();
-  
+
       if (userData.memberClass === "premium") {
         navigate("/projectWrite");
       } else {
@@ -71,7 +71,7 @@ function MainPage() {
       alert("유저 정보를 찾을 수 없습니다.");
     }
   };
-  
+
   const handleFreePage = () => {
     navigate('/FreeView');
   }
@@ -97,10 +97,28 @@ function MainPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState("전체");
 
-  // 카테고리별 필터링 함수
-  const filteredPosts = selectedCategory === "전체"
-    ? posts
-    : posts.filter(post => post.category === selectedCategory);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [appliedSearchTerm, setAppliedSearchTerm] = useState("");
+
+
+  // 검색어 눌렀을 때, 즉시 변환되지 않도록(엔터키를 눌러야만 변화되도록 컨트롤 해주는 함수)
+  // 검색어 입력 변화 처리
+  const handleSearchInputChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  // 엔터 키 눌렀을 때 검색어 적용
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      setAppliedSearchTerm(searchTerm);
+    }
+  };
+
+  // 카테고리별 필터링 함수 (searchTerm 대신 appliedSearchTerm 사용)
+  const filteredPosts = posts.filter(post =>
+    (selectedCategory === "전체" || post.category === selectedCategory) &&
+    (appliedSearchTerm === "" || post.name.includes(appliedSearchTerm))
+  );
 
   const currentFilteredPosts = filteredPosts.slice(
     (currentPage - 1) * postsPerPage,
@@ -351,7 +369,7 @@ function MainPage() {
     setSelectedCategory(category);
     setCurrentPage(1);
   };
-  
+
   return (
     <div className="MainPage-container">
       <div className="MainPage-Header">
@@ -359,7 +377,7 @@ function MainPage() {
           <div className="MainPage-Header-LOGO" onClick={handleMain}><span>P</span>-eeting</div>
           <div className="MainPage-Header-Search">
             <div className="MainPage-Header-SearchIcon"><img src={searchIcon} /></div>
-            <input className="MainPage-Header-InputArea" type="text" placeholder="프로젝트 미팅, 피팅" />
+            <input className="MainPage-Header-InputArea" type="text" placeholder="프로젝트 미팅, 피팅" value={searchTerm} onChange={handleSearchInputChange} onKeyDown={handleKeyDown} />
           </div>
         </div>
         <div className="MainPage-Header-Right">
@@ -634,6 +652,9 @@ function MainPage() {
           )}
         </div>
       </Modal>
+      {/* 챗봇 기능 개발 */}
+
+
     </div >
   )
 }
