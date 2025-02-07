@@ -7,6 +7,7 @@ import './ProjWrite.css';
 import { db } from "../firebase"; // Assuming you have Firebase configured in a `firebase.js` file
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { getFirestore, doc, getDoc, collection, addDoc } from "firebase/firestore";
+import { useNavigate } from 'react-router-dom';
 
 
 function ProjWrite() {
@@ -20,8 +21,14 @@ function ProjWrite() {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedTracks, setSelectedTracks] = useState([]);
 
+
+  
+
   const fileInputRef = useRef(null);
   const [fileName, setFileName] = useState(""); // 파일 이름 상태 추가
+
+  const navigate = useNavigate();
+
 
 
   const [projectData, setProjectData] = useState({
@@ -36,7 +43,8 @@ function ProjWrite() {
     techStack: [],
     tracks: [],
     deadLine: [],
-    participantsId: []
+    participantsId: [],
+    creatorName: ""
   });
 
   // 입력 값 변경 핸들러
@@ -97,7 +105,13 @@ function ProjWrite() {
       const userDocRef = doc(db, "users", userId);
       const userDocSnap = await getDoc(userDocRef);
 
-      let creatorId = userDocSnap.exists() ? userDocSnap.data().name || "익명" : "Null";
+      let creatorId = userId; // 🔹 userId 저장
+      let creatorName = "익명"; // 기본값 설정
+  
+      if (userDocSnap.exists()) {
+        const userData = userDocSnap.data();
+        creatorName = userData.name || "익명"; // 🔹 Firestore에서 name 필드 가져오기
+      }
 
       // ✅ 3. Firestore projects 컬렉션에 데이터 저장
       const newProject = {
@@ -106,7 +120,8 @@ function ProjWrite() {
         tracks: selectedTracks,
         techStack: techStacks,
         deadLine: startDate && endDate ? [formatDate(startDate), formatDate(endDate)] : [],
-        creatorId, // ✅ 사용자 이름 저장
+        creatorId, // ✅ 사용자 ID 저장
+        creatorName, // ✅ 사용자 이름 저장
         participantsId: [],
         createdAt: currentDate,
       };
@@ -129,6 +144,7 @@ function ProjWrite() {
         tracks: [],
         deadLine: "",
         creatorId: "",
+        creatorName: "", // 🔹 초기화 추가
         participantsId: []
       });
 
@@ -137,6 +153,10 @@ function ProjWrite() {
       setTechStacks([""]);
       setStartDate(null);
       setEndDate(null);
+
+      // ✅ 프로젝트 생성 완료 후 '/' 페이지로 이동
+      navigate("/");
+
     } catch (error) {
       console.error("프로젝트 추가 중 오류 발생: ", error);
       alert("프로젝트 생성 중 오류가 발생했습니다.");
