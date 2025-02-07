@@ -195,14 +195,14 @@ function MyProjectPage() {
 
             // Firebase Storage에 파일 업로드
             const storage = getStorage();
-            const storageRef = ref(storage, `profileImages/${file.name}`);
+            const storageRef = ref(storage, `profileImage/${file.name}`);
             const uploadTask = uploadBytesResumable(storageRef, file);
 
             // 업로드 완료 후, 다운로드 URL을 Firestore에 저장
             uploadTask.on(
                 "state_changed",
                 (snapshot) => {
-                    // 업로드 진행 상태 표시 (예: 진행률 표시)
+                    // 진행률 표시
                 },
                 (error) => {
                     console.error("파일 업로드 실패:", error);
@@ -233,9 +233,40 @@ function MyProjectPage() {
         }
     };
 
-    const handleDelte = async () => {
+    const handleDelte = async (postId) => {
+        const confirmDelete = window.confirm("삭제하시겠습니까?");
+        if (!confirmDelete) return;
 
-    }
+        const storedUser = localStorage.getItem("user");
+        if (!storedUser) return;
+
+        const { uid } = JSON.parse(storedUser); 
+        const userDocRef = doc(db, "users", uid); 
+
+        try {
+            // joinedProjects에서 삭제할 프로젝트 ID 제외
+            let updatedJoinedProjects = userInfo.joinedProjects || [];  // 비어있으면 빈 배열로 초기화
+            updatedJoinedProjects = updatedJoinedProjects.filter(project => project !== postId);
+
+            // Firestore에서 업데이트된 프로젝트 목록 반영
+            await updateDoc(userDocRef, {
+                joinedProjects: updatedJoinedProjects
+            });
+
+            // 상태 업데이트
+            setUserInfo((prevUserInfo) => ({
+                ...prevUserInfo,
+                joinedProjects: updatedJoinedProjects,
+            }));
+
+            // 로컬 상태에서 해당 프로젝트 삭제
+            setPosts((prevPosts) => prevPosts.filter(post => post.id !== postId));
+            alert("삭제 완료");
+        } catch (error) {
+            console.error("프로젝트 삭제 오류:", error);
+            alert("삭제 실패");
+        }
+    };
 
 
     return (
@@ -258,23 +289,23 @@ function MyProjectPage() {
                 {userInfo ? (
                     <div className="MyProject-Body">
                         <div className="MyProject-Body-Left">
-                            <div className="MyProject-Body-Left-Profile">
-                            <img
-                                    src={userInfo.profileImage || defaultProfile}
-                                    alt={'${userInfo.name}의 프로필'}
-                                    className="MyProject-Body-Left-profileImage"
-                            />
-                            </div>
-                            <div className="MyProject-Body-Left-NewProfileImage">
-                                <input
-                                    id="profileImage"
-                                    type="file"
-                                    accept="image/*"
-                                    onChange={handleProfileImageChange}
-                                    disabled={isUploading}
+                                <div className="MyProject-Body-Left-Profile">
+                                <img
+                                        src={userInfo.profileImage || defaultProfile}
+                                        alt={'${userInfo.name}의 프로필'}
+                                        className="MyProject-Body-Left-profileImage"
                                 />
-                                {isUploading && <p>업로드 중...</p>}
-                            </div>
+                                </div>
+                                <div className="MyProject-Body-Left-NewProfileImage">
+                                    <input
+                                        id="profileImage"
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={handleProfileImageChange}
+                                        disabled={isUploading}
+                                    />
+                                    {isUploading && <p>업로드 중...</p>}
+                                </div>
                             <div className="MyProject-Body-Left-Inform">
                                 <div className="MyProject-Body-Left-Inform-Name">이름
                                     <input
@@ -359,7 +390,7 @@ function MyProjectPage() {
                                     </div>
 
                                     {/* 삭제 버튼 */}
-                                    <div className="MyProject-Body-Right-Content-Box1-Trash" onClick={handleDelte}>
+                                    <div className="MyProject-Body-Right-Content-Box1-Trash" onClick={() => handleDelte(post.id)}>
                                         <img src={trashIcon} alt="Trash" width="20" height="20" />
                                     </div>
                                 </div>

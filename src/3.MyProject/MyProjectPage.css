@@ -166,8 +166,8 @@
 }
 .MyProject-Body-Left-Inform-Name,
 .MyProject-Body-Left-Inform-Email,
-.MyProject-Body-Left-Inform-Password,
 .MyProject-Body-Left-Inform-Track,
+.MyProject-Body-Left-Inform-Password,
 .MyProject-Body-Left-Inform-Record {
     width:100%;
     display: flex;
@@ -175,31 +175,30 @@
 }
 
 .MyProject-Body-Left-Inform-Track {
-    height: 15%;
+    height: 12%;
     position: relative;
     display: flex;
     gap: 28px;
     border: none;
     outline: none;
+    word-break: keep-all;
 }
 
 .MyProject-Body-Left-Inform-Track-Dropdown {
-    width: 70%;
+    width: 67%;
     height: 100%;
     background-color: #D9D9D9;
     border: 1px, solid, #BCC2C6;
     border-radius: 15px;
-    padding-left: 30px;
+    padding-left: 20px;
     font-family: 'Pretendard-Medium';
-    font-size: 22px;
-
     color: #000000;
     text-align: left;
     cursor: pointer;
 }
 
 .MyProject-Body-Left-Inform-Track-Dropdown.placeholder {
-    color: #BCC2C6;
+    color: #000000;
 }
 
 .MyProject-Body-Left-Inform-Track-Dropdown:not(.placeholder) {
