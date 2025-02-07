@@ -8,7 +8,7 @@ import firstIcon from '../images/first.png';
 import prevIcon from '../images/prev.png';
 import nextIcon from '../images/next.png';
 import lastIcon from '../images/last.png';
-import plusIcon from '../images/plusIcon.png';
+import plusIcon2 from '../images/plusIcon2.png';
 
 function projDetail() {
     const navigate = useNavigate();

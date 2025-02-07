@@ -1,4 +1,4 @@
-import InputButton from '../images/plusIcon.png';
+import InputButton from '../images/plusIcon2.png';
 import React, { useEffect, useState, useRef } from 'react';
 import previousMonth from '../images/arrow-left.png';
 import nextMonth from '../images/arrow-right.png'
@@ -90,6 +90,37 @@ function ProjWrite() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+      // 필수 입력 필드 확인
+  if (!projectData.name) {
+    alert("프로젝트 이름을 입력해주세요.");
+    return;
+  }
+  if (!selectedCategory) {
+    alert("카테고리를 선택해주세요.");
+    return;
+  }
+  if (!techStacks || techStacks.length === 0 || techStacks.includes('')) {
+    alert("적어도 하나의 기술 스택을 입력해주세요.");
+    return;
+  }
+  if (!startDate || !endDate) {
+    alert("프로젝트 시작일과 종료일을 선택해주세요.");
+    return;
+  }
+  if (!projectData.description) {
+    alert("프로젝트 설명을 입력해주세요.");
+    return;
+  }
+  if (!projectData.eligibility) {
+    alert("프로젝트 자격 요건을 입력해주세요.");
+    return;
+  }
+  if (!projectData.salary || projectData.salary <= 0) {
+    alert("프로젝트 급여를 입력해주세요.");
+    return;
+  }
+
 
     const currentDate = new Date();
     const storedUser = localStorage.getItem("user");
