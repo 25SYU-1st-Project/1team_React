@@ -54,13 +54,8 @@ function ProjWrite() {
     }
   };
 
-  useEffect(() => {
-    if (!isLoggedIn) {
-      alert("로그인 후 이용 가능합니다.");
-      navigate("/"); // 메인 페이지로 이동
-    }
-  }, [isLoggedIn, navigate]);
   
+
   const [projectData, setProjectData] = useState({
     name: "",
     category: "",
@@ -353,6 +348,14 @@ function ProjWrite() {
       console.error('로그아웃 실패:', err.message);
     }
   };
+
+  // useEffect(() => {
+  //   if (!isLoggedIn) {
+  //     alert("로그인 후 이용 가능합니다.");
+  //     navigate("/"); // 메인 페이지로 이동
+  //   }
+  // }, [isLoggedIn, navigate]);
+  
 
   return (
     <div className="ProjWrite-Container">

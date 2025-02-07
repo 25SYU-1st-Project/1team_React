@@ -14,7 +14,7 @@ import plusIcon from '../images/plusIcon.png';
 //firebase 임포트
 import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { doc, setDoc, Timestamp, collection, getDocs } from "firebase/firestore";
+import { doc, setDoc, Timestamp, collection, getDoc, getDocs } from "firebase/firestore";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import { auth, db } from '../firebase';
 
@@ -46,15 +46,32 @@ function MainPage() {
   const handleMain = () => {
     navigate('/')
   }
-  const handleProjButton = () => {
-    if (isLoggedIn) {
-      navigate('/projectWrite')
-    } else {
-      alert('글 작성은 로그인 후 단체 회원만 이용 가능합니다.');
+  const handleProjButton = async () => {
+    const storedUser = localStorage.getItem("user");
+    if (!storedUser) {
+      alert("글 작성은 로그인 후 이용 가능합니다.");
       setLoginModalIsOpen(true);
+      return;
     }
-  }
-
+  
+    const parsedUser = JSON.parse(storedUser);
+  
+    const userRef = doc(db, "users", parsedUser.uid);
+    const userSnap = await getDoc(userRef);
+  
+    if (userSnap.exists()) {
+      const userData = userSnap.data();
+  
+      if (userData.memberClass === "premium") {
+        navigate("/projectWrite");
+      } else {
+        alert("단체 회원만 글을 작성할 수 있습니다.");
+      }
+    } else {
+      alert("유저 정보를 찾을 수 없습니다.");
+    }
+  };
+  
   const handleFreePage = () => {
     navigate('/FreeView');
   }
@@ -297,10 +314,10 @@ function MainPage() {
           id: doc.id,
           ...doc.data(),
         }));
-  
+
         // createdAt을 기준으로 내림차순 정렬
         fetchedProjects.sort((a, b) => b.createdAt - a.createdAt);
-  
+
         // Firebase Storage에서 이미지 URL 변환
         const storage = getStorage();
         const updatedProjects = await Promise.all(
@@ -320,24 +337,21 @@ function MainPage() {
             return post;
           })
         );
-  
+
         setPosts(updatedProjects); // 불필요한 setPosts 중복 제거
       } catch (error) {
         console.error("프로젝트 데이터를 가져오는 중 오류:", error);
       }
     };
-  
+
     fetchProjects();
   }, []);
-  
-
-  
 
   const handleCategoryClick = (category) => {
     setSelectedCategory(category);
     setCurrentPage(1);
   };
-
+  
   return (
     <div className="MainPage-container">
       <div className="MainPage-Header">
@@ -383,7 +397,7 @@ function MainPage() {
           {currentFilteredPosts.map((post, index) => (
             <div key={index} className="MainPage-Contents-item" onClick={() => handleDetail(post)}>
               <div className="MainPage-Contents-item-poster">
-                <img src={post.projectPoster || defaultPoster}  />
+                <img src={post.projectPoster || defaultPoster} />
               </div>
               <div className="MainPage-Contents-item-contents">
                 <div className="MainPage-Contents-item-left">
