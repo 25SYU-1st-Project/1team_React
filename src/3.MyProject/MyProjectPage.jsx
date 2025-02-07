@@ -12,6 +12,7 @@ import prevIcon from '../images/prev.png';
 import nextIcon from '../images/next.png';
 import lastIcon from '../images/last.png';
 import defaultProfile from '../images/profileImage.png';
+import imageEditIcon from '../images/imageEdit.png';
 import './MyProjectPage.css';
 
 function MyProjectPage() {
@@ -188,7 +189,7 @@ function MyProjectPage() {
     };
 
     //프로필 이미지 변환
-    const handleProfileImageChange = (e) => {
+     const handleProfileImageChange = (e) => {
         const file = e.target.files[0];
         if (file) {
             setIsUploading(true);
@@ -289,31 +290,35 @@ function MyProjectPage() {
                 {userInfo ? (
                     <div className="MyProject-Body">
                         <div className="MyProject-Body-Left">
-                                <div className="MyProject-Body-Left-Profile">
-                                <img
-                                        src={userInfo.profileImage || defaultProfile}
-                                        alt={'${userInfo.name}의 프로필'}
-                                        className="MyProject-Body-Left-profileImage"
-                                />
+                            <div className="MyProject-Body-Left-Profile">
+                                <div className="MyProject-Body-Left-ProfileImage">
+                                    <img
+                                            src={userInfo.profileImage || defaultProfile}
+                                            alt={'${userInfo.name}의 프로필'}
+                                    />
                                 </div>
                                 <div className="MyProject-Body-Left-NewProfileImage">
                                     <input
                                         id="profileImage"
                                         type="file"
+                                        style={{display: 'none'}}
                                         accept="image/*"
                                         onChange={handleProfileImageChange}
                                         disabled={isUploading}
                                     />
-                                    {isUploading && <p>업로드 중...</p>}
+                                    <label className="MyProject-Body-Left-NewProfileImage-Button" htmlFor="profileImage">
+                                        <img src={imageEditIcon} alt="ImageEdit"/>
+                                    </label>
                                 </div>
+                            </div>
+                            <div className="MyProject-Body-Left-Name">
+                                <input
+                                    type="text"
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
+                                />
+                            </div>
                             <div className="MyProject-Body-Left-Inform">
-                                <div className="MyProject-Body-Left-Inform-Name">이름
-                                    <input
-                                        type="text"
-                                        value={name}
-                                        onChange={(e) => setName(e.target.value)}
-                                    />
-                                </div>
                                 <div className="MyProject-Body-Left-Inform-Email"> 이메일
                                     <input
                                         type="email"
@@ -335,7 +340,7 @@ function MyProjectPage() {
                                         onClick={toggleDropdown}
                                     >
                                         {tracks.length > 0
-                                            ? `${tracks.join(', ')}`
+                                            ? `# ${tracks.join(' # ')}`
                                             : ''}
                                         </button>
                                         {isDropdownOpen && (
@@ -352,7 +357,7 @@ function MyProjectPage() {
                                         </ul>
                                         )}
                                 </div>
-                                <div className="MyProject-Body-Left-Inform-Record">이력 : 
+                                <div className="MyProject-Body-Left-Inform-Resume">이력
                                     <input
                                         type="text"
                                         value={resume}
@@ -360,13 +365,13 @@ function MyProjectPage() {
                                     />  
                                 </div>
                             </div>
-                            <div className="MyProject-Body-Left-Complete" onClick={handleEditButton}>수정 완료</div>
+                            <div className="MyProject-Body-Left-Complete" onClick={handleEditButton}>저장하기</div>
                         </div>
                         <div className="MyProject-Body-Right">
                             <div className="MyProject-Body-Right-Content">
                             {currentPosts.map((post, index) => (
                                 <div key={index} className="MyProject-Body-Right-Content-Box1">
-                                    <div className="MyProject-Body-Right-Content-Box1-Record">
+                                    <div className="MyProject-Body-Right-Content-Box1-Resume">
                                         {/* 프로젝트 이름 */}
                                         <div className="MyProject-Body-Right-Content-Box1-PrjName">{post.name}</div>
 
@@ -379,6 +384,7 @@ function MyProjectPage() {
 
                                         {/* 트랙 (추가적인 정보) */}
                                         <div className="MyProject-Body-Right-Content-Box1-Tracks">
+                                            
                                             {post.tracks?.join(", ")}
                                         </div>
 
