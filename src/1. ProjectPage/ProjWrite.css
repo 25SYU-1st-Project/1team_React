@@ -248,6 +248,7 @@
 
 .ProjWrite-Body-MainBox::-webkit-scrollbar {
     width: 50px;
+    background-color: transparent;
 }
 
 .ProjWrite-Body-MainBox::-webkit-scrollbar-track {
@@ -257,7 +258,7 @@
 }
 
 .ProjWrite-Body-MainBox::-webkit-scrollbar-thumb {
-    background-color: #D9D9D9;
+    background-color: transparent;
     /* 스크롤바 색상 */
     border-radius: 50px;
     /* 스크롤바 모서리 둥글게 */
