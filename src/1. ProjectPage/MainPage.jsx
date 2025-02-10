@@ -234,7 +234,7 @@ function MainPage() {
      // 로그인 여부 확인
      const storedUser = localStorage.getItem("user");
      if (!storedUser) {
-       alert("글 작성은 로그인 후 이용 가능합니다.");
+       alert("P-eeting 챗봇은 로그인 후 이용 가능합니다.");
        setLoginModalIsOpen(true);
        return;
      }
