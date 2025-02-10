@@ -34,7 +34,8 @@ html {
     padding: 0;
     width: 100%;
     height: 100%;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
     display: flex;
     justify-content: center;
 }
@@ -197,6 +198,14 @@ html {
     flex-direction: column;
     align-items: center;
     cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.MainPage-Contents-item:hover {
+    background-color: #F2F2F2;
+    transform: scale(1.05);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
 }
 
 .MainPage-Contents-item-poster {
@@ -209,6 +218,17 @@ html {
     justify-content: center;
     align-items: center;
 }
+
+.MainPage-Contents-item-poster img {
+    width: 100%;
+    height: 100%;
+    border-radius: 15px 15px 8px 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    object-fit: cover;
+}
+
 
 .MainPage-Contents-item-contents {
     margin-top: 7px;
@@ -298,7 +318,7 @@ html {
 .pagination button {
     width: 38.38px;
     height: 38.38px;
-    background-color: #FFFFFF;
+    background-color: transparent;
     border-radius: 4px;
     font-family: 'Pretendard-Medium';
     font-size: 16px;

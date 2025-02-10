@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import searchIcon from '../images/search.png';
 import './MainPage.css';
 
+import defaultPoster from '../images/defaultPoster.png';
 import firstIcon from '../images/first.png';
 import prevIcon from '../images/prev.png';
 import nextIcon from '../images/next.png';
@@ -13,7 +14,8 @@ import plusIcon from '../images/plusIcon.png';
 //firebase 임포트
 import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { doc, setDoc, Timestamp, collection, getDocs } from "firebase/firestore";
+import { doc, setDoc, Timestamp, collection, getDoc, getDocs } from "firebase/firestore";
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import { auth, db } from '../firebase';
 
 Modal.setAppElement('#root');
@@ -44,10 +46,32 @@ function MainPage() {
   const handleMain = () => {
     navigate('/')
   }
-  const handleProjButton = () => {
-    navigate('/projectWrite')
-  }
-
+  const handleProjButton = async () => {
+    const storedUser = localStorage.getItem("user");
+    if (!storedUser) {
+      alert("글 작성은 로그인 후 이용 가능합니다.");
+      setLoginModalIsOpen(true);
+      return;
+    }
+  
+    const parsedUser = JSON.parse(storedUser);
+  
+    const userRef = doc(db, "users", parsedUser.uid);
+    const userSnap = await getDoc(userRef);
+  
+    if (userSnap.exists()) {
+      const userData = userSnap.data();
+  
+      if (userData.memberClass === "premium") {
+        navigate("/projectWrite");
+      } else {
+        alert("단체 회원만 글을 작성할 수 있습니다.");
+      }
+    } else {
+      alert("유저 정보를 찾을 수 없습니다.");
+    }
+  };
+  
   const handleFreePage = () => {
     navigate('/FreeView');
   }
@@ -71,8 +95,20 @@ function MainPage() {
 
   const postsPerPage = 6;
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedCategory, setSelectedCategory] = useState("전체");
 
-  const totalPages = Math.ceil(posts.length / postsPerPage);
+  // 카테고리별 필터링 함수
+  const filteredPosts = selectedCategory === "전체"
+    ? posts
+    : posts.filter(post => post.category === selectedCategory);
+
+  const currentFilteredPosts = filteredPosts.slice(
+    (currentPage - 1) * postsPerPage,
+    currentPage * postsPerPage
+  );
+
+  const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
+
   const maxPageButtons = 5;
 
   const getPageNumbers = () => {
@@ -274,12 +310,35 @@ function MainPage() {
     const fetchProjects = async () => {
       try {
         const querySnapshot = await getDocs(collection(db, "projects"));
-        const fetchedProjects = querySnapshot.docs.map(doc => ({
+        let fetchedProjects = querySnapshot.docs.map(doc => ({
           id: doc.id,
           ...doc.data(),
         }));
+
+        // createdAt을 기준으로 내림차순 정렬
         fetchedProjects.sort((a, b) => b.createdAt - a.createdAt);
-        setPosts(fetchedProjects);
+
+        // Firebase Storage에서 이미지 URL 변환
+        const storage = getStorage();
+        const updatedProjects = await Promise.all(
+          fetchedProjects.map(async (post) => {
+            if (post.projectPoster && post.projectPoster.startsWith("gs://")) {
+              try {
+                const storageRef = ref(storage, post.projectPoster);
+                post.projectPoster = await getDownloadURL(storageRef);
+              } catch (error) {
+                console.error("이미지 URL을 가져오는 중 오류:", error);
+                post.projectPoster = "https://storage.googleapis.com/p-eeting.firebasestorage.app/profileImage/DefaultImage.png";
+              }
+            } else if (!post.projectPoster) {
+              // projectPoster가 비어 있을 경우 기본 이미지 적용
+              post.projectPoster = defaultPoster;
+            }
+            return post;
+          })
+        );
+
+        setPosts(updatedProjects); // 불필요한 setPosts 중복 제거
       } catch (error) {
         console.error("프로젝트 데이터를 가져오는 중 오류:", error);
       }
@@ -288,23 +347,11 @@ function MainPage() {
     fetchProjects();
   }, []);
 
-  const [selectedCategory, setSelectedCategory] = useState("전체");
-
-  // 카테고리별 필터링 함수
-  const filteredPosts = selectedCategory === "전체"
-    ? posts
-    : posts.filter(post => post.category === selectedCategory);
-
-  const currentFilteredPosts = filteredPosts.slice(
-    (currentPage - 1) * postsPerPage,
-    currentPage * postsPerPage
-  );
-
   const handleCategoryClick = (category) => {
     setSelectedCategory(category);
     setCurrentPage(1);
   };
-
+  
   return (
     <div className="MainPage-container">
       <div className="MainPage-Header">
@@ -350,12 +397,12 @@ function MainPage() {
           {currentFilteredPosts.map((post, index) => (
             <div key={index} className="MainPage-Contents-item" onClick={() => handleDetail(post)}>
               <div className="MainPage-Contents-item-poster">
-                {formatDate(post.createdAt)}
+                <img src={post.projectPoster || defaultPoster} />
               </div>
               <div className="MainPage-Contents-item-contents">
                 <div className="MainPage-Contents-item-left">
                   <div className="MainPage-Contents-item-projectInfo">
-                    <div className="MainPage-Contents-item-projectCreator">{post.creatorId}</div>
+                    <div className="MainPage-Contents-item-projectCreator">{post.creatorName}</div>
                     <div className="MainPage-Contents-item-projectTitle">{post.name}</div>
                   </div>
                   <div className="MainPage-Contents-item-stacks">
@@ -382,7 +429,9 @@ function MainPage() {
               </div>
             </div>
           ))}
-
+          <div className='MainPage-Contents-chatBotButton'>
+            <img src="" alt="" />
+          </div>
           <div className="MainPage-Contents-createProjButton" onClick={handleProjButton}>
             <img src={plusIcon} />
           </div>
