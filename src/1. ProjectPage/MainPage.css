@@ -356,6 +356,25 @@ html {
     height: 30px;
 }
 
+.MainPage-Contents-chatBotButton {
+    position: absolute;
+    right: -100px;
+    bottom: 100px;
+    width: 75px;
+    height: 75px;
+    border-radius: 15px;
+    background-color: #000000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.gpt-icon {
+    width: 40px;
+    height: 40px;
+}
+
 /* 모달 css */
 .overlay {
     display: flex;
@@ -436,7 +455,7 @@ html {
 }
 
 .modal1-content-loginType {
-    
+
     margin-top: -10px;
     display: flex;
     justify-content: flex-end;
@@ -664,7 +683,8 @@ html {
     gap: 11px;
 }
 
-.modal2-content-memberClass-personal, .modal2-content-memberClass-group {
+.modal2-content-memberClass-personal,
+.modal2-content-memberClass-group {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -834,4 +854,203 @@ li {
     100% {
         transform: translateX(-200%);
     }
+}
+
+.chatbot-modal {
+    width: 409px;
+    height: 647px;
+    background-color: #EAEAEA;
+    border: none;
+    border-radius: 60px;
+    position: fixed; /* 화면에서 고정 위치 */
+    right: 10px; /* 화면 오른쪽에서 20px 떨어지도록 */
+    top: 33%; /* 화면 세로 중앙에 배치 */
+    transform: translateY(-50%); /* 세로 중앙 맞추기 */
+    outline: none;
+
+}
+
+.chatbot-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.chatbot-header {
+    position: relative;
+    width: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.chatbot-title {
+    margin: 0;
+    margin-top: 51px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 30px;
+    color: #030027;
+    font-family: 'Pretendard-SemiBold';
+
+}
+
+.close-chatbot {
+    position: absolute;
+    right: 0;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+
+}
+
+/* 모달 전체 화면 어두운 배경 */
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /* background-color: rgba(0, 0, 0, 0.5); */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+
+/* 챗봇 메시지 영역 */
+.chatbot-messages {
+    width: 90%;
+    height: 400px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    gap: 10px;
+    /* 메시지 간격 */
+    display: flex;
+    flex-direction: column;
+}
+
+.chatbot-messages::-webkit-scrollbar {
+    width: 45px;
+}
+
+.chatbot-messages::-webkit-scrollbar-track {
+    background-color: transparent;
+    margin-top: 17px;
+    margin-bottom: 17px;
+}
+
+.chatbot-messages::-webkit-scrollbar-thumb {
+    background-color: #F6F6F6;
+    /* 스크롤바 색상 */
+    border-radius: 50px;
+    /* 스크롤바 모서리 둥글게 */
+    border: 16px solid #EAEAEA;
+    /* 스크롤바를 오른쪽에서 떨어지게 하는 여백 */
+}
+
+
+
+.message {
+    max-width: 70%;
+    /* 메시지가 화면 너비의 70%를 차지하도록 설정 */
+    padding: 13px;
+    margin-bottom: 32px;
+    word-wrap: break-word;
+    font-size: 20px;
+    font-family: 'Pretendard-Medium';
+}
+
+.message.user {
+    align-items: center;
+    align-self: flex-end;
+    border: none;
+    border-radius: 15px;
+    background-color: #ED9191;
+    color: #030027;
+}
+
+.message.bot {
+    display: flex;
+    align-items: center;
+    /* 메시지 텍스트와 이미지 세로 중앙 정렬 */
+    align-self: flex-start;
+    /* 왼쪽 정렬 */
+    margin-left: 30px;
+    background-color: #F6F6F6;
+    color: #030027;
+    padding: 10px;
+    border-radius: 15px;
+    max-width: 70%;
+    position: relative;
+    /* 이미지를 메시지와 독립적으로 위치시키기 위해 relative 설정 */
+    margin-bottom: 32px;
+    /* 메시지 사이의 간격 */
+}
+
+.bot-image {
+    position: absolute;
+    /* 절대 위치로 설정 */
+    left: -39px;
+    /* 메시지 왼쪽에 이미지 배치 (메시지 너비만큼 떨어지게 설정) */
+    top: 15%;
+    transform: translateY(-50%);
+    /* 세로 중앙 정렬 */
+    width: 30px;
+    /* 이미지 크기 */
+    height: 30px;
+    /* 이미지 크기 */
+}
+
+
+
+.chatbot-message-input {
+    position: fixed;
+    bottom: 44px;
+    width: 370px;
+    height: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    border-radius: 15px;
+    border: 1px solid #A1A6A9;
+}
+
+.chatbot-input {
+    width: 370px;
+    height: 70px;
+
+    display: flex;
+    align-items: center;
+    background-color: white;
+    border-radius: 15px;
+    border: 1px solid #A1A6A9;
+    padding-right: 61px;
+    padding-left: 11px;
+
+    outline: none;
+    font-size: 20px;
+
+}
+
+.chatbot-input::placeholder {
+    font-family: 'Pretendard-Medium';
+    font-size: 20px;
+}
+
+
+
+.send-button {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
 }
