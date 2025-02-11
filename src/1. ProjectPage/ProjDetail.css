@@ -438,9 +438,10 @@
     font-size: 20px;
 }
 
-.Detail-SubBody-commentBox-comment-header-profileImage {
+.Detail-SubBody-commentBox-comment-header-profileImage, .Detail-SubBody-commentBox-comment-header-profileImage img {
     width: 45px;
     height: 45px;
+    border-radius: 50%;
     object-fit: cover;
 }
 

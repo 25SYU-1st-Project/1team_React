@@ -1,8 +1,10 @@
+
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 import { useNavigate } from 'react-router-dom';
 import searchIcon from '../images/search.png';
 import './MainPage.css';
+// import './ChatBot.css';
 
 import defaultPoster from '../images/defaultPoster.png';
 import firstIcon from '../images/first.png';
@@ -10,6 +12,10 @@ import prevIcon from '../images/prev.png';
 import nextIcon from '../images/next.png';
 import lastIcon from '../images/last.png';
 import plusIcon from '../images/plusIcon.png';
+import GptIcon from '../images/gpt.png';
+import sendButton from '../images/sendButton.png'
+import closeChat from '../images/closeChat.png';
+import innerGpt from '../images/innerGpt.png';
 
 //firebase 임포트
 import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
@@ -32,8 +38,67 @@ function MainPage() {
   const [signupSuccess, setSignupSuccess] = useState(false);
 
 
+
   const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태 추가
   const [currentUser, setCurrentUser] = useState(null); // 현재 로그인한 사용자 정보
+
+  // chatBot 관련 함수
+  const apiKey = import.meta.env.VITE_OPENAI_API_KEY;
+  const apiEndpoint = 'https://api.openai.com/v1/chat/completions';
+
+  const [messages, setMessages] = useState([]);
+  const [userInput, setUserInput] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const addMessage = (sender, message) => {
+    setMessages(prevMessages => [...prevMessages, { sender, message }]);
+  };
+
+  const handleSendMessage = async () => {
+    const message = userInput.trim();
+    if (message.length === 0) return;
+
+    addMessage('user', message);
+    setUserInput('');
+    setLoading(true);
+
+    const prompt = `${message}에 대한 답변을 3줄로 간략히 요약해 주세요:`;
+
+    try {
+      const response = await fetch(apiEndpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify({
+          model: 'gpt-4o',
+          messages: [{ role: 'user', content: prompt }],
+          max_tokens: 200,
+          top_p: 0.7,
+          temperature: 0.7,
+          frequency_penalty: 0.5,
+          presence_penalty: 0.5,
+          stop: ['문장 생성 중단 단어'],
+        }),
+      });
+
+      const data = await response.json();
+      const aiResponse = data.choices?.[0]?.message?.content || 'No response';
+      addMessage('bot', aiResponse);
+    } catch (error) {
+      console.error('오류 발생!');
+      addMessage('bot', '오류 발생!');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      handleSendMessage();
+    }
+  };
 
   // 회원가입 라디오버튼 핸들러
   const handleRadioChange = (event) => {
@@ -97,28 +162,10 @@ function MainPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState("전체");
 
-  const [searchTerm, setSearchTerm] = useState("");
-  const [appliedSearchTerm, setAppliedSearchTerm] = useState("");
-
-
-  // 검색어 눌렀을 때, 즉시 변환되지 않도록(엔터키를 눌러야만 변화되도록 컨트롤 해주는 함수)
-  // 검색어 입력 변화 처리
-  const handleSearchInputChange = (event) => {
-    setSearchTerm(event.target.value);
-  };
-
-  // 엔터 키 눌렀을 때 검색어 적용
-  const handleKeyDown = (event) => {
-    if (event.key === "Enter") {
-      setAppliedSearchTerm(searchTerm);
-    }
-  };
-
-  // 카테고리별 필터링 함수 (searchTerm 대신 appliedSearchTerm 사용)
-  const filteredPosts = posts.filter(post =>
-    (selectedCategory === "전체" || post.category === selectedCategory) &&
-    (appliedSearchTerm === "" || post.name.includes(appliedSearchTerm))
-  );
+  // 카테고리별 필터링 함수
+  const filteredPosts = selectedCategory === "전체"
+    ? posts
+    : posts.filter(post => post.category === selectedCategory);
 
   const currentFilteredPosts = filteredPosts.slice(
     (currentPage - 1) * postsPerPage,
@@ -165,6 +212,7 @@ function MainPage() {
   //모달 함수
   const [loginModalIsOpen, setLoginModalIsOpen] = useState(false);
   const [signupModalIsOpen, setSignupModalIsOpen] = useState(false);
+  const [ChatBotModalIsOpen, setChatBotModalIsOpen] = useState(false);
 
   const openLoginModal = () => {
     setLoginModalIsOpen(true);
@@ -181,6 +229,21 @@ function MainPage() {
 
   const closeSignupModal = () => {
     setSignupModalIsOpen(false);
+  };
+
+  const openChatBotModal = () => {
+     // 로그인 여부 확인
+     const storedUser = localStorage.getItem("user");
+     if (!storedUser) {
+       alert("P-eeting 챗봇은 로그인 후 이용 가능합니다.");
+       setLoginModalIsOpen(true);
+       return;
+     }
+    setChatBotModalIsOpen(true);
+  };
+
+  const closeChatBotModal = () => {
+    setChatBotModalIsOpen(false);
   };
 
   //트랙 선택 드롭다운 함수
@@ -255,7 +318,7 @@ function MainPage() {
       sessionStorage.removeItem("isLoggedIn");
       sessionStorage.removeItem("user");
     } catch (err) {
-      console.error('로그아웃 실패:', err.message);
+      console.error('로그아웃 실패:');
     }
   };
 
@@ -345,7 +408,7 @@ function MainPage() {
                 const storageRef = ref(storage, post.projectPoster);
                 post.projectPoster = await getDownloadURL(storageRef);
               } catch (error) {
-                console.error("이미지 URL을 가져오는 중 오류:", error);
+                console.error("이미지 URL을 가져오는 중 오류");
                 post.projectPoster = "https://storage.googleapis.com/p-eeting.firebasestorage.app/profileImage/DefaultImage.png";
               }
             } else if (!post.projectPoster) {
@@ -358,7 +421,7 @@ function MainPage() {
 
         setPosts(updatedProjects); // 불필요한 setPosts 중복 제거
       } catch (error) {
-        console.error("프로젝트 데이터를 가져오는 중 오류:", error);
+        console.error("프로젝트 데이터를 가져오는 중 오류:");
       }
     };
 
@@ -377,7 +440,7 @@ function MainPage() {
           <div className="MainPage-Header-LOGO" onClick={handleMain}><span>P</span>-eeting</div>
           <div className="MainPage-Header-Search">
             <div className="MainPage-Header-SearchIcon"><img src={searchIcon} /></div>
-            <input className="MainPage-Header-InputArea" type="text" placeholder="프로젝트 미팅, 피팅" value={searchTerm} onChange={handleSearchInputChange} onKeyDown={handleKeyDown} />
+            <input className="MainPage-Header-InputArea" type="text" placeholder="프로젝트 미팅, 피팅" />
           </div>
         </div>
         <div className="MainPage-Header-Right">
@@ -447,7 +510,9 @@ function MainPage() {
               </div>
             </div>
           ))}
-
+          <div className='MainPage-Contents-chatBotButton' onClick={openChatBotModal}>
+            <img src={GptIcon} className='gpt-icon' />
+          </div>
           <div className="MainPage-Contents-createProjButton" onClick={handleProjButton}>
             <img src={plusIcon} />
           </div>
@@ -652,9 +717,46 @@ function MainPage() {
           )}
         </div>
       </Modal>
-      {/* 챗봇 기능 개발 */}
 
-
+      {/* 챗봇 모달 */}
+      <Modal
+        isOpen={ChatBotModalIsOpen}
+        shouldCloseOnOverlayClick={false}
+        shouldCloseOnEsc={false}
+        onRequestClose={closeChatBotModal}
+        contentLabel="ChatBot Modal"
+        className="chatbot-modal"
+        overlayClassName="modalOverlay" 
+      >
+        <div className="chatbot-container">
+          <div className='chatbot-header'>
+            <h2 className='chatbot-title'>P-eeting 챗봇</h2>
+            <img src={closeChat} className='close-chatbot' onClick={closeChatBotModal} />
+          </div>
+          <div className="chatbot-messages">
+            {messages.map((msg, index) => (
+            <div key={index} className={`message ${msg.sender}`}>
+                {msg.sender === 'bot' && (
+                  <img src={innerGpt} className="bot-image" />
+                )}
+                {msg.message}
+              </div>
+            ))}
+          </div>
+          <div className="chatbot-message-input">
+            <input
+              type="text"
+              value={userInput}
+              onChange={(e) => setUserInput(e.target.value)}
+              onKeyDown={handleKeyDown}
+              placeholder="질문을 입력해주세요."
+              disabled={loading}
+              className="chatbot-input"
+            />
+            <img src={sendButton} onClick={handleSendMessage} disabled={loading} className="send-button" />
+          </div>
+        </div>
+      </Modal>
     </div >
   )
 }

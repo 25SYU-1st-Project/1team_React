@@ -2,8 +2,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { db } from "../firebase"; // Firebase 초기화 파일에서 가져옴
+import { auth, db } from "../firebase"; // Firebase 초기화 파일에서 가져옴
 import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { signOut } from 'firebase/auth';
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 import searchIcon from '../images/search.png';
@@ -17,6 +18,8 @@ import imageEditIcon from '../images/imageEdit.png';
 import './MyProjectPage.css';
 
 function MyProjectPage() {
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [currentUser, setCurrentUser] = useState(null);
     const navigate = useNavigate();
 
     const handleMain = () => {
@@ -26,6 +29,21 @@ function MyProjectPage() {
     const handleFreePage = () => {
         navigate('/FreeView');
     }
+
+    const handleLogout = async () => {
+        try {
+            await signOut(auth);
+            setIsLoggedIn(false); // 로그인 상태 해제
+            setCurrentUser(null); // 현재 사용자 초기화
+            localStorage.removeItem("isLoggedIn");
+            localStorage.removeItem("user");
+            sessionStorage.removeItem("isLoggedIn");
+            sessionStorage.removeItem("user");
+            navigate('/')
+        } catch (err) {
+            console.error('로그아웃 실패');
+        }
+    };
 
     //애니메이션
     const slides = [
@@ -118,7 +136,6 @@ function MyProjectPage() {
                 const userDoc = await getDoc(doc(db, "users", uid));
                 if (userDoc.exists()) {
                     const userData = userDoc.data();
-                    console.log(userData);
                     setUserInfo(userData);
 
                     const { joinedProjects } = userData; // 참여한 프로젝트 목록 가져오기
@@ -145,7 +162,7 @@ function MyProjectPage() {
                             const storageRef = ref(storage, userData.profileImage);
                             userData.profileImage = await getDownloadURL(storageRef);
                         } catch (error) {
-                            console.error("이미지 URL 변환 실패:", error);
+                            console.error("이미지 URL 변환 실패");
                         }
                     }
                     setUserInfo(userData); // 최종 데이터 저장 
@@ -156,10 +173,9 @@ function MyProjectPage() {
                     setTracks(userData.setTracks || []); 
                     setResume(userData.resume || ""); 
                 } else {
-                    console.log("User not found");
                 }
             } catch (error) {
-                console.error("Error fetching user and project data:", error);
+                console.error("Error fetching user and project data");
             }
         };
 
@@ -184,7 +200,7 @@ function MyProjectPage() {
 
             alert("수정 완료");
         } catch (error) {
-            console.error("error", error);
+            console.error("error");
             alert("수정 실패");
         }
     };
@@ -207,7 +223,7 @@ function MyProjectPage() {
                     // 진행률 표시
                 },
                 (error) => {
-                    console.error("파일 업로드 실패:", error);
+                    console.error("파일 업로드 실패");
                     setIsUploading(false);
                 },
                 () => {
@@ -226,7 +242,7 @@ function MyProjectPage() {
                             setProfileImage(downloadURL);  // 프로필 이미지 상태 업데이트
                             setIsUploading(false);
                         }).catch((error) => {
-                            console.error("Firestore 업데이트 실패:", error);
+                            console.error("Firestore 업데이트 실패");
                             setIsUploading(false);
                         });
                     });
@@ -265,7 +281,7 @@ function MyProjectPage() {
             setPosts((prevPosts) => prevPosts.filter(post => post.id !== postId));
             alert("삭제 완료");
         } catch (error) {
-            console.error("프로젝트 삭제 오류:", error);
+            console.error("프로젝트 삭제 오류");
             alert("삭제 실패");
         }
     };
@@ -285,7 +301,7 @@ function MyProjectPage() {
                         <div className="MyProject-Header-Right-ProMatch" onClick={handleMain}>프로젝트 매칭</div>
                         <div className="MyProject-Header-Right-FreeMatch" onClick={handleFreePage}>프리랜서 매칭</div>
                         <div className="MyProject-Header-Right-MyProject">마이 프로젝트</div>
-                        <div className="MyProject-Header-Right-Logout">로그아웃</div>
+                        <div className="MyProject-Header-Right-Logout" onClick={handleLogout}>로그아웃</div>
                     </div>
                 </div>
                 {userInfo ? (
@@ -385,15 +401,22 @@ function MyProjectPage() {
 
                                         {/* 트랙 (추가적인 정보) */}
                                         <div className="MyProject-Body-Right-Content-Box1-Tracks">
-                                            
-                                            {post.tracks?.join(", ")}
+                                            {post.tracks.map((track, index) => (
+                                                <div key={index} className="track-box">
+                                                    {track}
+                                                </div>
+                                            ))}
                                         </div>
 
                                         {/* 급여 정보 */}
                                         <div className="MyProject-Body-Right-Content-Box1-Salary">급여: {post.salary}</div>
 
                                         {/* 상세 설명 */}
-                                        <div className="MyProject-Body-Right-Content-Box1-Detail">{post.description}</div>
+                                        <div className="MyProject-Body-Right-Content-Box1-Detail">
+                                            <div className="MyProject-Body-Right-Content-Box1-DetailContent">
+                                                {post.description}
+                                            </div>
+                                        </div>
                                     </div>
 
                                     {/* 삭제 버튼 */}

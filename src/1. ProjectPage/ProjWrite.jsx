@@ -106,7 +106,7 @@ function ProjWrite() {
       }));
 
     } catch (error) {
-      console.error("포스터 업로드 오류:", error);
+      console.error("포스터 업로드 오류");
       alert("포스터 업로드 중 오류가 발생했습니다.");
     }
   };
@@ -126,37 +126,32 @@ function ProjWrite() {
     const db = getFirestore();
 
     try {
-      // ✅ 1. Firestore에서 사용자 정보 가져오기
       const userDocRef = doc(db, "users", userId);
       const userDocSnap = await getDoc(userDocRef);
 
-      let creatorId = userId; // 🔹 userId 저장
-      let creatorName = "익명"; // 기본값 설정
+      let creatorId = userId;
+      let creatorName = "익명";
 
       if (userDocSnap.exists()) {
         const userData = userDocSnap.data();
-        creatorName = userData.name || "익명"; // 🔹 Firestore에서 name 필드 가져오기
+        creatorName = userData.name || "익명";
       }
 
-      // ✅ 3. Firestore projects 컬렉션에 데이터 저장
       const newProject = {
         ...projectData,
         category: selectedCategory,
         tracks: selectedTracks,
         techStack: techStacks,
         deadLine: startDate && endDate ? [formatDate(startDate), formatDate(endDate)] : [],
-        creatorId, // ✅ 사용자 ID 저장
-        creatorName, // ✅ 사용자 이름 저장
+        creatorId,
+        creatorName,
         participantsId: [],
         createdAt: currentDate,
       };
 
-      // ✅ Firestore에 데이터 추가
       const docRef = await addDoc(collection(db, "projects"), newProject);
-      console.log("프로젝트 생성됨, 문서 ID: ", docRef.id);
       alert("프로젝트 공고가 성공적으로 생성되었습니다!");
 
-      // ✅ 입력 필드 초기화
       setProjectData({
         name: "",
         category: "",
@@ -169,7 +164,7 @@ function ProjWrite() {
         tracks: [],
         deadLine: "",
         creatorId: "",
-        creatorName: "", // 🔹 초기화 추가
+        creatorName: "",
         participantsId: []
       });
 
@@ -179,11 +174,10 @@ function ProjWrite() {
       setStartDate(null);
       setEndDate(null);
 
-      // ✅ 프로젝트 생성 완료 후 '/' 페이지로 이동
       navigate("/");
 
     } catch (error) {
-      console.error("프로젝트 추가 중 오류 발생: ", error);
+      console.error("프로젝트 추가 중 오류 발생");
       alert("프로젝트 생성 중 오류가 발생했습니다.");
     }
   };
@@ -191,20 +185,19 @@ function ProjWrite() {
 
 
 
-  // 카테고리 라디오버튼 핸들러
+  // 카테고리 라디오버튼
   const handleRadioChange = (event) => {
     setSelectedCategory(event.target.value);
   };
 
-  // 트랙 카테고리 체크박스 핸들러
+  // 트랙 카테고리 체크박스
   const handleCheckboxChange = (event) => {
     const { value, checked } = event.target;
     if (checked) {
-      // 선택된 카테고리를 배열에 추가
+      // 카테고리를 배열 추가
       setSelectedTracks([...selectedTracks, value]);
-      // 기존 배열이 아닌 카테고리를 선택할 때마다 ... 을 사용해 새로운 배열을 만들어 상태 설정
     } else {
-      // 선택을 해제하면 배열에서 제거
+      // 선택 해제 배열 제거
       setSelectedTracks(selectedTracks.filter(category => category !== value));
     }
   };
@@ -212,18 +205,15 @@ function ProjWrite() {
 
   // input 추가하는 함수
   const addInput = () => {
-    setTechStacks([...techStacks, '']); // 새로운 빈 input 추가
+    setTechStacks([...techStacks, '']);
   };
 
   // input 값 변경 처리 함수
   const handleInputChange = (index, value) => {
     const newTechStacks = [...techStacks];
     newTechStacks[index] = value;
-    setTechStacks(newTechStacks); // 변경된 값을 상태에 저장
+    setTechStacks(newTechStacks);
   };
-
-
-
 
   // 캘린더 관련 로직
   const year = currentDate.getFullYear();
@@ -271,21 +261,21 @@ function ProjWrite() {
     setCurrentDate(nextMonth);
   };
 
-  // 날짜를 YYYY-MM-DD 형식으로 변환
+  // 날짜 형식 변환
   const formatDate = (date) => {
     return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
   };
 
   // 시작일을 클릭했을 때 캘린더 토글
   const handleStartDateSelection = () => {
-    setIsSelectingStartDate(true); // 시작일 선택 모드
-    setIsCalendarVisible((prev) => !prev);  // 캘린더 토글
+    setIsSelectingStartDate(true); 
+    setIsCalendarVisible((prev) => !prev);
   };
 
   // 종료일을 클릭했을 때 캘린더 토글
   const handleEndDateSelection = () => {
-    setIsSelectingStartDate(false); // 종료일 선택 모드
-    setIsCalendarVisible((prev) => !prev);  // 캘린더 토글
+    setIsSelectingStartDate(false);
+    setIsCalendarVisible((prev) => !prev); 
   };
 
 
@@ -294,19 +284,18 @@ function ProjWrite() {
     if (isSelectingStartDate) {
       // 시작일 선택
       if (startDate && date.toDateString() === startDate.toDateString()) {
-        setStartDate(null); // 시작일자 취소
+        setStartDate(null);
       } else {
-        setStartDate(date); // 새로운 시작일 설정
+        setStartDate(date);
         if (endDate && date > endDate) {
-          setEndDate(null); // 종료일이 시작일 이전일 때 종료일 취소
+          setEndDate(null);
         }
       }
     } else {
-      // 종료일 선택
       if (endDate && date.toDateString() === endDate.toDateString()) {
-        setEndDate(null); // 종료일자 취소
+        setEndDate(null);
       } else if (startDate && date >= startDate) {
-        setEndDate(date); // 시작일 이후로 종료일 설정
+        setEndDate(date);
       }
     }
   };
@@ -337,25 +326,17 @@ function ProjWrite() {
   const handleLogout = async () => {
     try {
       await signOut(auth);
-      setIsLoggedIn(false); // 로그인 상태 해제
-      setCurrentUser(null); // 현재 사용자 초기화
+      setIsLoggedIn(false);
+      setCurrentUser(null); 
       localStorage.removeItem("isLoggedIn");
       localStorage.removeItem("user");
       sessionStorage.removeItem("isLoggedIn");
       sessionStorage.removeItem("user");
       navigate("/");
     } catch (err) {
-      console.error('로그아웃 실패:', err.message);
+      console.error('로그아웃 실패');
     }
   };
-
-  // useEffect(() => {
-  //   if (!isLoggedIn) {
-  //     alert("로그인 후 이용 가능합니다.");
-  //     navigate("/"); // 메인 페이지로 이동
-  //   }
-  // }, [isLoggedIn, navigate]);
-  
 
   return (
     <div className="ProjWrite-Container">

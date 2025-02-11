@@ -16,6 +16,7 @@ import plusIcon from '../images/plusIcon.png';
 import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { doc, setDoc, collection, getDoc, addDoc, onSnapshot, orderBy, query } from "firebase/firestore";
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import { updateDoc, arrayUnion } from "firebase/firestore";
 import { auth, db } from '../firebase';
 
@@ -30,8 +31,8 @@ function projDetail() {
   const [signupSuccess, setSignupSuccess] = useState(false);
 
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태 추가
-  const [currentUser, setCurrentUser] = useState(null); // 현재 로그인한 사용자 정보
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
   const [userName, setUserName] = useState("");
 
   const [post, setPost] = useState(null);
@@ -174,7 +175,7 @@ function projDetail() {
       sessionStorage.removeItem("isLoggedIn");
       sessionStorage.removeItem("user");
     } catch (err) {
-      console.error('로그아웃 실패:', err.message);
+      console.error('로그아웃 실패');
     }
   };
 
@@ -244,7 +245,7 @@ function projDetail() {
       });
       setComment(""); // 입력 필드 초기화
     } catch (error) {
-      console.error("댓글 저장 오류:", error);
+      console.error("댓글 저장 오류");
     }
   };
 
@@ -254,12 +255,12 @@ function projDetail() {
     try {
       const userDoc = await getDoc(doc(db, "users", userId));
       if (userDoc.exists()) {
-        return userDoc.data().name; // name 값 반환
+        return userDoc.data().name;
       } else {
         console.error("사용자 정보가 없습니다.");
       }
     } catch (error) {
-      console.error("사용자 정보 가져오기 오류:", error);
+      console.error("사용자 정보 가져오기 오류");
     }
   };
 
@@ -271,6 +272,27 @@ function projDetail() {
     }
   }, [auth.currentUser]);
 
+  const storage = getStorage();
+
+const fetchUserProfileImage = async (userId) => {
+  try {
+    const userDoc = await getDoc(doc(db, "users", userId));
+    if (userDoc.exists()) {
+      const profileImagePath = userDoc.data().profileImage;
+
+      if (profileImagePath) {
+        const imageRef = ref(storage, profileImagePath);
+        const imageUrl = await getDownloadURL(imageRef); // 이미지 URL 가져오기
+        return imageUrl;
+      }
+    }
+  } catch (error) {
+    console.error("프로필 이미지 가져오기 오류:", error);
+  }
+  return "/default-profile.png"; // 오류 시 기본 이미지 반환
+};
+
+
 
   // Firestore에서 댓글 가져오기 (실시간 업데이트)
   useEffect(() => {
@@ -279,29 +301,39 @@ function projDetail() {
         collection(db, `projects/${projectId}/comments`),
         orderBy("createdAt", "desc")
       ),
-      (snapshot) => {
-        const fetchedComments = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setComments(fetchedComments);
+      async (snapshot) => {
+        const commentsWithImages = await Promise.all(
+          snapshot.docs.map(async (doc) => {
+            const commentData = doc.data();
+            const profileImage = await fetchUserProfileImage(commentData.creatorId);
+            return {
+              id: doc.id,
+              ...commentData,
+              profileImage, // 프로필 이미지 추가
+            };
+          })
+        );
+  
+        setComments(commentsWithImages);
+  
         if (post && auth.currentUser) {
           setIsPostOwner(String(post.creatorId) === String(auth.currentUser.uid));
         }
       }
     );
-
+  
     return () => unsubscribe();
   }, [projectId, post, auth?.currentUser]);
+  
 
   const handleAccept = async (commentItem) => {
     if (!isPostOwner) return;
   
-    const userRef = doc(db, "users", commentItem.creatorId); // 댓글 작성자의 Firestore 문서
+    const userRef = doc(db, "users", commentItem.creatorId);
   
     try {
       await updateDoc(userRef, {
-        joinedProjects: arrayUnion(projectId), // 프로젝트 ID 추가
+        joinedProjects: arrayUnion(projectId),
       });
     } catch (error) {
     }
@@ -309,7 +341,7 @@ function projDetail() {
 
 
   // 그리드에 표시되는 포스트들, 페이징 버튼
-  const commentsPerPage = 4; // 한 페이지에 표시할 댓글 수
+  const commentsPerPage = 4; // 한 페이지에 표시할 댓글
   const [currentCommentPage, setCurrentCommentPage] = useState(1);
   const maxPageButtons = 5; // 페이지 버튼 최대 개수
 
@@ -353,16 +385,13 @@ function projDetail() {
   useEffect(() => {
     const savedPost = localStorage.getItem("selectedPost");
     if (savedPost) {
-      setPost(JSON.parse(savedPost)); // 데이터 복구
+      setPost(JSON.parse(savedPost));
     } else {
-      navigate("/"); // 데이터 없으면 홈으로 리디렉트
+      navigate("/");
     }
   }, [navigate]);
 
   if (!post) return null;
-
-
-
 
   return (
     <div className="Detail-Container">
