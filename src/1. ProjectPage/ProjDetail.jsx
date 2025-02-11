@@ -274,25 +274,23 @@ function projDetail() {
 
   const storage = getStorage();
 
-const fetchUserProfileImage = async (userId) => {
-  try {
-    const userDoc = await getDoc(doc(db, "users", userId));
-    if (userDoc.exists()) {
-      const profileImagePath = userDoc.data().profileImage;
+  const fetchUserProfileImage = async (userId) => {
+    try {
+      const userDoc = await getDoc(doc(db, "users", userId));
+      if (userDoc.exists()) {
+        const profileImagePath = userDoc.data().profileImage;
 
-      if (profileImagePath) {
-        const imageRef = ref(storage, profileImagePath);
-        const imageUrl = await getDownloadURL(imageRef); // 이미지 URL 가져오기
-        return imageUrl;
+        if (profileImagePath) {
+          const imageRef = ref(storage, profileImagePath);
+          const imageUrl = await getDownloadURL(imageRef); // 이미지 URL 가져오기
+          return imageUrl;
+        }
       }
+    } catch (error) {
+      console.error("프로필 이미지 가져오기 오류:", error);
     }
-  } catch (error) {
-    console.error("프로필 이미지 가져오기 오류:", error);
-  }
-  return "/default-profile.png"; // 오류 시 기본 이미지 반환
-};
-
-
+    return "/default-profile.png"; // 오류 시 기본 이미지 반환
+  };
 
   // Firestore에서 댓글 가져오기 (실시간 업데이트)
   useEffect(() => {
@@ -313,24 +311,24 @@ const fetchUserProfileImage = async (userId) => {
             };
           })
         );
-  
+
         setComments(commentsWithImages);
-  
+
         if (post && auth.currentUser) {
           setIsPostOwner(String(post.creatorId) === String(auth.currentUser.uid));
         }
       }
     );
-  
+
     return () => unsubscribe();
   }, [projectId, post, auth?.currentUser]);
-  
+
 
   const handleAccept = async (commentItem) => {
     if (!isPostOwner) return;
-  
+
     const userRef = doc(db, "users", commentItem.creatorId);
-  
+
     try {
       await updateDoc(userRef, {
         joinedProjects: arrayUnion(projectId),

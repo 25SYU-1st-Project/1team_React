@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Modal from 'react-modal';
 import { useNavigate } from 'react-router-dom';
 import searchIcon from '../images/search.png';
@@ -50,6 +50,8 @@ function MainPage() {
   const [userInput, setUserInput] = useState('');
   const [loading, setLoading] = useState(false);
 
+  const endOfMessagesRef = useRef(null); 
+
   const addMessage = (sender, message) => {
     setMessages(prevMessages => [...prevMessages, { sender, message }]);
   };
@@ -62,7 +64,9 @@ function MainPage() {
     setUserInput('');
     setLoading(true);
 
-    const prompt = `${message}에 대한 답변을 3줄로 간략히 요약해 주세요:`;
+    const prompt = `${message}에 대한 답변을 명확하게 5줄로 요약해서 작성해 주세요. 
+  안녕하세요! 저는 PEETING의 챗봇입니다. PEETING은 프리랜서 개발자 및 디자이너들이 기업과 협업 기회를 얻고 프로젝트를 진행할 수 있는 사이트입니다. 
+  이 사이트에 대한 정보가 필요한 경우에만 해당 정보를 답변에 포함시켜 주세요.`;
 
     try {
       const response = await fetch(apiEndpoint, {
@@ -72,7 +76,7 @@ function MainPage() {
           'Authorization': `Bearer ${apiKey}`,
         },
         body: JSON.stringify({
-          model: 'gpt-4o',
+          model: 'gpt-4o-mini',
           messages: [{ role: 'user', content: prompt }],
           max_tokens: 200,
           top_p: 0.7,
@@ -93,6 +97,13 @@ function MainPage() {
       setLoading(false);
     }
   };
+
+  // 메시지가 업데이트될 때마다 자동으로 대화 끝으로 스크롤
+  useEffect(() => {
+    if (endOfMessagesRef.current) {
+      endOfMessagesRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages]);
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
@@ -742,6 +753,7 @@ function MainPage() {
                 {msg.message}
               </div>
             ))}
+            <div ref={endOfMessagesRef} />
           </div>
           <div className="chatbot-message-input">
             <input

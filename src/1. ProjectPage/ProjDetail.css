@@ -197,19 +197,25 @@
     justify-content: space-between;
 }
 
-.Detail-Body-pName{
+.Detail-Body-pName {
     display: flex;
     align-items: center;
     gap: 4px;
 }
 
-.Detail-Body-pDeadline{
+.Detail-Body-pDeadline {
     display: flex;
     align-items: center;
     gap: 8px;
 }
 
-.Detail-Body-pName-label, .Detail-Body-pDeadline-label, .Detail-Body-pCategory-label, .Detail-Body-pTracks-label, .Detail-Body-pTechStacks-label, .Detail-Body-pEligibility-label, .Detail-Body-pDescription-label {
+.Detail-Body-pName-label,
+.Detail-Body-pDeadline-label,
+.Detail-Body-pCategory-label,
+.Detail-Body-pTracks-label,
+.Detail-Body-pTechStacks-label,
+.Detail-Body-pEligibility-label,
+.Detail-Body-pDescription-label {
     color: #741C1C;
     font-size: 17px;
 }
@@ -234,7 +240,7 @@
     gap: 10px;
 }
 
-.Detail-Body-pTracks-items{
+.Detail-Body-pTracks-items {
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -249,7 +255,7 @@
     gap: 10px;
 }
 
-.Detail-Body-pTechStacks-items{
+.Detail-Body-pTechStacks-items {
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -260,7 +266,7 @@
     width: 100%;
     display: flex;
     align-items: center;
-    justify-content:flex-start;
+    justify-content: flex-start;
     gap: 10px;
 }
 
@@ -323,7 +329,7 @@
     font-size: 20px;
 }
 
-.Detail-Body-contents6-right a{
+.Detail-Body-contents6-right a {
     width: 100%;
 }
 
@@ -417,7 +423,7 @@
     padding-right: 30px;
     padding-left: 30px;
     border-radius: 15px;
-    
+
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -438,7 +444,8 @@
     font-size: 20px;
 }
 
-.Detail-SubBody-commentBox-comment-header-profileImage, .Detail-SubBody-commentBox-comment-header-profileImage img {
+.Detail-SubBody-commentBox-comment-header-profileImage,
+.Detail-SubBody-commentBox-comment-header-profileImage img {
     width: 45px;
     height: 45px;
     border-radius: 50%;
