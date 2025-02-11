@@ -34,7 +34,8 @@ html {
     padding: 0;
     width: 100%;
     height: 100%;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
     display: flex;
     justify-content: center;
 }
@@ -50,9 +51,9 @@ html {
 
 .MainPage-Header {
     margin-top: 50px;
+    width: 1100px;
     display: flex;
-    justify-content: center;
-    gap: 90px;
+    justify-content: space-between;
 }
 
 .MainPage-Header-Left {
@@ -63,6 +64,7 @@ html {
 }
 
 .MainPage-Header-LOGO {
+    width: 150px;
     font-family: 'Montserrat-Bold';
     font-size: 32px;
     cursor: pointer;
@@ -108,7 +110,7 @@ html {
 .MainPage-Header-Right {
     display: flex;
     justify-content: flex-start;
-    gap: 30px;
+    gap: 15px;
     align-items: center;
 }
 
@@ -117,6 +119,7 @@ html {
 .MainPage-Header-Right-MyProject,
 .MainPage-Header-Right-LoginButton,
 .MainPage-Header-Right-LogoutButton {
+    width: 90px;
     font-family: 'Pretendard-Semibold';
     cursor: pointer;
 }
@@ -194,6 +197,15 @@ html {
     display: flex;
     flex-direction: column;
     align-items: center;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.MainPage-Contents-item:hover {
+    background-color: #F2F2F2;
+    transform: scale(1.05);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
 }
 
 .MainPage-Contents-item-poster {
@@ -206,6 +218,17 @@ html {
     justify-content: center;
     align-items: center;
 }
+
+.MainPage-Contents-item-poster img {
+    width: 100%;
+    height: 100%;
+    border-radius: 15px 15px 8px 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    object-fit: cover;
+}
+
 
 .MainPage-Contents-item-contents {
     margin-top: 7px;
@@ -295,7 +318,7 @@ html {
 .pagination button {
     width: 38.38px;
     height: 38.38px;
-    background-color: #FFFFFF;
+    background-color: transparent;
     border-radius: 4px;
     font-family: 'Pretendard-Medium';
     font-size: 16px;
@@ -690,6 +713,11 @@ html {
     border: none;
     cursor: pointer;
 }
+
+
+/* 챗봇 css 위치 */
+
+
 
 ul,
 li {

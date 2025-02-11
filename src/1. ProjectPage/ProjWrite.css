@@ -3,6 +3,7 @@
     src: url('../Fonts/Montserrat-Bold.ttf') format('truetype');
     font-style: normal;
 }
+
 @font-face {
     font-family: 'Pretendard-SemiBold';
     src: url('../Fonts/Pretendard-SemiBold.ttf') format('truetype');
@@ -13,4 +14,751 @@
     font-family: 'Pretendard-Medium';
     src: url('../Fonts/Pretendard-Medium.ttf') format('truetype');
     font-style: normal;
+}
+
+@font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('../Fonts/Pretendard-Regular.ttf') format('truetype');
+    font-style: normal;
+}
+
+/* 캘린더 스타일 */
+.calendar-dropdown {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #ffffff;
+    margin-top: 10px;
+    width: 275px;
+    height: 275px;
+    border: 3px solid #BE3838;
+    border-radius: 15px;
+
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Pretendard-SemiBold';
+    font-size: 16px;
+    margin-top: 16px;
+
+}
+
+.calendar-nav {
+    border: none;
+    width: 23px;
+    height: 23px;
+    cursor: pointer;
+}
+
+.calendar-body {
+    margin-top: 10px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+    width: 231px;
+    height: 195px;
+    flex-direction: column;
+}
+
+.calendar-weekday {
+    width: 230px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+
+}
+
+.calendar-day-day-header {
+    width: 20px;
+    height: 20px;
+    color: #A1A6A9;
+    font-family: 'Pretendard-Semibold';
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/*   
+  .calendar-weekday-item {
+    display: flex;
+
+  } */
+
+.calendar-week {
+    display: flex;
+    width: 230px;
+    height: 20px;
+    gap: 15px;
+}
+
+.calendar-day {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 20px;
+    height: 20px;
+    font-family: 'Pretendard-Regular';
+    text-align: center;
+    cursor: pointer;
+}
+
+/* 선택한 날짜 스타일 */
+.calendar-day.selected {
+    background-color: #E99A9A;
+    color: #ffffff;
+    border-radius: 50%;
+
+}
+
+
+
+.current-month {
+    background: #fff;
+    color: black;
+}
+
+.other-month {
+    /* background: #f8f8f8; */
+    color: #aaa;
+}
+
+.other-month.sunday {
+    color: #aaa;
+}
+
+.other-month.saturday {
+    color: #aaa;
+}
+
+/* 일요일 (빨간색) */
+.sunday {
+    color: #FF5D5D;
+
+}
+
+/* 토요일 (파란색) */
+.saturday {
+    color: #789EFF;
+
+}
+
+
+.ProjWrite-Container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.ProjWrite-Header {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 50px;
+    width: 1100px;
+    height: 58px;
+}
+
+.ProjWrite-Header-Left {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 26px;
+}
+
+.ProjWrite-Header-Left-Logo {
+    width: 150px;
+    font-family: 'Montserrat-Bold';
+    font-size: 32px;
+    cursor: pointer;
+}
+
+.ProjWrite-Header-Left-Logo span {
+    color: #BE3838;
+}
+
+
+.ProjWrite-Header-Right {
+    display: flex;
+    justify-content: flex-start;
+    gap: 30px;
+    align-items: center;
+}
+
+
+.ProjWrite-Header-Right-ProMatch,
+.ProjWrite-Header-Right-FreeMatch,
+.ProjWrite-Header-Right-MyProject,
+.ProjWrite-Header-Right-LoginButton {
+    width: 90px;
+    font-family: 'Pretendard-SemiBold';
+    cursor: pointer;
+}
+
+.ProjWrite-Header-Right-FreeMatch,
+.ProjWrite-Header-Right-MyProject,
+.ProjWrite-Header-Right-LoginButton {
+    color: #A1A6A9;
+}
+
+
+.ProjWrite-Body {
+    display: flex;
+    margin-top: 30px;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+}
+
+.ProjWrite-Body-Title-Box {
+    display: flex;
+    justify-content: flex-start;
+    width: 300px;
+    margin-right: 830px;
+}
+
+.ProjWrite-Body-Title {
+    font-family: 'Pretendard-Medium';
+    font-size: 40px;
+}
+
+.ProjWrite-Body-MainBox {
+    width: 1128px;
+    height: 555px;
+    margin-top: 38px;
+    padding-bottom: 17px;
+    background-color: #F2F2F2;
+    justify-content: flex-start;
+    border: 3px solid #BE3838;
+    border-radius: 15px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+.ProjWrite-Body-MainBox::-webkit-scrollbar {
+    width: 50px;
+}
+
+.ProjWrite-Body-MainBox::-webkit-scrollbar-track {
+    background-color: transparent;
+    margin-top: 17px;
+    margin-bottom: 17px;
+}
+
+.ProjWrite-Body-MainBox::-webkit-scrollbar-thumb {
+    background-color: #D9D9D9;
+    /* 스크롤바 색상 */
+    border-radius: 50px;
+    /* 스크롤바 모서리 둥글게 */
+    border: 16px solid #F2F2F2;
+    /* 스크롤바를 오른쪽에서 떨어지게 하는 여백 */
+}
+
+.ProjWrite-Body-MainBox-Title {
+    display: flex;
+    margin-top: 50px;
+    margin-left: 264px;
+    width: 600px;
+    height: 70px;
+    outline: none;
+    border-radius: 15px;
+    background-color: #d9d9d9;
+    border: none;
+    font-size: 24px;
+    text-align: center;
+
+}
+
+.ProjWrite-Body-MainBox-Title::placeholder {
+    font-family: 'Pretendard-Medium';
+    color: #A9A9A9;
+    text-align: center;
+}
+
+.ProjWrite-Body-MainBox-ContentBox {
+    margin-top: 25px;
+    margin-left: 72px;
+}
+
+.ProjWrite-Body-ContentBox-Title {
+    font-family: 'Pretendard-Medium';
+    font-size: 20px;
+}
+
+.ProjWrite-ContentBox-Container {
+    display: flex;
+    justify-content: flex-start;
+
+    gap: 21px;
+    font-family: 'Pretendard-Medium';
+    font-size: 20px;
+    color: #A1A6A9;
+}
+
+.ProjWrite-Category-radio {
+    appearance: none;
+    background-color: #D9D9D9;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    outline: none;
+    cursor: pointer;
+    position: relative;
+}
+
+.ProjWrite-Category-radio:checked {
+    background-color: #D9D9D9;
+}
+
+.ProjWrite-Category-radio:checked::before {
+    content: "";
+    width: 16px;
+    height: 16px;
+    background-color: #BE3838;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.ProjWrite-Category-Culture,
+.ProjWrite-Category-Finance,
+.ProjWrite-Category-Medical,
+.ProjWrite-Category-Building {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+
+
+.ProjWrite-Tracks-Back,
+.ProjWrite-Tracks-Front,
+.ProjWrite-Tracks-PM,
+.ProjWrite-Tracks-Design {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.ProjWrite-Tracks-Front {
+    margin-left: 19px;
+}
+
+.ProjWrite-Tracks-PM {
+    margin-left: 5px;
+}
+
+.ProjWrite-Tracks-Design {
+    margin-left: 62.5px;
+}
+
+
+
+
+.ProjWrite-Tracks-radio {
+    appearance: none;
+    background-color: #D9D9D9;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    outline: none;
+    cursor: pointer;
+    position: relative;
+}
+
+.ProjWrite-Tracks-radio:checked {
+    background-color: #D9D9D9;
+}
+
+.ProjWrite-Tracks-radio:checked::before {
+    content: "";
+    width: 16px;
+    height: 16px;
+    background-color: #BE3838;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+
+
+
+
+/* .ProjWrite-Category {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+} */
+
+/* .category-icon {
+    width: 34px;
+    height: 34px;
+}
+
+.category-text {
+    font-family: 'Pretendard-Medium';
+    font-size: 20px;
+    color: #A1A6A9;
+    width: 102px;
+} */
+
+.ProjWrite-ContentBox-LimitSalary {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 125px;
+
+}
+
+.ProjWrite-ContentBox-Limit {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+
+}
+
+.Limit-title {
+    display: flex;
+    flex-direction: row;
+
+    align-items: center;
+}
+
+.Limit-content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.calendar-icon {
+    width: 35px;
+    height: 35px;
+    margin-left: 1px;
+    cursor: pointer;
+}
+
+
+.ProjWrite-LimitBox1 {
+    font-family: 'Pretendard-Medium';
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 168px;
+    height: 55px;
+    background-color: #d9d9d9;
+    border-radius: 15px;
+    margin-right: 8px;
+
+
+}
+
+.ProjWrite-LimitBox2 {
+    font-family: 'Pretendard-Medium';
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 168px;
+    height: 55px;
+    background-color: #d9d9d9;
+    border-radius: 15px;
+    margin-left: 8px;
+
+}
+
+.LimitBox-Text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+    font-family: 'Pretendard-Medium';
+}
+
+.ProjWrite-ContentBox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ProjWrite-ContentBox-Salary {
+    display: flex;
+    flex-direction: column;
+    margin-left: 12px;
+
+}
+
+.Salary-Input-Box {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 267px;
+    height: 55px;
+    background-color: #d9d9d9;
+    border: none;
+    border-radius: 15px;
+    outline: none;
+    font-family: 'Pretendard-Medium';
+    font-size: 20px;
+    padding-left: 19px;
+}
+
+.Salary-Input {
+    width: 80%;
+    height: 100%;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    font-family: 'Pretendard-Medium';
+    font-size: 20px;
+
+}
+
+.Salary-Input::placeholder {
+    font-family: 'Pretendard-Medium';
+    color: #A9A9A9;
+    font-size: 20px;
+}
+
+.Salary-Text {
+    font-family: 'Pretendard-Medium';
+    font-size: 20px;
+}
+
+.ProjWrite-Target-Content {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.Target-Text {
+    width: 416px;
+    height: 117px;
+    font-family: 'Pretendard-Medium';
+    font-size: 20px;
+    border: none;
+    border-radius: 15px;
+    background-color: #d9d9d9;
+    overflow-y: auto;
+    /* 스크롤 자동 생성 */
+    overflow-x: hidden;
+    padding: 25px;
+    outline: none;
+    resize: none;
+}
+
+
+.Target-Text::-webkit-scrollbar {
+    width: 40px;
+}
+
+.Target-Text::-webkit-scrollbar-track {
+    background-color: transparent;
+    /* margin-top: 17px;
+    margin-bottom: 17px; */
+}
+
+.Target-Text::-webkit-scrollbar-thumb {
+    background-color: #F2F2F2;
+    /* 스크롤바 색상 */
+    border-radius: 50px;
+    /* 스크롤바 모서리 둥글게 */
+    border: 14px solid #D9D9D9;
+    /* 스크롤바를 오른쪽에서 떨어지게 하는 여백 */
+}
+
+
+
+.ProjWrite-ContentBox-TargetTech {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 49px;
+
+}
+
+
+
+.ProjWrite-Tech-Content {
+    width: 466px;
+    max-height: 117px;
+    border: none;
+    border-radius: 15px;
+    background-color: #d9d9d9;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center;
+    align-items: flex-start; */
+    gap: 10px;
+    padding: 10px 0;
+
+}
+
+.ProjWrite-Tech-Content::-webkit-scrollbar {
+    width: 40px;
+}
+
+.ProjWrite-Tech-Content::-webkit-scrollbar-track {
+    background-color: transparent;
+    /* margin-top: 17px;
+    margin-bottom: 17px; */
+}
+
+.ProjWrite-Tech-Content::-webkit-scrollbar-thumb {
+    background-color: #F2F2F2;
+    /* 스크롤바 색상 */
+    border-radius: 50px;
+    /* 스크롤바 모서리 둥글게 */
+    border: 14px solid #D9D9D9;
+    /* 스크롤바를 오른쪽에서 떨어지게 하는 여백 */
+}
+
+.ProjWrite-Tech-Input {
+    width: 391px;
+    height: 29px;
+    border-radius: 15px;
+    border: none;
+    resize: none;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    outline: none;
+    text-align: center;
+    font-family: 'Pretendard-Medium';
+    font-size: 15px;
+    margin-left: 11px;
+
+}
+
+.ProjWrite-Tech-Input::placeholder {
+    font-family: 'Pretendard-Medium';
+    color: #A9A9A9;
+    font-size: 15px;
+    text-align: center;
+}
+
+.ProjWrite-AddButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 391px;
+    height: 45px;
+    background-color: #ffffff;
+    border: none;
+    border-radius: 15px;
+    flex-shrink: 0;
+    /* 버튼 크기가 줄어들지 않도록 설정 */
+    margin-left: 11px;
+
+}
+
+.Tech-Input-Button {
+    width: 20px;
+    height: 18px;
+}
+
+.ProjWrite-ContentBox-Projdetail {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.ProjWrite-Prjdetail-Content {
+    width: 981px;
+    height: 220px;
+    border: none;
+    border-radius: 15px;
+    background-color: #d9d9d9;
+    overflow-y: auto;
+    /* 스크롤 자동 생성 */
+    overflow-x: hidden;
+}
+
+.ProjWrite-Prjdetail-Content::-webkit-scrollbar {
+    width: 40px;
+}
+
+.ProjWrite-Prjdetail-Content::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+.ProjWrite-Prjdetail-Content::-webkit-scrollbar-thumb {
+    background-color: #F2F2F2;
+    border-radius: 50px;
+    border: 14px solid #D9D9D9;
+    min-height: 50px;
+}
+
+.Project-Detail-Content {
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    font-family: 'Pretendard-Medium';
+    font-size: 20px;
+    padding: 25px;
+    resize: none;
+}
+
+
+
+.Create-Project {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    margin-top: 20px;
+    margin-right: 25px;
+}
+
+.Create-Button {
+    width: 177px;
+    height: 63px;
+    border: 3px solid #BE3838;
+    border-radius: 15px;
+    background-color: #d9d9d9;
+    font-family: 'Pretendard-Medium';
+    font-size: 25px;
+    color: #000000;
+
+}
+
+.Add-Poster {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-top: 20px;
+    width: 981px;
+    height: 68px;
+    background-color: #F2C6C6;
+    border: none;
+    border-radius: 15px;
+    cursor: "pointer";
+    gap: 19px;
+}
+
+.img-upload{
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    padding-left: 20px;
+}
+
+.imgfile-name,
+.add-poster-name {
+    font-family: 'Pretendard-Medium';
+    size: 20px;
+    color: #741C1C;
 }

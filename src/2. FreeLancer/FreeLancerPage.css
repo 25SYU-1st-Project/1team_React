@@ -25,10 +25,10 @@
 }
 
 .FreeLancer-Header {
+    width: 1100px;
     margin-top: 50px;
     display: flex;
-    justify-content: center;
-    gap: 90px;
+    justify-content: space-between;
 }
 
 .FreeLancer-Header-Left {
@@ -39,6 +39,7 @@
 }
 
 .FreeLancer-Header-LOGO {
+    width: 150px;
     font-family: 'Montserrat-Bold';
     font-size: 32px;
     cursor: pointer;
@@ -51,7 +52,7 @@
 .FreeLancer-Header-Right {
     display: flex;
     justify-content: flex-start;
-    gap: 30px;
+    gap: 15px;
     align-items: center;
 }
 
@@ -90,14 +91,17 @@
 .FreeLancer-Header-Right-ProMatch,
 .FreeLancer-Header-Right-FreeMatch,
 .FreeLancer-Header-Right-MyProject,
-.FreeLancer-Header-Right-LoginButton {
+.FreeLancer-Header-Right-LoginButton,
+.FreeLancer-Header-Right-LogoutButton {
+    width: 90px;
     font-family: 'Pretendard-Semibold';
     cursor: pointer;
 }
 
 .FreeLancer-Header-Right-ProMatch,
 .FreeLancer-Header-Right-MyProject,
-.FreeLancer-Header-Right-LoginButton {
+.FreeLancer-Header-Right-LoginButton,
+.FreeLancer-Header-Right-LogoutButton {
     color: #A1A6A9;
 }
 

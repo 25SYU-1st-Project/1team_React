@@ -179,6 +179,12 @@
     font-size: 26px;
 }
 
+.MyProject-Body-Left-Name-input::placeholder {
+    font-family: 'Pretendard-Medium';
+    color: #A1A6A9;
+    font-size: 20px;
+}
+
 .MyProject-Body-Left-Inform {
     width: 346px;
     height: 233px;
@@ -226,6 +232,10 @@
     border: none;
     outline: none;
     word-break: keep-all;
+}
+
+.MyProject-Body-Left-Inform-Track button {
+    color: #000000;
 }
 
 .MyProject-Body-Left-Inform-Track-Dropdown {
@@ -283,7 +293,6 @@
     width: 354px;
     height: 55px;
     display: flex;
-
     align-self: center;
     justify-content: center;
     align-items: center;
@@ -292,7 +301,7 @@
     color: #FFFFFF;
     font-size: 20px;
     border: none;
-    border-radius: 50px;
+    border-radius: 15px;
     cursor: pointer;
 }
 
@@ -329,7 +338,7 @@
 }
 
 .MyProject-Body-Right-Content-Box1-Resume {
-    width: 100%;
+    width: 637px;
     height: 100%;
     display: flex;
     justify-content: center;
@@ -351,7 +360,11 @@
 }
 
 .MyProject-Body-Right-Content-Box1-Tracks {
-    
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    font-family: 'Pretendard-Medium';
+    font-size: 13px;
 }
 
 .track-box {
@@ -371,8 +384,20 @@
 }
 
 .MyProject-Body-Right-Content-Box1-Detail {
+    width: 637px;
+    height: 100%;
+    display: block;
+}
+
+.MyProject-Body-Right-Content-Box1-DetailContent {
+    width: 637px;
+    height: 100%;
     font-family: 'Pretendard-Medium';
-    font-size: 15px;
+    font-size: 15px; 
+    display: block;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
 }
 
 .MyProject-Body-Right-Content-Box1-Trash {

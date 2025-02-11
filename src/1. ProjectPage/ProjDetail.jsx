@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
+import { Link } from 'react-scroll';
 import Modal from 'react-modal';
-import { useNavigate } from 'react-router-dom';
-import searchIcon from '../images/search.png';
-import './MainPage.css';
 
-import defaultPoster from '../images/defaultPoster.png';
+import './ProjDetail.css';
+import searchIcon from '../images/search.png';
+
 import firstIcon from '../images/first.png';
 import prevIcon from '../images/prev.png';
 import nextIcon from '../images/next.png';
@@ -14,14 +15,11 @@ import plusIcon from '../images/plusIcon.png';
 //firebase 임포트
 import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { doc, setDoc, Timestamp, collection, getDoc, getDocs } from "firebase/firestore";
-import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import { doc, setDoc, collection, getDoc, addDoc, onSnapshot, orderBy, query } from "firebase/firestore";
+import { updateDoc, arrayUnion } from "firebase/firestore";
 import { auth, db } from '../firebase';
 
-Modal.setAppElement('#root');
-
-function MainPage() {
-
+function projDetail() {
   // 회원 정보 변수
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -34,52 +32,45 @@ function MainPage() {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태 추가
   const [currentUser, setCurrentUser] = useState(null); // 현재 로그인한 사용자 정보
+  const [userName, setUserName] = useState("");
+
+  const [post, setPost] = useState(null);
+  const projectId = post?.id;
+  const [comment, setComment] = useState("");
+  const [comments, setComments] = useState([]);
+  const [isPostOwner, setIsPostOwner] = useState(false);
+
 
   // 회원가입 라디오버튼 핸들러
   const handleRadioChange = (event) => {
     setSelectedMemberClass(event.target.value);
   };
 
+  //애니메이션
+  const slides = [
+    { color: "#000000", text: "LIKELION 13기 모집중", target: "#" },
+    { color: "#000000", text: "1팀 장준익 유광렬 정서우", target: "#" },
+    { color: "#000000", text: "강승진 강사님 화이팅", target: "#" },
+    { color: "#000000", text: "삼육대 컴공 4학년 화이팅", target: "#" },
+    { color: "#000000", text: "개발자 커뮤니티 WAD!", target: "#" },
+    { color: "#000000", text: "챌 서폿 잼띵이 구독!!", target: "#" },
+    { color: "#000000", text: "PEETING은 최고야!", target: "#" },
+  ];
+  const [animate, setAnimate] = useState(true);
+  const onStop = () => setAnimate(false);
+  const onRun = () => setAnimate(true);
+
   //라우터 핸들러
+
   const navigate = useNavigate();
 
   const handleMain = () => {
     navigate('/')
   }
-  const handleProjButton = async () => {
-    const storedUser = localStorage.getItem("user");
-    if (!storedUser) {
-      alert("글 작성은 로그인 후 이용 가능합니다.");
-      setLoginModalIsOpen(true);
-      return;
-    }
-
-    const parsedUser = JSON.parse(storedUser);
-
-    const userRef = doc(db, "users", parsedUser.uid);
-    const userSnap = await getDoc(userRef);
-
-    if (userSnap.exists()) {
-      const userData = userSnap.data();
-
-      if (userData.memberClass === "premium") {
-        navigate("/projectWrite");
-      } else {
-        alert("단체 회원만 글을 작성할 수 있습니다.");
-      }
-    } else {
-      alert("유저 정보를 찾을 수 없습니다.");
-    }
-  };
 
   const handleFreePage = () => {
     navigate('/FreeView');
   }
-
-  const handleDetail = (post) => {
-    localStorage.setItem("selectedPost", JSON.stringify(post)); // 데이터 저장
-    navigate("/detail");
-  };
 
   const handleMyProject = () => {
     if (isLoggedIn) {
@@ -88,78 +79,6 @@ function MainPage() {
       alert('마이페이지는 로그인 후 이용 가능합니다.');
       setLoginModalIsOpen(true);
     }
-  };
-
-  // 그리드에 표시되는 포스트들, 페이징 버튼
-  const [posts, setPosts] = useState([]);
-
-  const postsPerPage = 6;
-  const [currentPage, setCurrentPage] = useState(1);
-  const [selectedCategory, setSelectedCategory] = useState("전체");
-
-  const [searchTerm, setSearchTerm] = useState("");
-  const [appliedSearchTerm, setAppliedSearchTerm] = useState("");
-
-
-  // 검색어 눌렀을 때, 즉시 변환되지 않도록(엔터키를 눌러야만 변화되도록 컨트롤 해주는 함수)
-  // 검색어 입력 변화 처리
-  const handleSearchInputChange = (event) => {
-    setSearchTerm(event.target.value);
-  };
-
-  // 엔터 키 눌렀을 때 검색어 적용
-  const handleKeyDown = (event) => {
-    if (event.key === "Enter") {
-      setAppliedSearchTerm(searchTerm);
-    }
-  };
-
-  // 카테고리별 필터링 함수 (searchTerm 대신 appliedSearchTerm 사용)
-  const filteredPosts = posts.filter(post =>
-    (selectedCategory === "전체" || post.category === selectedCategory) &&
-    (appliedSearchTerm === "" || post.name.includes(appliedSearchTerm))
-  );
-
-  const currentFilteredPosts = filteredPosts.slice(
-    (currentPage - 1) * postsPerPage,
-    currentPage * postsPerPage
-  );
-
-  const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
-
-  const maxPageButtons = 5;
-
-  const getPageNumbers = () => {
-    const pageGroup = Math.floor((currentPage - 1) / maxPageButtons) * maxPageButtons;
-    const startPage = pageGroup + 1;
-    const endPage = Math.min(startPage + maxPageButtons - 1, totalPages);
-
-    return Array.from({ length: endPage - startPage + 1 }, (_, index) => startPage + index);
-  };
-
-  const currentPosts = posts.slice(
-    (currentPage - 1) * postsPerPage,
-    currentPage * postsPerPage
-  );
-
-  const handleClick = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
-
-  const handleFirstPage = () => {
-    setCurrentPage(1);
-  };
-
-  const handleLastPage = () => {
-    setCurrentPage(totalPages);
-  };
-
-  const handlePrevPage = () => {
-    setCurrentPage(prev => (prev > 1 ? prev - 1 : 1));
-  };
-
-  const handleNextPage = () => {
-    setCurrentPage(prev => (prev < totalPages ? prev + 1 : totalPages));
   };
 
   //모달 함수
@@ -297,186 +216,331 @@ function MainPage() {
       setError(`회원가입 실패: ${err.message}`);
     }
   };
+  // 댓글 입력 핸들러
+  const handleCommentChange = (e) => {
+    setComment(e.target.value);
+  };
 
-  //애니메이션
-  const slides = [
-    { color: "#000000", text: "LIKELION 13기 모집중", target: "#" },
-    { color: "#000000", text: "1팀 장준익 유광렬 정서우", target: "#" },
-    { color: "#000000", text: "강승진 강사님 화이팅", target: "#" },
-    { color: "#000000", text: "삼육대 컴공 4학년 화이팅", target: "#" },
-    { color: "#000000", text: "개발자 커뮤니티 WAD!", target: "#" },
-    { color: "#000000", text: "챌 서폿 잼띵이 구독!!", target: "#" },
-    { color: "#000000", text: "PEETING은 최고야!", target: "#" },
-  ];
+  // Firestore에 댓글 추가
+  const handlePostComment = async () => {
+    if (!comment.trim()) return; // 빈 댓글 방지
 
-  const [animate, setAnimate] = useState(true);
-  const onStop = () => setAnimate(false);
-  const onRun = () => setAnimate(true);
+    if (!auth.currentUser) {
+      alert("로그인 후 이용해주세요.");
 
+      return;
+    }
 
-  //포스트 Get함수
-  const formatDate = (timestamp) => {
-    if (!timestamp) return "";
-    const date = timestamp instanceof Timestamp ? timestamp.toDate() : new Date(timestamp);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    return `${year}.${month}.${day}`;
+    const currentDate = new Date();
+    const userId = auth.currentUser.uid;
+
+    try {
+      await addDoc(collection(db, `projects/${projectId}/comments`), {
+        contents: comment,
+        createdAt: currentDate,
+        creatorId: userId,
+        creatorName: userName, // 기존의 name 대신 userName 사용
+        participateStatus: "none"
+      });
+      setComment(""); // 입력 필드 초기화
+    } catch (error) {
+      console.error("댓글 저장 오류:", error);
+    }
+  };
+
+  const fetchUserName = async (userId) => {
+    if (!userId) return;
+
+    try {
+      const userDoc = await getDoc(doc(db, "users", userId));
+      if (userDoc.exists()) {
+        return userDoc.data().name; // name 값 반환
+      } else {
+        console.error("사용자 정보가 없습니다.");
+      }
+    } catch (error) {
+      console.error("사용자 정보 가져오기 오류:", error);
+    }
   };
 
   useEffect(() => {
-    const fetchProjects = async () => {
-      try {
-        const querySnapshot = await getDocs(collection(db, "projects"));
-        let fetchedProjects = querySnapshot.docs.map(doc => ({
+    if (auth.currentUser) {
+      fetchUserName(auth.currentUser.uid).then((name) => {
+        if (name) setUserName(name);
+      });
+    }
+  }, [auth.currentUser]);
+
+
+  // Firestore에서 댓글 가져오기 (실시간 업데이트)
+  useEffect(() => {
+    const unsubscribe = onSnapshot(
+      query(
+        collection(db, `projects/${projectId}/comments`),
+        orderBy("createdAt", "desc")
+      ),
+      (snapshot) => {
+        const fetchedComments = snapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         }));
-
-        // createdAt을 기준으로 내림차순 정렬
-        fetchedProjects.sort((a, b) => b.createdAt - a.createdAt);
-
-        // Firebase Storage에서 이미지 URL 변환
-        const storage = getStorage();
-        const updatedProjects = await Promise.all(
-          fetchedProjects.map(async (post) => {
-            if (post.projectPoster && post.projectPoster.startsWith("gs://")) {
-              try {
-                const storageRef = ref(storage, post.projectPoster);
-                post.projectPoster = await getDownloadURL(storageRef);
-              } catch (error) {
-                console.error("이미지 URL을 가져오는 중 오류:", error);
-                post.projectPoster = "https://storage.googleapis.com/p-eeting.firebasestorage.app/profileImage/DefaultImage.png";
-              }
-            } else if (!post.projectPoster) {
-              // projectPoster가 비어 있을 경우 기본 이미지 적용
-              post.projectPoster = defaultPoster;
-            }
-            return post;
-          })
-        );
-
-        setPosts(updatedProjects); // 불필요한 setPosts 중복 제거
-      } catch (error) {
-        console.error("프로젝트 데이터를 가져오는 중 오류:", error);
+        setComments(fetchedComments);
+        if (post && auth.currentUser) {
+          setIsPostOwner(String(post.creatorId) === String(auth.currentUser.uid));
+        }
       }
-    };
+    );
 
-    fetchProjects();
-  }, []);
+    return () => unsubscribe();
+  }, [projectId, post, auth?.currentUser]);
 
-  const handleCategoryClick = (category) => {
-    setSelectedCategory(category);
-    setCurrentPage(1);
+  const handleAccept = async (commentItem) => {
+    if (!isPostOwner) return;
+  
+    const userRef = doc(db, "users", commentItem.creatorId); // 댓글 작성자의 Firestore 문서
+  
+    try {
+      await updateDoc(userRef, {
+        joinedProjects: arrayUnion(projectId), // 프로젝트 ID 추가
+      });
+    } catch (error) {
+    }
   };
 
+
+  // 그리드에 표시되는 포스트들, 페이징 버튼
+  const commentsPerPage = 4; // 한 페이지에 표시할 댓글 수
+  const [currentCommentPage, setCurrentCommentPage] = useState(1);
+  const maxPageButtons = 5; // 페이지 버튼 최대 개수
+
+  // 전체 페이지 수 계산
+  const totalCommentPages = Math.ceil(comments.length / commentsPerPage);
+
+  const getPageNumbers = () => {
+    const pageGroup = Math.floor((currentCommentPage - 1) / maxPageButtons) * maxPageButtons;
+    const startPage = pageGroup + 1;
+    const endPage = Math.min(startPage + maxPageButtons - 1, totalCommentPages);
+
+    return Array.from({ length: endPage - startPage + 1 }, (_, index) => startPage + index);
+  };
+
+  const currentFilteredPosts = comments.slice(
+    (currentCommentPage - 1) * commentsPerPage,
+    currentCommentPage * commentsPerPage
+  );
+
+  const handleCommentPageChange = (pageNumber) => {
+    setCurrentCommentPage(pageNumber);
+  };
+
+  const handleFirstPage = () => {
+    setCurrentCommentPage(1);
+  };
+
+  const handleLastPage = () => {
+    setCurrentCommentPage(totalCommentPages);
+  };
+
+  const handlePrevPage = () => {
+    setCurrentCommentPage(prev => (prev > 1 ? prev - 1 : 1));
+  };
+
+  const handleNextPage = () => {
+    setCurrentCommentPage(prev => (prev < totalCommentPages ? prev + 1 : totalCommentPages));
+  };
+
+
+  useEffect(() => {
+    const savedPost = localStorage.getItem("selectedPost");
+    if (savedPost) {
+      setPost(JSON.parse(savedPost)); // 데이터 복구
+    } else {
+      navigate("/"); // 데이터 없으면 홈으로 리디렉트
+    }
+  }, [navigate]);
+
+  if (!post) return null;
+
+
+
+
   return (
-    <div className="MainPage-container">
-      <div className="MainPage-Header">
-        <div className="MainPage-Header-Left">
-          <div className="MainPage-Header-LOGO" onClick={handleMain}><span>P</span>-eeting</div>
-          <div className="MainPage-Header-Search">
-            <div className="MainPage-Header-SearchIcon"><img src={searchIcon} /></div>
-            <input className="MainPage-Header-InputArea" type="text" placeholder="프로젝트 미팅, 피팅" value={searchTerm} onChange={handleSearchInputChange} onKeyDown={handleKeyDown} />
+    <div className="Detail-Container">
+      <div className="Detail-Header">
+        <div className="Detail-Header-Left">
+          <div className="Detail-Header-LOGO" onClick={handleMain}><span>P</span>-eeting</div>
+          <div className="Detail-Header-Search">
+            <div className="Detail-Header-SearchIcon"><img src={searchIcon} /></div>
+            <input className="Detail-Header-InputArea" type="text" placeholder="프로젝트 미팅, 피팅" />
           </div>
         </div>
-        <div className="MainPage-Header-Right">
-          <div className="MainPage-Header-Right-ProMatch">프로젝트 매칭</div>
-          <div className="MainPage-Header-Right-FreeMatch" onClick={handleFreePage}>프리랜서 매칭</div>
-          <div className="MainPage-Header-Right-MyProject" onClick={handleMyProject}>마이 프로젝트</div>
+        <div className="Detail-Header-Right">
+          <div className="Detail-Header-Right-ProMatch">프로젝트 매칭</div>
+          <div className="Detail-Header-Right-FreeMatch" onClick={handleFreePage}>프리랜서 매칭</div>
+          <div className="Detail-Header-Right-MyProject" onClick={handleMyProject}>마이 프로젝트</div>
           {isLoggedIn ? (
-            <div className="MainPage-Header-Right-LogoutButton" onClick={handleLogout}>
+            <div className="Detail-Header-Right-LogoutButton" onClick={handleLogout}>
               로그아웃
             </div>
           ) : (
-            <div className="MainPage-Header-Right-LoginButton" onClick={() => setLoginModalIsOpen(true)}>
+            <div className="Detail-Header-Right-LoginButton" onClick={() => setLoginModalIsOpen(true)}>
               로그인
             </div>
           )}
         </div>
       </div>
-      <div className="MainPage-Contents">
-        <div className="MainPage-Contents-header">
-          <div className="MainPage-Contents-header-title">프로젝트 목록</div>
-          <div className="MainPage-Contents-header-category">
-            {["전체", "문화 · 스포츠", "금융 · 보험", "의료서비스", "건설 · 건축"].map((category) => (
-              <div
-                key={category}
-                className={`MainPage-Contents-header-category-item ${selectedCategory === category ? "active" : ""
-                  }`}
-                onClick={() => handleCategoryClick(category)}
-              >
-                {category}
-              </div>
+      <div className="Detail-Body">
+        <div className="Detail-Body-contents1">
+          <img src={post.projectPoster} alt="" />
+        </div>
+        <div className="Detail-Body-contents2">
+          <div className="Detail-Body-pName">
+            <div className="Detail-Body-pName-label">프로젝트명 : </div>
+            <div className="Detail-Body-pName-item">{post.name}</div>
+          </div>
+          <div className="Detail-Body-pDeadline">
+            <div className="Detail-Body-pDeadline-label">모집 기간 : </div>
+            <div className="Detail-Body-pDeadline-start">{post.deadLine[0]}</div><div> ~ </div><div className="Detail-Body-pDeadline-end">{post.deadLine[1]}</div>
+          </div>
+        </div>
+        <div className="Detail-Body-contents3">
+          <div className="Detail-Body-pCategory">
+            <div className="Detail-Body-pCategory-label">프로젝트 카테고리 : </div>
+            <div className="Detail-Body-pCategory-item">{post.category}</div>
+          </div>
+          <div className="Detail-Body-pTracks">
+            <div className="Detail-Body-pTracks-label">
+              모집 트랙 :
+            </div>
+            <div className="Detail-Body-pTracks-items">
+              {post.tracks.map((track, index) => (
+                <div key={index}># {track}</div>
+              ))}
+            </div>
+          </div>
+        </div>
+        <div className="Detail-Body-contents4">
+          <div className="Detail-Body-pTechStacks-label">
+            모집 기술스택 :
+          </div>
+          <div className="Detail-Body-pTechStacks-items">
+            {post.techStack.map((tech, index) => (
+              <div key={index}># {tech}</div>
             ))}
           </div>
         </div>
-        <div className="MainPage-Contents-body">
-          {currentFilteredPosts.map((post, index) => (
-            <div key={index} className="MainPage-Contents-item" onClick={() => handleDetail(post)}>
-              <div className="MainPage-Contents-item-poster">
-                <img src={post.projectPoster || defaultPoster} />
-              </div>
-              <div className="MainPage-Contents-item-contents">
-                <div className="MainPage-Contents-item-left">
-                  <div className="MainPage-Contents-item-projectInfo">
-                    <div className="MainPage-Contents-item-projectCreator">{post.creatorName}</div>
-                    <div className="MainPage-Contents-item-projectTitle">{post.name}</div>
-                  </div>
-                  <div className="MainPage-Contents-item-stacks">
-                    {post.tracks.map((track, index) => (
-                      <span key={index}># {track} </span>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="MainPage-Contents-item-right">
-                  <div className="MainPage-Contents-item-Date">
-                    <div className="MainPage-Contents-item-DateTitle">모집 기간</div>
-                    <div className="MainPage-Contents-item-Deadline">
-                      <div className="MainPage-Contents-item-DeadlineFrom">{formatDate(post.deadLine[0])}</div>
-                      <div className="MainPage-Contents-item-~">~</div>
-                      <div className="MainPage-Contents-item-DeadlineTo">{formatDate(post.deadLine[1])}</div>
-                    </div>
-                  </div>
-                  <div className="MainPage-Contents-item-CategoryReward">
-                    <div className="MainPage-Contents-item-Category">{post.category}</div>
-                    <div className="MainPage-Contents-item-Reward"><span>1인</span> {post.salary} 만원</div>
-                  </div>
-                </div>
-              </div>
+        <div className="Detail-Body-contents5">
+          <div className="Detail-Body-pEligibility-label">
+            지원 대상 :
+          </div>
+          <div className="Detail-Body-pEligibility-item">
+            {post.eligibility}
+          </div>
+        </div>
+        <div className="Detail-Body-contents6">
+          <div className="Detail-Body-contents6-left">
+            <div className="Detail-Body-pDescription-label">
+              프로젝트 설명
             </div>
-          ))}
-
-          <div className="MainPage-Contents-createProjButton" onClick={handleProjButton}>
-            <img src={plusIcon} />
+            <div className="Detail-Body-pDescription-item">
+              {post.description}
+            </div>
+          </div>
+          <div className="Detail-Body-contents6-right">
+            <div className="Detail-Body-pSalary-box">
+              <div className="Detail-Body-pSalary-label1">1인</div>
+              <div className="Detail-Body-pSalary">{post.salary}</div>
+              <div className="Detail-Body-pSalary-label2">만원</div>
+            </div>
+            <Link to="DetailSubbody" smooth={true} duration={500} offset={-50}>
+              <div className="Detail-Body-pApplicate">
+                지원하기
+              </div >
+            </Link>
           </div>
         </div>
       </div>
-      <div className="pagination">
-        <button onClick={handleFirstPage}>
-          <img src={firstIcon} alt="First" width="20" height="20" />
-        </button>
-        <button onClick={handlePrevPage}>
-          <img src={prevIcon} alt="Previous" width="20" height="20" />
-        </button>
-        {getPageNumbers().map((pageNumber) => (
-          <button
-            key={pageNumber}
-            onClick={() => handleClick(pageNumber)}
-            className={pageNumber === currentPage ? 'active' : ''}
-          >
-            {pageNumber}
+
+      <div id="DetailSubbody" className="Detail-SubBody">
+        <div className="Detail-SubBody-applicateBox">
+          <textarea
+            className="Detail-SubBody-applicateBox-textarea"
+            placeholder="지원신청 댓글을 입력해주세요."
+            value={comment}
+            onChange={handleCommentChange}
+          />
+          <div className="Detail-SubBody-applicateButton" onClick={handlePostComment}>
+            지원하기
+          </div>
+        </div>
+        <div className="Detail-SubBody-commentBox">
+          {currentFilteredPosts.map((c, index) => (
+            <div key={index} className="Detail-SubBody-comment">
+              <div className="Detail-SubBody-commentBox-comment-header">
+                <div className="Detail-SubBody-commentBox-comment-header-profile">
+                  <div className="Detail-SubBody-commentBox-comment-header-profileImage">
+                    <img src={c.profileImage} alt="" />
+                  </div>
+                  <div className="Detail-SubBody-commentBox-comment-header-profileName">
+                    {c.creatorName}
+                  </div>
+                </div>
+                <div className="Detail-SubBody-commentBox-comment-header-dayAgo">
+                  {c.createdAt?.toDate().toLocaleDateString("ko-KR", {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                  })}
+                </div>
+              </div>
+              <div className="Detail-SubBody-commentBox-comment-contents">
+                <div className="Detail-SubBody-commentBox-comment-Box">
+                  {c.contents}
+                </div>
+                {/* {c.participateStatus} */}
+                {isPostOwner && (
+                  <div className="Detail-SubBody-commentBox-comment-decision">
+                    <div className="Detail-SubBody-commentBox-comment-Accept" onClick={() => handleAccept(c)}>
+                      수락
+                    </div>
+                    <div className="Detail-SubBody-commentBox-comment-Reject" onClick={() => handleReject(c)}>
+                      거절
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="pagination">
+          <button onClick={handleFirstPage}>
+            <img src={firstIcon} alt="First" width="20" height="20" />
           </button>
-        ))}
-        <button onClick={handleNextPage}>
-          <img src={nextIcon} alt="Next" width="20" height="20" />
-        </button>
-        <button onClick={handleLastPage}>
-          <img src={lastIcon} alt="Last" width="20" height="20" />
-        </button>
+          <button onClick={handlePrevPage}>
+            <img src={prevIcon} alt="Previous" width="20" height="20" />
+          </button>
+          {getPageNumbers().map((pageNumber) => (
+            <button
+              key={pageNumber}
+
+              onClick={() => handleCommentPageChange(pageNumber)}
+              className={pageNumber === currentCommentPage ? 'active' : ''}
+            >
+              {pageNumber}
+            </button>
+          ))}
+          <button onClick={handleNextPage}>
+            <img src={nextIcon} alt="Next" width="20" height="20" />
+          </button>
+          <button onClick={handleLastPage}>
+            <img src={lastIcon} alt="Last" width="20" height="20" />
+          </button>
+        </div>
       </div>
-      <div className="AdSlide">
+
+      <div className="AdSlide-detail">
         <div className="slide_container">
           <ul
             className="slide_wrapper"
@@ -522,6 +586,7 @@ function MainPage() {
           </ul>
         </div>
       </div>
+
       <Modal
         isOpen={loginModalIsOpen}
         onRequestClose={closeLoginModal}
@@ -652,11 +717,9 @@ function MainPage() {
           )}
         </div>
       </Modal>
-      {/* 챗봇 기능 개발 */}
+    </div>
+  );
 
+};
 
-    </div >
-  )
-}
-
-export default MainPage
+export default projDetail;

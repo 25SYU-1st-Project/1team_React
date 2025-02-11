@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { db } from "../firebase"; // Firebase 초기화 파일에서 가져옴
+import { auth, db } from "../firebase"; // Firebase 초기화 파일에서 가져옴
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { signOut } from 'firebase/auth';
 
 import searchIcon from '../images/search.png';
 import trashIcon from '../images/trash.png';
@@ -16,6 +17,9 @@ import imageEditIcon from '../images/imageEdit.png';
 import './MyProjectPage.css';
 
 function MyProjectPage() {
+    const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태 추가
+    const [currentUser, setCurrentUser] = useState(null); // 현재 로그인한 사용자 정보
+
     const navigate = useNavigate();
 
     const handleMain = () => {
@@ -81,6 +85,22 @@ function MyProjectPage() {
     const handleNextPage = () => {
         setCurrentPage(prev => (prev < totalPages ? prev + 1 : totalPages));
     };
+
+    // 로그아웃 함수
+      const handleLogout = async () => {
+        try {
+          await signOut(auth);
+          setIsLoggedIn(false); // 로그인 상태 해제
+          setCurrentUser(null); // 현재 사용자 초기화
+          localStorage.removeItem("isLoggedIn");
+          localStorage.removeItem("user");
+          sessionStorage.removeItem("isLoggedIn");
+          sessionStorage.removeItem("user");
+          navigate('/');
+        } catch (err) {
+          console.error('로그아웃 실패:', err.message);
+        }
+      };
 
     const [userInfo, setUserInfo] = useState(null);
     const [currentFilteredPosts, setCurrentPosts] = useState([]);
@@ -181,10 +201,10 @@ function MyProjectPage() {
                 resume: resume
             });
 
-            alert("수정 완료");
+            alert("저장되었습니다.");
         } catch (error) {
             console.error("error", error);
-            alert("수정 실패");
+            alert("저장에 실패하였습니다.");
         }
     };
 
@@ -284,7 +304,7 @@ function MyProjectPage() {
                         <div className="MyProject-Header-Right-ProMatch" onClick={handleMain}>프로젝트 매칭</div>
                         <div className="MyProject-Header-Right-FreeMatch" onClick={handleFreePage}>프리랜서 매칭</div>
                         <div className="MyProject-Header-Right-MyProject">마이 프로젝트</div>
-                        <div className="MyProject-Header-Right-Logout">로그아웃</div>
+                        <div className="MyProject-Header-Right-Logout" onClick={handleLogout}>로그아웃</div>
                     </div>
                 </div>
                 {userInfo ? (
@@ -315,7 +335,9 @@ function MyProjectPage() {
                                 <input
                                     type="text"
                                     value={name}
+                                    className="MyProject-Body-Left-Name-input"
                                     onChange={(e) => setName(e.target.value)}
+                                    placeholder="이름을 입력하세요"
                                 />
                             </div>
                             <div className="MyProject-Body-Left-Inform">
@@ -341,9 +363,9 @@ function MyProjectPage() {
                                     >
                                         {tracks.length > 0
                                             ? `# ${tracks.join(' # ')}`
-                                            : ''}
-                                        </button>
-                                        {isDropdownOpen && (
+                                            : '트랙 선택'}
+                                    </button>
+                                    {isDropdownOpen && (
                                         <ul className="dropdown-list">
                                             {trackOptions.map((track, index) => (
                                             <li
@@ -355,7 +377,7 @@ function MyProjectPage() {
                                             </li>
                                             ))}
                                         </ul>
-                                        )}
+                                    )}
                                 </div>
                                 <div className="MyProject-Body-Left-Inform-Resume">이력
                                     <input
@@ -384,15 +406,22 @@ function MyProjectPage() {
 
                                         {/* 트랙 (추가적인 정보) */}
                                         <div className="MyProject-Body-Right-Content-Box1-Tracks">
-                                            
-                                            {post.tracks?.join(", ")}
+                                            {post.tracks.map((track, index) => (
+                                                <div key={index} className="track-box">
+                                                    {track}
+                                                </div>
+                                            ))}
                                         </div>
 
                                         {/* 급여 정보 */}
                                         <div className="MyProject-Body-Right-Content-Box1-Salary">급여: {post.salary}</div>
 
                                         {/* 상세 설명 */}
-                                        <div className="MyProject-Body-Right-Content-Box1-Detail">{post.description}</div>
+                                        <div className="MyProject-Body-Right-Content-Box1-Detail">
+                                            <div className="MyProject-Body-Right-Content-Box1-DetailContent">
+                                                {post.description}
+                                            </div>
+                                        </div>
                                     </div>
 
                                     {/* 삭제 버튼 */}
