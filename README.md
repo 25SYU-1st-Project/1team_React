@@ -33,11 +33,11 @@ P+eeting은 프로젝트를 찾고자하는 프리랜서 개발자들과, 그들
 ![S3](https://img.shields.io/badge/S3-569A31?style=for-the-badge&logo=amazon-s3&logoColor=white)
 ![CloudFront](https://img.shields.io/badge/CloudFront-EC7211?style=for-the-badge&logo=amazon-cloudfront&logoColor=white)
 
-## 📊 ERD (Entity-Relationship Diagram)  
-<img src="ERD_이미지_경로" width="600">  
-
 ## 📌 WBS (Work Breakdown Structure)  
-<img src="WBS_이미지_경로" width="600"> 
+<img src="https://private-user-images.githubusercontent.com/129136966/412228088-bff400f6-dd47-45c2-ab36-31f7930282de.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MzkzMjU0ODksIm5iZiI6MTczOTMyNTE4OSwicGF0aCI6Ii8xMjkxMzY5NjYvNDEyMjI4MDg4LWJmZjQwMGY2LWRkNDctNDVjMi1hYjM2LTMxZjc5MzAyODJkZS5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwMjEyJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDIxMlQwMTUzMDlaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT02NjJhYjg1Y2M0ZTg5YTk1Njg0MjRkMzUyNzdkNDE5MzRhODFmOWJmZjc4MmQwNjg0Mjk4M2M2NTQwMDM5YzUyJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.iKYzt-Kwl9t21O_slvpJst8nLEe5ICBIBZgfpN7MtU0" width="600"> 
+
+## 📊 ERD (Entity-Relationship Diagram)  
+<img src="https://private-user-images.githubusercontent.com/129136966/412228087-f847826b-1f03-4303-877d-959e6a4908b0.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MzkzMjU0ODksIm5iZiI6MTczOTMyNTE4OSwicGF0aCI6Ii8xMjkxMzY5NjYvNDEyMjI4MDg3LWY4NDc4MjZiLTFmMDMtNDMwMy04NzdkLTk1OWU2YTQ5MDhiMC5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwMjEyJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDIxMlQwMTUzMDlaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1iZWNjZjljMjhiMGE3MWM3YzA1YzYwN2RhZDhlMWI5YWI3YTE0YThjYTZhNDE2YWVlZjZhMDA2ODA3ZWI4ZmM0JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.1DtsBYBrPLuwdmuL7lRFWTtFW0l4METTnDzPBJks_GE" width="600">  
   
 ## 📖 How to use -?  
 ```bash
