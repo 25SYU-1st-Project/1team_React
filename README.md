@@ -1,6 +1,6 @@
 # P+eeting (Project + Meeting)
 
-<img src="이미지_경로_또는_URL" width="300">
+<img src="https://github.com/25SYU-1st-Project/1team_React/issues/1#issue-2846897849" width="300">
 
 ## 📌 프로젝트 소개  
 P+eeting은 프로젝트 진행을 원활하게 하기 위해 팀원들이 효과적으로 회의를 관리할 수 있도록 돕는 서비스입니다.  
