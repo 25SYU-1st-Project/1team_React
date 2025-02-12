@@ -33,12 +33,16 @@ P+eeting은 프로젝트를 찾고자하는 프리랜서 개발자들과, 그들
 ![S3](https://img.shields.io/badge/S3-569A31?style=for-the-badge&logo=amazon-s3&logoColor=white)
 ![CloudFront](https://img.shields.io/badge/CloudFront-EC7211?style=for-the-badge&logo=amazon-cloudfront&logoColor=white)
 
-  
- 
+## 📊 ERD (Entity-Relationship Diagram)  
+<img src="ERD_이미지_경로" width="600">  
 
+## 📌 WBS (Work Breakdown Structure)  
+<img src="WBS_이미지_경로" width="600"> 
+  
 ## 📖 How to use -?  
 ```bash
 # 서비스 링크 : https://d3le9azes4h81t.cloudfront.net/
+
 # 회원가입
 - 트랙 선택 및 개인 / 단체 여부 선택 후 회원 가입
 
@@ -53,9 +57,8 @@ P+eeting은 프로젝트를 찾고자하는 프리랜서 개발자들과, 그들
 - 프리랜서 매칭에서 지원한 프리랜서의 프로필 확인 가능
 
 ## 🤝 팀원  
-- 👨‍💻 **이름1** - 역할  
-- 👩‍💻 **이름2** - 역할  
-- 👨‍💻 **이름3** - 역할  
+- 👨‍💻 **장준익** - Project Manager  
+- 👩‍💻 **유광렬** - UI 구현, 챗봇 , 다이어그램 작성   
+- 👨‍💻 **정서우** - UI 구현, WBS, 최종 PPT 작성   
 
-## 📬 문의  
-문의사항이 있다면 [이메일](mailto:your-email@example.com) 또는 [GitHub Issues](https://github.com/내_깃허브_아이디/P+eeting/issues)를 통해 연락 주세요! 😊
+
