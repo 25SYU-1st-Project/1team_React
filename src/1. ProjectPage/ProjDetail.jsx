@@ -324,14 +324,35 @@ function projDetail() {
   }, [projectId, post, auth?.currentUser]);
 
 
+
+
   const handleAccept = async (commentItem) => {
     if (!isPostOwner) return;
 
-    const userRef = doc(db, "users", commentItem.creatorId);
-
+    const commentRef = doc(db, `projects/${projectId}/comments`, commentItem.id);
+    
     try {
+      await updateDoc(commentRef, {
+        participateStatus: "accepted",
+      });
+      // 해당 사용자의 joinedProjects 업데이트
+      const userRef = doc(db, "users", commentItem.creatorId);
       await updateDoc(userRef, {
         joinedProjects: arrayUnion(projectId),
+      });
+  
+    } catch (error) {
+    }
+  };
+
+  const handleReject = async (commentItem) => {
+    if (!isPostOwner) return;
+
+    const commentRef = doc(db, `projects/${projectId}/comments`, commentItem.id);
+    
+    try {
+      await updateDoc(commentRef, {
+        participateStatus: "rejected",
       });
     } catch (error) {
     }
@@ -527,16 +548,19 @@ function projDetail() {
                   {c.contents}
                 </div>
                 {/* {c.participateStatus} */}
-                {isPostOwner && (
-                  <div className="Detail-SubBody-commentBox-comment-decision">
-                    <div className="Detail-SubBody-commentBox-comment-Accept" onClick={() => handleAccept(c)}>
-                      수락
-                    </div>
-                    <div className="Detail-SubBody-commentBox-comment-Reject" onClick={() => handleReject(c)}>
-                      거절
-                    </div>
-                  </div>
-                )}
+                {isPostOwner && c.participateStatus === "none" && (
+      <div className="Detail-SubBody-commentBox-comment-decision">
+        <div className="Detail-SubBody-commentBox-comment-Accept" onClick={() => handleAccept(c)}>
+          수락
+        </div>
+        <div className="Detail-SubBody-commentBox-comment-Reject" onClick={() => handleReject(c)}>
+          거절
+        </div>
+      </div>
+    )}
+
+    {c.participateStatus === "accepted" && <div className="accepted-status">✅ 수락됨</div>}
+    {c.participateStatus === "rejected" && <div className="rejected-status">❌ 거절됨</div>}
               </div>
             </div>
           ))}
