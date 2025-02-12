@@ -12,20 +12,23 @@ P+eeting은 프로젝트를 찾고자하는 프리랜서 개발자들과, 그들
 - ✅ **프로젝트 매칭**: 개인 회원(프리랜서)은 본인에게 맞는 프로젝트를 선택하여 지원할 수 있고, 해당 프로젝트를 등록한 단체 회원은 지원자들 중 조건에 맞는 사람의 신청을 수락한다.  
 - ✅ **프리랜서 프로필 등록**: 개인 회원(프리랜서)은 본인의 개인 정보 및 이력등을 포함하여 개인 프로필을 등록할 수 있고, 이를 단체회원이 열람하여 프로젝트 신청 수락에 참고할 수 있다.   
 
-## 🛠️ 기술 스택 
-### **기획 & 디자인**  
-- <img src="https://private-user-images.githubusercontent.com/129136966/412217417-c674e776-65a0-4d01-84bf-c4e82a1ed844.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MzkzMjIxNDQsIm5iZiI6MTczOTMyMTg0NCwicGF0aCI6Ii8xMjkxMzY5NjYvNDEyMjE3NDE3LWM2NzRlNzc2LTY1YTAtNGQwMS04NGJmLWM0ZTgyYTFlZDg0NC5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwMjEyJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDIxMlQwMDU3MjRaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT03ZTI2ZjkxYmU3MjY0MzhlMmNlYTdhY2QzNGE4OTZmNTc3NjUxNWJkZjhkMTU2ODlkZjg3YTY4NzhjOGMxZTM1JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.K4cX5e19QiVWgiSfZMWz-ilri27ordlGy8U9NkWP_A0" width="30"> *Figma*
+## 🛠️ 기술 스택
 
-### **Backend**  
-- <img src="https://private-user-images.githubusercontent.com/129136966/412217418-9b574511-c74f-4f7e-bde3-2dac9b475ae0.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MzkzMjIxNDQsIm5iZiI6MTczOTMyMTg0NCwicGF0aCI6Ii8xMjkxMzY5NjYvNDEyMjE3NDE4LTliNTc0NTExLWM3NGYtNGY3ZS1iZGUzLTJkYWM5YjQ3NWFlMC5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwMjEyJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDIxMlQwMDU3MjRaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1iMDliYzBhMmFhYzMxNDliZjUwM2RlZGZkM2UyZDE4ODhkYmEwNzFhZmM0YTZiZTAyMTM5MGEwYmFhNzM0M2IzJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.7yPBo5tJfowTfDy7xiXmjA1WlViLSfjkCFHO1jA9u-Y" width="30"> *FireBase*  
- 
+### 🎨 기획 & 디자인  
+![Figma](https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white)
 
-### **Frontend**  
-- <img src="https://private-user-images.githubusercontent.com/129136966/412217416-c1f81c4f-0683-4e69-a299-4645de4ba6f3.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MzkzMjIxNDQsIm5iZiI6MTczOTMyMTg0NCwicGF0aCI6Ii8xMjkxMzY5NjYvNDEyMjE3NDE2LWMxZjgxYzRmLTA2ODMtNGU2OS1hMjk5LTQ2NDVkZTRiYTZmMy5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwMjEyJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDIxMlQwMDU3MjRaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT03ZjhiNzk2ZTU4OGVmMDcxM2NiNGZmZDUzOWRjMTVhMTg5MWM2YzA2Mjg4ZDAxOGQ5MzYwNTU4Y2JkYzEwNzZhJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.6YQhhIn18ELXU5vIqo_oyY-UgGiGFNhr8a86hc-JUak" width="50"> **React (JavaScript)**  
-- <img src="https://platform.theverge.com/wp-content/uploads/sites/2/2025/02/openai-old-logo.png?quality=90&strip=all&crop=7.8125%2C0%2C84.375%2C100&w=2400" width="30"> **OpenAI API (ChatGPT-4o)**
+### 🖥️ Frontend  
+![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=white)
 
-### **Deployment**  
-- S3 CloudFront(배포)  
+
+### 🛠️ Backend  
+
+
+### ☁️ Deployment  
+![AWS](https://img.shields.io/badge/AWS-232F3E?style=for-the-badge&logo=amazon-aws&logoColor=white)
+![S3](https://img.shields.io/badge/S3-569A31?style=for-the-badge&logo=amazon-s3&logoColor=white)
+
+  
  
 
 ## 📖 설치 및 실행 방법  
