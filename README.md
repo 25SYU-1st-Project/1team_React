@@ -3,14 +3,14 @@
 <img src="https://private-user-images.githubusercontent.com/129136966/412214006-4ef2aea8-12a3-45bc-abc1-02f8c776eaf2.jpg?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MzkzMjEyMDksIm5iZiI6MTczOTMyMDkwOSwicGF0aCI6Ii8xMjkxMzY5NjYvNDEyMjE0MDA2LTRlZjJhZWE4LTEyYTMtNDViYy1hYmMxLTAyZjhjNzc2ZWFmMi5qcGc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwMjEyJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDIxMlQwMDQxNDlaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT05ZGJlYTRjNTYxOTg0Y2E5ZjYzY2I5MDg4MDc1MzI0MjJiNjA2NGRkZWUzODRiOTk4Nzc5MmY5M2U2YzY1MTY0JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.W2LgafPrUdrZBeZbIKaw6O4QQZtKk8x_gvwOm9pOOpM" width="800">
 
 ## 📌 프로젝트 소개  
-P+eeting은 프로젝트를 찾고자하는 프리랜서 개발자들과 그들에게 프로젝트를 의뢰하고자 하는 기업들간의 양방향 프로젝트 매칭을 제공하는 서비스입니다.  
+P+eeting은 프로젝트를 찾고자하는 프리랜서 개발자들과, 그들에게 프로젝트를 의뢰하고자 하는 기업들간의 양방향 프로젝트 매칭을 제공하는 서비스입니다.  
 
 
 ## 🚀 주요 기능  
-- ✅ **회의 일정 관리**: 프로젝트 관련 회의 일정을 쉽게 등록 및 공유  
-- ✅ **실시간 채팅**: 팀원 간 실시간 커뮤니케이션  
-- ✅ **회의록 자동 저장**: 회의 내용을 자동 저장하여 히스토리 관리 가능  
-- ✅ **투표 기능**: 빠른 의사결정을 위한 투표 시스템 제공  
+- ✅ **P+eeting 챗봇 기능**: 챗봇 기능을 통해 프리랜서 개발자들에게 본인의 상황에 맞는 프로젝트를 추천해줄 수 있다.  
+- ✅ **프로젝트 공고 등록**: 단체 회원(기업)은 요구 개발 스택, 카테고리 등의 조건을 설정하여 프로젝트 공고를 등록한다.  
+- ✅ **프로젝트 매칭**: 개인 회원(프리랜서)은 본인에게 맞는 프로젝트를 선택하여 지원할 수 있고, 해당 프로젝트를 등록한 단체 회원은 지원자들 중 조건에 맞는 사람의 신청을 수락한다.  
+- ✅ **프리랜서 프로필 등록**: 개인 회원(프리랜서)은 본인의 개인 정보 및 이력등을 포함하여 개인 프로필을 등록할 수 있고, 이를 단체회원이 열람하여 프로젝트 신청 수락에 참고할 수 있다.   
 
 ## 🛠️ 기술 스택  
 ### **Backend**  
