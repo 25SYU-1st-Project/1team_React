@@ -45,18 +45,18 @@ P+eeting은 프로젝트를 찾고자하는 프리랜서 개발자들과, 그들
 <img src="https://private-user-images.githubusercontent.com/129136966/412228087-f847826b-1f03-4303-877d-959e6a4908b0.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MzkzMjU0ODksIm5iZiI6MTczOTMyNTE4OSwicGF0aCI6Ii8xMjkxMzY5NjYvNDEyMjI4MDg3LWY4NDc4MjZiLTFmMDMtNDMwMy04NzdkLTk1OWU2YTQ5MDhiMC5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwMjEyJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDIxMlQwMTUzMDlaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1iZWNjZjljMjhiMGE3MWM3YzA1YzYwN2RhZDhlMWI5YWI3YTE0YThjYTZhNDE2YWVlZjZhMDA2ODA3ZWI4ZmM0JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.1DtsBYBrPLuwdmuL7lRFWTtFW0l4METTnDzPBJks_GE" width="800">  
   
 ## 📖 How to use -?  
-```bash
-# 서비스 링크 : https://d3le9azes4h81t.cloudfront.net/
 
-# 회원가입
+### 서비스 URL : https://d3le9azes4h81t.cloudfront.net/
+
+### 회원가입
 - 트랙 선택 및 개인 / 단체 여부 선택 후 회원 가입
 
-# 프리랜서(개인 회원) 
+### 프리랜서(개인 회원) 
 - 로그인 후 마이 프로젝트에서 개인 프로필 등록
 - 메인화면에서 지원하고자 하는 프로젝트 선택 후 지원 댓글 작성
 - 메인화면 - 챗봇 버튼 클릭 후 챗봇에 프로젝트 관련 질문 가능   
 
-# 기업(단체 회원)
+### 기업(단체 회원)
 - 로그인 후 메인화면에서 + 버튼 선택 후 프로젝트 공고 생성
 - 메인화면에서 본인의 프로젝트 공고를 선택 후 지원자들의 지원 댓글 수락/거절 여부 선택
 - 프리랜서 매칭에서 지원한 프리랜서의 프로필 확인 가능
