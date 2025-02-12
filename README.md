@@ -2,6 +2,11 @@
 
 <img src="https://private-user-images.githubusercontent.com/129136966/412214006-4ef2aea8-12a3-45bc-abc1-02f8c776eaf2.jpg?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MzkzMjEyMDksIm5iZiI6MTczOTMyMDkwOSwicGF0aCI6Ii8xMjkxMzY5NjYvNDEyMjE0MDA2LTRlZjJhZWE4LTEyYTMtNDViYy1hYmMxLTAyZjhjNzc2ZWFmMi5qcGc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwMjEyJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDIxMlQwMDQxNDlaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT05ZGJlYTRjNTYxOTg0Y2E5ZjYzY2I5MDg4MDc1MzI0MjJiNjA2NGRkZWUzODRiOTk4Nzc5MmY5M2U2YzY1MTY0JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.W2LgafPrUdrZBeZbIKaw6O4QQZtKk8x_gvwOm9pOOpM" width="800">
 
+## 🤝 팀원  
+- 👨‍💻 **장준익** - Project Manager  
+- 👩‍💻 **유광렬** - UI 구현, 챗봇 , 다이어그램 작성   
+- 👨‍💻 **정서우** - UI 구현, WBS, 최종 PPT 작성
+
 ## 📌 프로젝트 소개  
 P+eeting은 프로젝트를 찾고자하는 프리랜서 개발자들과, 그들에게 프로젝트를 의뢰하고자 하는 기업들간의 양방향 프로젝트 매칭을 제공하는 서비스입니다.  
 
@@ -55,10 +60,6 @@ P+eeting은 프로젝트를 찾고자하는 프리랜서 개발자들과, 그들
 - 로그인 후 메인화면에서 + 버튼 선택 후 프로젝트 공고 생성
 - 메인화면에서 본인의 프로젝트 공고를 선택 후 지원자들의 지원 댓글 수락/거절 여부 선택
 - 프리랜서 매칭에서 지원한 프리랜서의 프로필 확인 가능
-
-## 🤝 팀원  
-- 👨‍💻 **장준익** - Project Manager  
-- 👩‍💻 **유광렬** - UI 구현, 챗봇 , 다이어그램 작성   
-- 👨‍💻 **정서우** - UI 구현, WBS, 최종 PPT 작성   
+   
 
 
