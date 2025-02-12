@@ -222,7 +222,20 @@
     font-size: 18px;
 }
 
-
+.MyProject-Body-Left-Inform-Resume textarea {
+    width:78%;
+    height: 132px;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    text-align: left;
+    font-family: 'Pretendard-Medium';
+    font-size: 18px;
+    overflow-x: hidden;
+    word-break: keep-all;
+    overflow-y: auto;
+    resize: none;
+}
 
 .MyProject-Body-Left-Inform-Track {
     position: relative;

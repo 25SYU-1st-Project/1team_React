@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { auth, db } from "../firebase"; // Firebase 초기화 파일에서 가져옴
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { signOut } from 'firebase/auth';
+import { updatePassword } from "firebase/auth";
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 import searchIcon from '../images/search.png';
@@ -129,79 +130,68 @@ function MyProjectPage() {
         const fetchUserAndProjects = async () => {
             const storedUser = localStorage.getItem("user");
             if (!storedUser) return;
-
-            const { uid } = JSON.parse(storedUser); // 로컬스토리지에서 UID 가져오기
-
+    
+            const { uid } = JSON.parse(storedUser);
+    
             try {
                 const userDoc = await getDoc(doc(db, "users", uid));
                 if (userDoc.exists()) {
                     const userData = userDoc.data();
+    
                     setUserInfo(userData);
-
-                    const { joinedProjects } = userData; // 참여한 프로젝트 목록 가져오기
-
-                    if (!joinedProjects || joinedProjects.length === 0) {
-                        setPosts([]);  // posts 상태를 비우기
+                    setProfileImage(userData.profileImage || defaultProfile);
+                    setName(userData.name || ""); 
+                    setEmail(userData.email || ""); 
+                    setTracks(userData.tracks || []); 
+                    setResume(userData.resume || ""); 
+    
+                    const joinedProjects = userData.joinedProjects || [];
+                    if (joinedProjects.length === 0) {
+                        setPosts([]);
                         return;
                     }
-
-                    // 프로젝트 정보 가져오기
+    
                     const projectPromises = joinedProjects.map(async (projectId) => {
                         const projectRef = doc(db, "projects", projectId);
                         const projectSnap = await getDoc(projectRef);
                         return projectSnap.exists() ? { id: projectId, ...projectSnap.data() } : null;
                     });
-
+    
                     const projects = await Promise.all(projectPromises);
-                    setPosts(projects.filter((project) => project !== null)); // 유효한 프로젝트만 저장
-
-                    // 프로필 이미지 URL 변환
-                    if (userData.profileImage && userData.profileImage.startsWith("gs://")) {
-                        try {
-                            const storage = getStorage();
-                            const storageRef = ref(storage, userData.profileImage);
-                            userData.profileImage = await getDownloadURL(storageRef);
-                        } catch (error) {
-                            console.error("이미지 URL 변환 실패");
-                        }
-                    }
-                    setUserInfo(userData); // 최종 데이터 저장 
-                    setProfileImage(userData.profileImage || defaultProfile);
-                    setName(userData.name || ""); 
-                    setEmail(userData.email || ""); 
-                    setPassword(userData.password || "");
-                    setTracks(userData.setTracks || []); 
-                    setResume(userData.resume || ""); 
-                } else {
+                    setPosts(projects.filter((project) => project !== null));
                 }
             } catch (error) {
                 console.error("Error fetching user and project data");
             }
         };
-
+    
         fetchUserAndProjects();
     }, []);
+    
 
     const handleEditButton = async () => {
         const storedUser = localStorage.getItem("user");
         if (!storedUser) return;
-
-        const { uid } = JSON.parse(storedUser); // 로컬스토리지에서 UID 가져오기
-        const userDocRef = doc(db, "users", uid); // 해당 유저 문서 참조
-
+    
+        const { uid } = JSON.parse(storedUser); 
+        const userDocRef = doc(db, "users", uid); 
+    
         try {
             await updateDoc(userDocRef, {
                 name: name,
                 email: email,
-                password: password,
                 tracks: tracks,
                 resume: resume
             });
-
+    
+            // 비밀번호 변경 로직 추가
+            if (password) {
+                const user = auth.currentUser;
+                await updatePassword(user, password);
+            }
             alert("수정 완료");
         } catch (error) {
-            console.error("error");
-            alert("수정 실패");
+            console.error("수정 실패");
         }
     };
 
@@ -216,11 +206,9 @@ function MyProjectPage() {
             const storageRef = ref(storage, `profileImage/${file.name}`);
             const uploadTask = uploadBytesResumable(storageRef, file);
 
-            // 업로드 완료 후, 다운로드 URL을 Firestore에 저장
             uploadTask.on(
                 "state_changed",
                 (snapshot) => {
-                    // 진행률 표시
                 },
                 (error) => {
                     console.error("파일 업로드 실패");
@@ -235,11 +223,10 @@ function MyProjectPage() {
                         const { uid } = JSON.parse(storedUser);
                         const userDocRef = doc(db, "users", uid);
                         
-                        // Firestore에 프로필 이미지 URL 업데이트
                         updateDoc(userDocRef, {
                             profileImage: downloadURL
                         }).then(() => {
-                            setProfileImage(downloadURL);  // 프로필 이미지 상태 업데이트
+                            setProfileImage(downloadURL);
                             setIsUploading(false);
                         }).catch((error) => {
                             console.error("Firestore 업데이트 실패");
@@ -286,7 +273,6 @@ function MyProjectPage() {
         }
     };
 
-
     return (
         <div>
             <div className="MyProject-container">
@@ -323,7 +309,7 @@ function MyProjectPage() {
                                         onChange={handleProfileImageChange}
                                         disabled={isUploading}
                                     />
-                                    <label className="MyProject-Body-Left-NewProfileImage-Button">
+                                    <label className="MyProject-Body-Left-NewProfileImage-Button" htmlFor="profileImage">
                                         <img src={imageEditIcon} alt="ImageEdit"/>
                                     </label>
                                 </div>
@@ -332,6 +318,7 @@ function MyProjectPage() {
                                 <input
                                     type="text"
                                     value={name}
+                                    placeholder='이름 입력'
                                     onChange={(e) => setName(e.target.value)}
                                 />
                             </div>
@@ -347,6 +334,7 @@ function MyProjectPage() {
                                     <input
                                         type="password"
                                         value={password}
+                                        placeholder='변경하실 비밀번호를 입력해주세요.'
                                         onChange={(e) => setPassword(e.target.value)}
                                     />  
                                 </div>
@@ -375,7 +363,7 @@ function MyProjectPage() {
                                         )}
                                 </div>
                                 <div className="MyProject-Body-Left-Inform-Resume">이력
-                                    <input
+                                    <textarea
                                         type="text"
                                         value={resume}
                                         onChange={(e) => setResume(e.target.value)}

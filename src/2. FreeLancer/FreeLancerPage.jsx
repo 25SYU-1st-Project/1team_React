@@ -128,7 +128,8 @@ function FreeLancerPage() {
                 const fetchedProjects = querySnapshot.docs.map(doc => ({
                     id: doc.id,
                     ...doc.data(),
-                }));
+                }))
+                .filter(user => user.memberClass === "basic");
 
                 // Firebase Storage에서 이미지 URL 변환
                 const storage = getStorage();
