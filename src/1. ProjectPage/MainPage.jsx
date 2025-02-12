@@ -50,7 +50,7 @@ function MainPage() {
   const [userInput, setUserInput] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const endOfMessagesRef = useRef(null); 
+  const endOfMessagesRef = useRef(null);
 
   const addMessage = (sender, message) => {
     setMessages(prevMessages => [...prevMessages, { sender, message }]);
@@ -98,6 +98,7 @@ function MainPage() {
     }
   };
 
+
   // 메시지가 업데이트될 때마다 자동으로 대화 끝으로 스크롤
   useEffect(() => {
     if (endOfMessagesRef.current) {
@@ -105,7 +106,7 @@ function MainPage() {
     }
   }, [messages]);
 
-  const handleKeyDown = (event) => {
+  const handleKeyDown2 = (event) => {
     if (event.key === 'Enter') {
       handleSendMessage();
     }
@@ -173,10 +174,28 @@ function MainPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState("전체");
 
-  // 카테고리별 필터링 함수
-  const filteredPosts = selectedCategory === "전체"
-    ? posts
-    : posts.filter(post => post.category === selectedCategory);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [appliedSearchTerm, setAppliedSearchTerm] = useState("");
+
+
+  // 검색어 눌렀을 때, 즉시 변환되지 않도록(엔터키를 눌러야만 변화되도록 컨트롤 해주는 함수)
+  // 검색어 입력 변화 처리
+  const handleSearchInputChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  // 엔터 키 눌렀을 때 검색어 적용
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      setAppliedSearchTerm(searchTerm);
+    }
+  };
+
+  // 카테고리별 필터링 함수 (searchTerm 대신 appliedSearchTerm 사용)
+  const filteredPosts = posts.filter(post =>
+    (selectedCategory === "전체" || post.category === selectedCategory) &&
+    (appliedSearchTerm === "" || post.name.includes(appliedSearchTerm))
+  );
 
   const currentFilteredPosts = filteredPosts.slice(
     (currentPage - 1) * postsPerPage,
@@ -243,13 +262,13 @@ function MainPage() {
   };
 
   const openChatBotModal = () => {
-     // 로그인 여부 확인
-     const storedUser = localStorage.getItem("user");
-     if (!storedUser) {
-       alert("P-eeting 챗봇은 로그인 후 이용 가능합니다.");
-       setLoginModalIsOpen(true);
-       return;
-     }
+    // 로그인 여부 확인
+    const storedUser = localStorage.getItem("user");
+    if (!storedUser) {
+      alert("P-eeting 챗봇은 로그인 후 이용 가능합니다.");
+      setLoginModalIsOpen(true);
+      return;
+    }
     setChatBotModalIsOpen(true);
   };
 
@@ -451,7 +470,7 @@ function MainPage() {
           <div className="MainPage-Header-LOGO" onClick={handleMain}><span>P</span>-eeting</div>
           <div className="MainPage-Header-Search">
             <div className="MainPage-Header-SearchIcon"><img src={searchIcon} /></div>
-            <input className="MainPage-Header-InputArea" type="text" placeholder="프로젝트 미팅, 피팅" />
+            <input className="MainPage-Header-InputArea" type="text" placeholder="프로젝트 미팅, 피팅" value={searchTerm} onChange={handleSearchInputChange} onKeyDown={handleKeyDown} />
           </div>
         </div>
         <div className="MainPage-Header-Right">
@@ -737,7 +756,7 @@ function MainPage() {
         onRequestClose={closeChatBotModal}
         contentLabel="ChatBot Modal"
         className="chatbot-modal"
-        overlayClassName="modalOverlay" 
+        overlayClassName="modalOverlay"
       >
         <div className="chatbot-container">
           <div className='chatbot-header'>
@@ -746,7 +765,7 @@ function MainPage() {
           </div>
           <div className="chatbot-messages">
             {messages.map((msg, index) => (
-            <div key={index} className={`message ${msg.sender}`}>
+              <div key={index} className={`message ${msg.sender}`}>
                 {msg.sender === 'bot' && (
                   <img src={innerGpt} className="bot-image" />
                 )}
@@ -760,7 +779,7 @@ function MainPage() {
               type="text"
               value={userInput}
               onChange={(e) => setUserInput(e.target.value)}
-              onKeyDown={handleKeyDown}
+              onKeyDown={handleKeyDown2}
               placeholder="질문을 입력해주세요."
               disabled={loading}
               className="chatbot-input"

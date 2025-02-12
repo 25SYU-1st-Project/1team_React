@@ -323,7 +323,7 @@ function MyProjectPage() {
                                         onChange={handleProfileImageChange}
                                         disabled={isUploading}
                                     />
-                                    <label className="MyProject-Body-Left-NewProfileImage-Button" htmlFor="profileImage">
+                                    <label className="MyProject-Body-Left-NewProfileImage-Button">
                                         <img src={imageEditIcon} alt="ImageEdit"/>
                                     </label>
                                 </div>
