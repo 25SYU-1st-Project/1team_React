@@ -20,6 +20,7 @@ P+eeting은 프로젝트를 찾고자하는 프리랜서 개발자들과, 그들
 ### 🖥️ Frontend  
 ![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=white)
 ![OpenAI API](https://img.shields.io/badge/OpenAI_API-412991?style=for-the-badge&logo=openai&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 
 
 ### 🛠️ Backend  
