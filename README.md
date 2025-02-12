@@ -46,7 +46,7 @@ P+eeting은 프로젝트를 찾고자하는 프리랜서 개발자들과, 그들
   
 ## 📖 How to use -?  
 
-### 서비스 링크 : https://d3le9azes4h81t.cloudfront.net/
+### 서비스 URL : https://d3le9azes4h81t.cloudfront.net/
 
 ### 회원가입
 - 트랙 선택 및 개인 / 단체 여부 선택 후 회원 가입
