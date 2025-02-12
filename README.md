@@ -1,6 +1,6 @@
 # P-eeting (Project + Meeting)
 
-<img src="https://private-user-images.githubusercontent.com/129136966/412214006-4ef2aea8-12a3-45bc-abc1-02f8c776eaf2.jpg?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MzkzMjEyMDksIm5iZiI6MTczOTMyMDkwOSwicGF0aCI6Ii8xMjkxMzY5NjYvNDEyMjE0MDA2LTRlZjJhZWE4LTEyYTMtNDViYy1hYmMxLTAyZjhjNzc2ZWFmMi5qcGc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwMjEyJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDIxMlQwMDQxNDlaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT05ZGJlYTRjNTYxOTg0Y2E5ZjYzY2I5MDg4MDc1MzI0MjJiNjA2NGRkZWUzODRiOTk4Nzc5MmY5M2U2YzY1MTY0JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.W2LgafPrUdrZBeZbIKaw6O4QQZtKk8x_gvwOm9pOOpM" width="800">
+<img src="https://github.com/25SYU-1st-Project/1team_React/commit/24bf525b8c3815115882bf7a5663bdb1063f065d#diff-c6f0927f1844c489523e4a4f55e02c26f4c1ca7ea1513e1f46a413b583c979e0" width="800">
 
 ## 🤝 팀원  
 - 👨‍💻 **장준익** - Project Manager  
