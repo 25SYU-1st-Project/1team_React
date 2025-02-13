@@ -4,10 +4,11 @@
   
 ## 🧑‍💻 멤버
 
-|  이름  |          [이나영](https://github.com/Bewheneverwhatiwant)          |              [황유빈](https://github.com/ppinppini)               |                [김가현](https://github.com/Kimgah)                |              [원정아](https://github.com/jeongawon)               |                [유광렬](https://github.com/ryeol00)                |
-| :----: | :----------------------------------------------------------------: | :---------------------------------------------------------------: | :----------------------------------------------------------------: | :----------------------------------------------------------------: | :----------------------------------------------------------------: |
-| 프로필 | <img src="https://avatars.githubusercontent.com/u/100694715?v=4"/> | <img src="https://avatars.githubusercontent.com/u/97329194?v=4"/> | <img src="https://avatars.githubusercontent.com/u/115142931?v=4"/> | <img src="https://avatars.githubusercontent.com/u/165775691?v=4"/> | <img src="https://avatars.githubusercontent.com/u/129136966?v=4"/> |
-|  역할  |          <img src="https://skillicons.dev/icons?i=next">           |          <img src="https://skillicons.dev/icons?i=next">          |         <img src="https://skillicons.dev/icons?i=spring">          |         <img src="https://skillicons.dev/icons?i=spring">          |         <img src="https://skillicons.dev/icons?i=spring">          |
+|  이름  |          [이나영](https://github.com/Bewheneverwhatiwant)          |              [황유빈](https://github.com/ppinppini)               |                [유광렬](https://github.com/ryeol00)                |
+| :----: | :----------------------------------------------------------------: | :---------------------------------------------------------------: | :----------------------------------------------------------------: |
+| 프로필 | <img src="https://avatars.githubusercontent.com/u/100694715?v=4"/> | <img src="https://avatars.githubusercontent.com/u/97329194?v=4"/> | <img src="https://avatars.githubusercontent.com/u/129136966?v=4"/> |
+|  역할  |          <img src="https://skillicons.dev/icons?i=next">           |          <img src="https://skillicons.dev/icons?i=next">          |         <img src="https://skillicons.dev/icons?i=spring">          |
+
 
 ## 📌 프로젝트 소개  
 P+eeting은 프로젝트를 찾고자하는 프리랜서 개발자들과, 그들에게 프로젝트를 의뢰하고자 하는 기업들간의 양방향 프로젝트 매칭을 제공하는 서비스입니다.  
