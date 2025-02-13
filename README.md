@@ -4,7 +4,7 @@
   
 ## 🧑‍💻 멤버
 
-|  이름  |                         [김가현](https://github.com/Kimgah)                |              [원정아](https://github.com/jeongawon)               |                [유광렬](https://github.com/ryeol00)                |
+|  이름  |          [이나영](https://github.com/Bewheneverwhatiwant)          |              [황유빈](https://github.com/ppinppini)               |                [김가현](https://github.com/Kimgah)                |              [원정아](https://github.com/jeongawon)               |                [유광렬](https://github.com/ryeol00)                |
 | :----: | :----------------------------------------------------------------: | :---------------------------------------------------------------: | :----------------------------------------------------------------: | :----------------------------------------------------------------: | :----------------------------------------------------------------: |
 | 프로필 | <img src="https://avatars.githubusercontent.com/u/100694715?v=4"/> | <img src="https://avatars.githubusercontent.com/u/97329194?v=4"/> | <img src="https://avatars.githubusercontent.com/u/115142931?v=4"/> | <img src="https://avatars.githubusercontent.com/u/165775691?v=4"/> | <img src="https://avatars.githubusercontent.com/u/129136966?v=4"/> |
 |  역할  |          <img src="https://skillicons.dev/icons?i=next">           |          <img src="https://skillicons.dev/icons?i=next">          |         <img src="https://skillicons.dev/icons?i=spring">          |         <img src="https://skillicons.dev/icons?i=spring">          |         <img src="https://skillicons.dev/icons?i=spring">          |
