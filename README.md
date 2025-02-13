@@ -4,10 +4,10 @@
   
 ## 🧑‍💻 멤버
 
-|  이름  |          [이나영](https://github.com/Bewheneverwhatiwant)          |              [황유빈](https://github.com/ppinppini)               |                [유광렬](https://github.com/ryeol00)                |
+|  이름  |          [장준익](https://github.com/No4hh4oN)          |              [정서우](https://github.com/8woes)               |                [유광렬](https://github.com/ryeol00)                |
 | :----: | :----------------------------------------------------------------: | :---------------------------------------------------------------: | :----------------------------------------------------------------: |
-| 프로필 | <img src="https://avatars.githubusercontent.com/u/100694715?v=4"/> | <img src="https://avatars.githubusercontent.com/u/97329194?v=4"/> | <img src="https://avatars.githubusercontent.com/u/129136966?v=4"/> |
-|  역할  |          <img src="https://skillicons.dev/icons?i=next">           |          <img src="https://skillicons.dev/icons?i=next">          |         <img src="https://skillicons.dev/icons?i=spring">          |
+| 프로필 | <img src="./src/images/준익.webp"/> | <img src="./src/images/서우.webp"/> | <img src="./src/images/광렬.webp"/> |
+|  역할  |          <img src="https://skillicons.dev/icons?i=react">           |          <img src="https://skillicons.dev/icons?i=react">          |         <img src="https://skillicons.dev/icons?i=react">          |
 
 
 ## 📌 프로젝트 소개  
