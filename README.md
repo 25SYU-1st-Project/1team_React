@@ -29,27 +29,7 @@ P+eeting은 프로젝트를 찾고자하는 프리랜서 개발자들과, 그들
 ![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=white)
 ![OpenAI API](https://img.shields.io/badge/OpenAI_API-412991?style=for-the-badge&logo=openai&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
-![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
-![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
-
-
-### 🛠️ Backend  
-![Firebase](https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black)
-
-### ☁️ Deployment  
-![AWS](https://img.shields.io/badge/AWS-232F3E?style=for-the-badge&logo=amazon-aws&logoColor=white)
-![S3](https://img.shields.io/badge/S3-569A31?style=for-the-badge&logo=amazon-s3&logoColor=white)
-![CloudFront](https://img.shields.io/badge/CloudFront-EC7211?style=for-the-badge&logo=amazon-cloudfront&logoColor=white)
-
-## 📌 WBS (Work Breakdown Structure)  
-<img src="./src/images/Readme2.webp" width="800"> 
-
-## 📊 ERD (Entity-Relationship Diagram)  
-<img src="./src/images/Readme3.webp" width="800">  
-  
-## 📖 How to use -?  
-
-### 서비스 URL : https://d3le9azes4h81t.cloudfront.net/
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=whi가)
 
 ### 회원가입
 - 트랙 선택 및 개인 / 단체 여부 선택 후 회원 가입
