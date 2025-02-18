@@ -31,6 +31,7 @@ P+eeting은 프로젝트를 찾고자하는 프리랜서 개발자들과, 그들
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=whi가)
 
+## 🛠️ How to use?
 ### 회원가입
 - 트랙 선택 및 개인 / 단체 여부 선택 후 회원 가입
 
